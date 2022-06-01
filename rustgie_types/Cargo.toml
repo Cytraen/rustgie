@@ -1,0 +1,20 @@
+[package]
+name = "rustgie_types"
+version = "0.0.1"
+authors = ["ashakoor"]
+edition = "2021"
+description = "Types for rustgie."
+repository = "https://github.com/ashakoor/rustgie/"
+license = "MIT OR Apache-2.0"
+keywords = ["bungie", "destiny", "destiny2"]
+categories = ["api-bindings"]
+
+[dependencies]
+serde = { version = "1.0.137", features = ["serde_derive"] }
+serde_json = "1.0.81"
+serde_repr = "0.1.8"
+serde_with = { version = "1.14.0", features = ["json"] }
+time = { version = "0.3.9", features = ["serde", "serde-well-known"] }
+
+[features]
+default = []

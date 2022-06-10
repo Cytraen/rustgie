@@ -2,7 +2,8 @@
 
 A Bungie.net API client.
 
-All requests that don't require authorization *should* work.
+All requests *should* work.  
+Requests that are part of the OAuth flow are not yet implemented.
 
 
 ## Example
@@ -14,9 +15,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_api_key("YOUR_API_KEY_HERE".to_string())
         .build();
 
-    let manifest_resp = client.destiny2_get_destiny_manifest().await;
+    let manifest_response = client.destiny2_get_destiny_manifest(None).await;
+    println!("{:#?}", manifest_response.version.unwrap());
 
-    println!("{:#?}", manifest_resp.version.unwrap());
+    let search_response = client.destiny2_search_destiny_player_by_bungie_name(
+        rustgie_types::BungieMembershipType::All,
+        rustgie_types::user::ExactSearchRequest {
+            display_name: Some("Cytraen".parse().unwrap()),
+            display_name_code: 2213
+        }, None).await;
+    println!("{:#?}", search_response[0].display_name.as_ref().unwrap());
+
+    Ok(())
 }
 ```
 

@@ -2,7 +2,7 @@
 
 A Bungie.net API client.
 
-Currently only GET requests are working.
+All requests that don't require authorization *should* work.
 
 
 ## Example

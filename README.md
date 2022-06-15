@@ -1,5 +1,8 @@
 # rustgie
 
+[![Crates.io](https://img.shields.io/crates/v/rustgie?label=rustgie&style=flat-square)](https://crates.io/crates/rustgie)
+[![Crates.io](https://img.shields.io/crates/v/rustgie_types?label=rustgie_types&style=flat-square)](https://crates.io/crates/rustgie_types)
+
 A Bungie.net API client.
 
 All requests *should* work.  

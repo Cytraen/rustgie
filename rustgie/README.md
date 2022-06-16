@@ -13,9 +13,9 @@ Requests that are part of the OAuth flow are not yet implemented.
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = rustgie::RustgieClientBuilder::new()
         .with_api_key("YOUR_API_KEY_HERE".to_string())
-        .build();
+        .build()?;
 
-    let manifest_response = client.destiny2_get_destiny_manifest(None).await;
+    let manifest_response = client.destiny2_get_destiny_manifest(None).await?;
     println!("{:#?}", manifest_response.version.unwrap());
 
     let search_response = client.destiny2_search_destiny_player_by_bungie_name(
@@ -23,7 +23,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         rustgie_types::user::ExactSearchRequest {
             display_name: Some("Cytraen".parse().unwrap()),
             display_name_code: 2213
-        }, None).await;
+        }, None).await?;
     println!("{:#?}", search_response[0].display_name.as_ref().unwrap());
 
     Ok(())

@@ -36,7 +36,18 @@ impl RustgieClientBuilder {
     }
 
     pub fn with_user_agent(mut self, user_agent: String) -> RustgieClientBuilder {
-        self.config.user_agent = Option::from(user_agent);
+        const RUSTGIE_VERSION: &str = env!("CARGO_PKG_VERSION");
+        self.config.user_agent = Option::from(format!("{} rustgie/{} (+github.com/ashakoor/rustgie)", user_agent, RUSTGIE_VERSION));
+        self
+    }
+
+    pub fn with_oauth_client_id(mut self, client_id: u32) -> RustgieClientBuilder {
+        self.config.oauth_client_id = Option::from(client_id.to_string());
+        self
+    }
+
+    pub fn with_oauth_client_secret(mut self, client_secret: String) -> RustgieClientBuilder {
+        self.config.oauth_client_secret = Option::from(client_secret);
         self
     }
 
@@ -46,10 +57,12 @@ impl RustgieClientBuilder {
             return Err("An API key is required.".to_string())
         }
         header_map.insert("X-API-Key", reqwest::header::HeaderValue::from_str(self.config.api_key.as_ref().unwrap()).unwrap());
+
         if self.config.user_agent.is_some() {
             header_map.insert(reqwest::header::USER_AGENT, reqwest::header::HeaderValue::from_str(self.config.user_agent.as_ref().unwrap()).unwrap());
         }
-        Ok(RustgieClient::new(header_map))
+
+        Ok(RustgieClient::new(header_map, self.config.oauth_client_id, self.config.oauth_client_secret))
     }
 }
 
@@ -60,33 +73,42 @@ impl Default for RustgieClientBuilder {
 struct ClientBuilderConfig {
     api_key: Option<String>,
     user_agent: Option<String>,
+    oauth_client_id: Option<String>,
+    oauth_client_secret: Option<String>,
 }
 
 impl ClientBuilderConfig {
     fn new () -> ClientBuilderConfig {
         ClientBuilderConfig {
             api_key: None,
-            user_agent: None
+            user_agent: None,
+            oauth_client_id: None,
+            oauth_client_secret: None
         }
     }
 }
 
 pub struct RustgieClient {
     client: reqwest::Client,
+    oauth_client_id: Option<String>,
+    oauth_client_secret: Option<String>,
 }
 
 impl RustgieClient {
-    fn new(default_headers: reqwest::header::HeaderMap) -> Self {
-        Self { client: reqwest::ClientBuilder::new()
-            .brotli(true)
-            .gzip(true)
-            .deflate(true)
-            .https_only(true)
-            .cookie_store(true)
-            .redirect(reqwest::redirect::Policy::none())
-            .default_headers(default_headers)
-            .build()
-            .unwrap()
+    fn new(default_headers: reqwest::header::HeaderMap, client_id: Option<String>, client_secret: Option<String>) -> Self {
+        Self {
+            client: reqwest::ClientBuilder::new()
+                .brotli(true)
+                .gzip(true)
+                .deflate(true)
+                .https_only(true)
+                .cookie_store(true)
+                .redirect(reqwest::redirect::Policy::none())
+                .default_headers(default_headers)
+                .build()
+                .unwrap(),
+            oauth_client_id: client_id,
+            oauth_client_secret: client_secret
         }
     }
 
@@ -135,10 +157,9 @@ impl RustgieClient {
     }
 
     async fn process_api_response<T: serde::de::DeserializeOwned>(&self, request: reqwest::RequestBuilder) -> RustgieResult<T> {
-        let response_result = request.send().await;
         let http_response: Response;
 
-        match response_result {
+        match request.send().await {
             Ok(resp) => { http_response = resp; }
             Err(_) => { return Err("There was an error connecting to the Bungie API".to_string()) }
         }
@@ -149,10 +170,9 @@ impl RustgieClient {
             return Err("'Content-Type' of response was not 'application/json'".to_string())
         }
 
-        let deserialized_response_result = http_response.json::<BungieApiResponse<T>>().await;
         let deserialized_response: BungieApiResponse<T>;
 
-        match deserialized_response_result {
+        match http_response.json::<BungieApiResponse<T>>().await {
             Ok(resp) => { deserialized_response = resp }
             Err(_) => { return Err("There was an error deserializing the JSON response".to_string()) }
         };
@@ -165,6 +185,96 @@ impl RustgieClient {
             None => { Err("The Bungie API did not include a response".to_string()) }
             Some(resp) => { Ok(resp) }
         }
+    }
+
+    /////////////////////////////////////// OAUTH FLOW
+
+    pub fn oauth_get_authorization_url_(&self, language_code: String, state: Option<String>) -> RustgieResult<String> {
+        let mut query_params = Vec::<(&str, String)>::new();
+
+        match &self.oauth_client_id {
+            None => { return Err("OAuth client ID is required".to_string()) }
+            Some(client_id) => {
+                query_params.push(("client_id", (*client_id).to_string()));
+            }
+        }
+
+        match state {
+            None => {}
+            Some(state_str) => { query_params.push(("state", state_str)); }
+        }
+
+        query_params.push(("response_type", "code".to_string()));
+
+        return match Url::parse_with_params(&*format!("https://www.bungie.net/{language_code}/OAuth/Authorize/"), query_params) {
+            Ok(url) => { Ok(url.to_string()) }
+            Err(_) => { Err("".to_string()) }
+        }
+    }
+
+    async fn process_oauth_response(&self, request: reqwest::RequestBuilder) -> RustgieResult<rustgie_types::api_response_::BungieTokenResponse> {
+        let http_response: Response;
+
+        match request.send().await {
+            Ok(resp) => { http_response = resp; }
+            Err(_) => { return Err("There was an error connecting to the Bungie API".to_string()) }
+        }
+
+        let headers = http_response.headers();
+
+        if headers.contains_key("Content-Type") && !headers["Content-Type"].to_str().unwrap().starts_with("application/json") {
+            return Err("'Content-Type' of response was not 'application/json'".to_string())
+        }
+
+        let deserialized_response: rustgie_types::api_response_::BungieTokenResponse;
+
+        match http_response.json::<rustgie_types::api_response_::BungieTokenResponse>().await {
+            Ok(resp) => { deserialized_response = resp }
+            Err(_) => { return Err("There was an error deserializing the JSON response".to_string()) }
+        };
+
+        match deserialized_response.access_token {
+            None => { Err("The Bungie API did not include an access token".to_string()) }
+            Some(_) => { Ok(deserialized_response) }
+        }
+    }
+
+    pub async fn oauth_get_auth_token_(&self, auth_code: String) -> RustgieResult<rustgie_types::api_response_::BungieTokenResponse> {
+        let mut form = HashMap::<&str, String>::new();
+
+        match &self.oauth_client_id {
+            None => { return Err("OAuth client ID is required".to_string()) }
+            Some(client_id) => { form.insert("client_id", client_id.to_string()); }
+        }
+
+        match &self.oauth_client_secret {
+            None => {}
+            Some(client_secret) => { form.insert("client_secret", client_secret.to_string()); }
+        }
+
+        form.insert("grant_type", "authorization_code".to_string());
+        form.insert("code", auth_code);
+
+        self.process_oauth_response(self.client.post("https://www.bungie.net/Platform/App/OAuth/Token/").form(&form)).await
+    }
+
+    pub async fn oauth_refresh_auth_token_(&self, refresh_token: String) -> RustgieResult<rustgie_types::api_response_::BungieTokenResponse> {
+        let mut form = HashMap::<&str, String>::new();
+
+        match &self.oauth_client_id {
+            None => { return Err("OAuth client ID is required".to_string()) }
+            Some(client_id) => { form.insert("client_id", client_id.to_string()); }
+        }
+
+        match &self.oauth_client_secret {
+            None => { return Err("OAuth client secret is required".to_string()) }
+            Some(client_secret) => { form.insert("client_secret", client_secret.to_string()); }
+        }
+
+        form.insert("grant_type", "refresh_token".to_string());
+        form.insert("refresh_token", refresh_token);
+
+        self.process_oauth_response(self.client.post("https://www.bungie.net/Platform/App/OAuth/Token/").form(&form)).await
     }
 
     /////////////////////////////////////// AUTO GENERATED CONTENT BELOW

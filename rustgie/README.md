@@ -1,9 +1,7 @@
 # rustgie
 
-A Bungie.net API client.
-
-All requests *should* work.  
-Requests that are part of the OAuth flow are not yet implemented.
+A Bungie.net API client that does minimal wrapping and stays one-to-one with the [official API documentation.](https://bungie-net.github.io/multi/index.html)  
+Still experimental, but it *should* fully work. Currently covers the full API surface of API v2.15.0 (Season of the Haunted)
 
 
 ## Example

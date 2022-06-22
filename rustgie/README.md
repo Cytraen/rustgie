@@ -10,19 +10,22 @@ Still experimental, but it *should* fully work. Currently covers the full API su
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let client = rustgie::RustgieClientBuilder::new()
-        .with_api_key("YOUR_API_KEY_HERE".to_string())
+        .with_api_key("YOUR_API_KEY_HERE")
         .build()?;
 
     let manifest_response = client.destiny2_get_destiny_manifest(None).await?;
-    println!("{:#?}", manifest_response.version.unwrap());
+    println!("{:#?}", manifest_response.version.expect("Manifest has no version"));
+
+    let search_request_body = rustgie_types::user::ExactSearchRequest {
+        display_name: Some("Cytraen".to_string()),
+        display_name_code: 2213
+    };
 
     let search_response = client.destiny2_search_destiny_player_by_bungie_name(
         rustgie_types::BungieMembershipType::All,
-        rustgie_types::user::ExactSearchRequest {
-            display_name: Some("Cytraen".parse().unwrap()),
-            display_name_code: 2213
-        }, None).await?;
-    println!("{:#?}", search_response[0].display_name.as_ref().unwrap());
+        search_request_body, None).await?;
+
+    println!("{:#?}", search_response[0].display_name.as_ref().expect("No display name found"));
 
     Ok(())
 }

@@ -22,6 +22,7 @@ pub mod vendors;
 
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -98,10 +99,10 @@ pub struct DestinyProgressionResetEntry {
 }
 
 /// Represents the different states a progression reward item can be in.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyProgressionRewardItemState {
-    None = 0,
     /// If this is set, the reward should be hidden.
     Invisible = 1,
     /// If this is set, the reward has been earned.
@@ -114,7 +115,7 @@ pub enum DestinyProgressionRewardItemState {
 
 impl Display for DestinyProgressionRewardItemState {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -323,16 +324,16 @@ impl Display for DestinyStatCategory {
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum EquippingItemBlockAttributes {
-    None = 0,
     EquipOnAcquire = 1,
 }
 
 impl Display for EquippingItemBlockAttributes {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -870,16 +871,16 @@ impl Display for DestinyPresentationScreenStyle {
 }
 
 /// If the plug has a specific custom style, this enumeration will represent that style/those styles.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum PlugUiStyles {
-    None = 0,
     Masterwork = 1,
 }
 
 impl Display for PlugUiStyles {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -924,11 +925,10 @@ impl Display for DestinyEnergyType {
 /// Indicates how a socket is populated, and where you should look for valid plug data.
 /// This is a flags enumeration/bitmask field, as you may have to look in multiple sources across multiple components for valid plugs.
 /// For instance, a socket could have plugs that are sourced from its own definition, as well as plugs that are sourced from Character-scoped AND profile-scoped Plug Sets. Only by combining plug data for every indicated source will you be able to know all of the plugs available for a socket.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum SocketPlugSources {
-    /// If there's no way we can detect to insert new plugs.
-    None = 0,
     /// Use plugs found in the player's inventory, based on the socket type rules (see DestinySocketTypeDefinition for more info)
     /// Note that a socket - like Shaders - can have *both* reusable plugs and inventory items inserted theoretically.
     InventorySourced = 1,
@@ -943,7 +943,7 @@ pub enum SocketPlugSources {
 
 impl Display for SocketPlugSources {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -1073,11 +1073,10 @@ impl Display for ItemBindStatus {
 }
 
 /// Whether you can transfer an item, and why not if you can't.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum TransferStatuses {
-    /// The item can be transferred.
-    CanTransfer = 0,
     /// You can't transfer the item because it is equipped on a character.
     ItemIsEquipped = 1,
     /// The item is defined as not transferrable in its DestinyInventoryItemDefinition.nonTransferrable property.
@@ -1088,15 +1087,15 @@ pub enum TransferStatuses {
 
 impl Display for TransferStatuses {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
 /// A flags enumeration/bitmask where each bit represents a different possible state that the item can be in that may effect how the item is displayed to the user and what actions can be performed against it.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum ItemState {
-    None = 0,
     /// If this bit is set, the item has been "locked" by the user and cannot be deleted. You may want to represent this visually with a "lock" icon.
     Locked = 1,
     /// If this bit is set, the item is a quest that's being tracked by the user. You may want a visual indicator to show that this is a tracked quest.
@@ -1111,15 +1110,15 @@ pub enum ItemState {
 
 impl Display for ItemState {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
 /// A flags enumeration/bitmask indicating the versions of the game that a given user has purchased.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyGameVersions {
-    None = 0,
     Destiny2 = 1,
     DLC1 = 2,
     DLC2 = 4,
@@ -1133,7 +1132,7 @@ pub enum DestinyGameVersions {
 
 impl Display for DestinyGameVersions {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -1226,10 +1225,10 @@ impl Display for DestinyComponentType {
 }
 
 /// I know this doesn't look like a Flags Enumeration/bitmask right now, but I assure you it is. This is the possible states that a Presentation Node can be in, and it is almost certain that its potential states will increase in the future. So don't treat it like a straight up enumeration.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyPresentationNodeState {
-    None = 0,
     /// If this is set, the game recommends that you not show this node. But you know your life, do what you've got to do.
     Invisible = 1,
     /// Turns out Presentation Nodes can also be obscured. If they are, this is set.
@@ -1238,16 +1237,15 @@ pub enum DestinyPresentationNodeState {
 
 impl Display for DestinyPresentationNodeState {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
 /// A Flags enumeration/bitmask where each bit represents a possible state that a Record/Triumph can be in.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyRecordState {
-    /// If there are no flags set, the record is in a state where it *could* be redeemed, but it has not been yet.
-    None = 0,
     /// If this is set, the completed record has been redeemed.
     RecordRedeemed = 1,
     /// If this is set, there's a reward available from this Record but it's unavailable for redemption.
@@ -1266,16 +1264,16 @@ pub enum DestinyRecordState {
 
 impl Display for DestinyRecordState {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
 /// A Flags Enumeration/bitmask where each bit represents a different state that the Collectible can be in. A collectible can be in any number of these states, and you can choose to use or ignore any or all of them when making your own UI that shows Collectible info. Our displays are going to honor them, but we're also the kind of people who only pretend to inhale before quickly passing it to the left. So, you know, do what you got to do.
 /// (All joking aside, please note the caveat I mention around the Invisible flag: there are cases where it is in the best interest of your users to honor these flags even if you're a "show all the data" person. Collector-oriented compulsion is a very unfortunate and real thing, and I would hate to instill that compulsion in others through showing them items that they cannot earn. Please consider this when you are making your own apps/sites.)
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyCollectibleState {
-    None = 0,
     /// If this flag is set, you have not yet obtained this collectible.
     NotAcquired = 1,
     /// If this flag is set, the item is "obscured" to you: you can/should use the alternate item hash found in DestinyCollectibleDefinition.stateInfo.obscuredOverrideItemHash when displaying this collectible instead of the default display info.
@@ -1295,15 +1293,15 @@ pub enum DestinyCollectibleState {
 
 impl Display for DestinyCollectibleState {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
 /// A flags enumeration that represents a Fireteam Member's status.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyPartyMemberStates {
-    None = 0,
     /// This one's pretty obvious - they're on your Fireteam.
     FireteamMember = 1,
     /// I don't know what it means to be in a 'Posse', but apparently this is it.
@@ -1317,7 +1315,7 @@ pub enum DestinyPartyMemberStates {
 
 impl Display for DestinyPartyMemberStates {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -1339,10 +1337,10 @@ impl Display for DestinyGamePrivacySetting {
 }
 
 /// A Flags enumeration representing the reasons why a person can't join this user's fireteam.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyJoinClosedReasons {
-    None = 0,
     /// The user is currently in matchmaking.
     InMatchmaking = 1,
     /// The user is currently in a loading screen.
@@ -1359,7 +1357,7 @@ pub enum DestinyJoinClosedReasons {
 
 impl Display for DestinyJoinClosedReasons {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -1471,11 +1469,10 @@ pub struct DestinyStat {
 }
 
 /// The reasons why an item cannot be equipped, if any. Many flags can be set, or "None" if
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum EquipFailureReason {
-    /// The item is/was able to be equipped.
-    None = 0,
     /// This is not the kind of item that can be equipped. Did you try equipping Glimmer or something?
     ItemUnequippable = 1,
     /// This item is part of a "unique set", and you can't have more than one item of that same set type equipped at once. For instance, if you already have an Exotic Weapon equipped, you can't equip a second one in another weapon slot.
@@ -1490,7 +1487,7 @@ pub enum EquipFailureReason {
 
 impl Display for EquipFailureReason {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -1589,10 +1586,10 @@ impl Display for DestinyVendorFilter {
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum VendorItemStatus {
-    Success = 0,
     NoInventorySpace = 1,
     NoFunds = 2,
     NoProgression = 4,
@@ -1611,7 +1608,7 @@ pub enum VendorItemStatus {
 
 impl Display for VendorItemStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
@@ -1629,11 +1626,10 @@ pub struct DestinyUnlockStatus {
 }
 
 /// The possible states of Destiny Profile Records. IMPORTANT: Any given item can theoretically have many of these states simultaneously: as a result, this was altered to be a flags enumeration/bitmask for v3.2.0.
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyVendorItemState {
-    /// There are no augments on the item.
-    None = 0,
     /// Deprecated forever (probably). There was a time when Records were going to be implemented through Vendors, and this field was relevant. Now they're implemented through Presentation Nodes, and this field doesn't matter anymore.
     Incomplete = 1,
     /// Deprecated forever (probably). See the description of the "Incomplete" value for the juicy scoop.
@@ -1676,7 +1672,7 @@ pub enum DestinyVendorItemState {
 
 impl Display for DestinyVendorItemState {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 

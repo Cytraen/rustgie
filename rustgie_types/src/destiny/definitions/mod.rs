@@ -24,6 +24,7 @@ pub mod vendors;
 
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -2246,10 +2247,10 @@ pub struct DestinyTalentNodeStepGroups {
     pub damage_types: crate::destiny::definitions::DestinyTalentNodeStepDamageTypes,
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepWeaponPerformances {
-    None = 0,
     RateOfFire = 1,
     Damage = 2,
     Accuracy = 4,
@@ -2263,38 +2264,36 @@ pub enum DestinyTalentNodeStepWeaponPerformances {
     TrackingAndDetonation = 1024,
     ShotgunSpread = 2048,
     ChargeTime = 4096,
-    All = 8191,
 }
 
 impl Display for DestinyTalentNodeStepWeaponPerformances {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepImpactEffects {
-    None = 0,
     ArmorPiercing = 1,
     Ricochet = 2,
     Flinch = 4,
     CollateralDamage = 8,
     Disorient = 16,
     HighlightTarget = 32,
-    All = 63,
 }
 
 impl Display for DestinyTalentNodeStepImpactEffects {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepGuardianAttributes {
-    None = 0,
     Stats = 1,
     Shields = 2,
     Health = 4,
@@ -2303,48 +2302,45 @@ pub enum DestinyTalentNodeStepGuardianAttributes {
     Radar = 32,
     Invisibility = 64,
     Reputations = 128,
-    All = 255,
 }
 
 impl Display for DestinyTalentNodeStepGuardianAttributes {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepLightAbilities {
-    None = 0,
     Grenades = 1,
     Melee = 2,
     MovementModes = 4,
     Orbs = 8,
     SuperEnergy = 16,
     SuperMods = 32,
-    All = 63,
 }
 
 impl Display for DestinyTalentNodeStepLightAbilities {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepDamageTypes {
-    None = 0,
     Kinetic = 1,
     Arc = 2,
     Solar = 4,
     Void = 8,
-    All = 15,
 }
 
 impl Display for DestinyTalentNodeStepDamageTypes {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 

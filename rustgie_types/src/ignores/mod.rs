@@ -1,4 +1,5 @@
 ﻿use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
@@ -11,10 +12,10 @@ pub struct IgnoreResponse {
     pub ignore_flags: crate::ignores::IgnoreStatus,
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum IgnoreStatus {
-    NotIgnored = 0,
     IgnoredUser = 1,
     IgnoredGroup = 2,
     IgnoredByGroup = 4,
@@ -25,7 +26,7 @@ pub enum IgnoreStatus {
 
 impl Display for IgnoreStatus {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 

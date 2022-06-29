@@ -1,13 +1,14 @@
 ﻿use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum ForumTopicsCategoryFiltersEnum {
-    None = 0,
     Links = 1,
     Questions = 2,
     AnsweredQuestions = 4,
@@ -20,7 +21,7 @@ pub enum ForumTopicsCategoryFiltersEnum {
 
 impl Display for ForumTopicsCategoryFiltersEnum {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 

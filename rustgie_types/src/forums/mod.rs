@@ -1,10 +1,11 @@
 ﻿use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum ForumPostCategoryEnums {
-    None = 0,
     TextOnly = 1,
     Media = 2,
     Link = 4,
@@ -20,14 +21,14 @@ pub enum ForumPostCategoryEnums {
 
 impl Display for ForumPostCategoryEnums {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum ForumFlagsEnum {
-    None = 0,
     BungieStaffPost = 1,
     ForumNinjaPost = 2,
     ForumMentorPost = 4,
@@ -40,6 +41,6 @@ pub enum ForumFlagsEnum {
 
 impl Display for ForumFlagsEnum {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }

@@ -2,6 +2,7 @@
 
 use std::collections::HashMap;
 use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -373,10 +374,10 @@ pub struct EmailOptInDefinition {
     pub dependent_subscriptions: Option<Vec<crate::user::EmailSubscriptionDefinition>>,
 }
 
-#[repr(i64)]
+#[bitflags]
+#[repr(u64)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum OptInFlags {
-    None = 0,
     Newsletter = 1,
     System = 2,
     Marketing = 4,
@@ -390,7 +391,7 @@ pub enum OptInFlags {
 
 impl Display for OptInFlags {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i64)
+        write!(f, "{}", *self as u64)
     }
 }
 

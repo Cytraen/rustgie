@@ -1,10 +1,12 @@
 ﻿use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
-#[repr(i64)]
+#[bitflags]
+#[repr(u64)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum ApplicationScopes {
     /// Read basic user profile information such as the user's handle, avatar icon, etc.
@@ -41,7 +43,7 @@ pub enum ApplicationScopes {
 
 impl Display for ApplicationScopes {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i64)
+        write!(f, "{}", *self as u64)
     }
 }
 

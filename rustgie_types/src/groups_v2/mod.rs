@@ -1,5 +1,6 @@
 ﻿use std::collections::HashMap;
 use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -304,10 +305,10 @@ pub struct GroupFeatures {
     pub join_level: crate::groups_v2::RuntimeGroupMemberType,
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Capabilities {
-    None = 0,
     Leaderboards = 1,
     Callsign = 2,
     OptionalConversations = 4,
@@ -319,7 +320,7 @@ pub enum Capabilities {
 
 impl Display for Capabilities {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 

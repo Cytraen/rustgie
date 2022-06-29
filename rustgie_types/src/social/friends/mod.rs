@@ -1,4 +1,5 @@
 ﻿use std::fmt::{Display, Formatter, Result};
+use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -51,17 +52,17 @@ impl Display for PresenceStatus {
     }
 }
 
-#[repr(i32)]
+#[bitflags]
+#[repr(u32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum PresenceOnlineStateFlags {
-    None = 0,
     Destiny1 = 1,
     Destiny2 = 2,
 }
 
 impl Display for PresenceOnlineStateFlags {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", *self as i32)
+        write!(f, "{}", *self as u32)
     }
 }
 

@@ -15,7 +15,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_api_key("YOUR_API_KEY_HERE")
         .build()?;
 
-    let manifest_response = client.destiny2_get_destiny_manifest(None).await?;
+    let manifest_response = client.destiny2_get_destiny_manifest(None::<&str>).await?;
     println!("{:#?}", manifest_response.version.expect("Manifest has no version"));
 
     let search_request_body = rustgie_types::user::ExactSearchRequest {
@@ -25,7 +25,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let search_response = client.destiny2_search_destiny_player_by_bungie_name(
         rustgie_types::BungieMembershipType::All,
-        search_request_body, None).await?;
+        search_request_body, None::<&str>).await?;
 
     println!("{:#?}", search_response[0].display_name.as_ref().expect("No display name found"));
 

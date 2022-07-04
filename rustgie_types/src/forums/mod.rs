@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
@@ -20,8 +21,28 @@ pub enum ForumPostCategoryEnums {
 }
 
 impl Display for ForumPostCategoryEnums {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for ForumPostCategoryEnums {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "TextOnly" => Ok(ForumPostCategoryEnums::TextOnly),
+            "Media" => Ok(ForumPostCategoryEnums::Media),
+            "Link" => Ok(ForumPostCategoryEnums::Link),
+            "Poll" => Ok(ForumPostCategoryEnums::Poll),
+            "Question" => Ok(ForumPostCategoryEnums::Question),
+            "Answered" => Ok(ForumPostCategoryEnums::Answered),
+            "Announcement" => Ok(ForumPostCategoryEnums::Announcement),
+            "ContentComment" => Ok(ForumPostCategoryEnums::ContentComment),
+            "BungieOfficial" => Ok(ForumPostCategoryEnums::BungieOfficial),
+            "NinjaOfficial" => Ok(ForumPostCategoryEnums::NinjaOfficial),
+            "Recruitment" => Ok(ForumPostCategoryEnums::Recruitment),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -40,7 +61,24 @@ pub enum ForumFlagsEnum {
 }
 
 impl Display for ForumFlagsEnum {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for ForumFlagsEnum {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "BungieStaffPost" => Ok(ForumFlagsEnum::BungieStaffPost),
+            "ForumNinjaPost" => Ok(ForumFlagsEnum::ForumNinjaPost),
+            "ForumMentorPost" => Ok(ForumFlagsEnum::ForumMentorPost),
+            "TopicBungieStaffPosted" => Ok(ForumFlagsEnum::TopicBungieStaffPosted),
+            "TopicBungieVolunteerPosted" => Ok(ForumFlagsEnum::TopicBungieVolunteerPosted),
+            "QuestionAnsweredByBungie" => Ok(ForumFlagsEnum::QuestionAnsweredByBungie),
+            "QuestionAnsweredByNinja" => Ok(ForumFlagsEnum::QuestionAnsweredByNinja),
+            "CommunityContent" => Ok(ForumFlagsEnum::CommunityContent),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }

@@ -65,7 +65,7 @@ pub struct DestinyVendorCategory {
 pub struct DestinyVendorSaleItemComponent {
     /// A flag indicating whether the requesting character can buy the item, and if not the reasons why the character can't buy it.
     #[serde(rename = "saleStatus")]
-    pub sale_status: crate::destiny::VendorItemStatus,
+    pub sale_status: enumflags2::BitFlags<crate::destiny::VendorItemStatus>,
 
     /// If you can't buy the item due to a complex character state, these will be hashes for DestinyUnlockDefinitions that you can check to see messages regarding the failure (if the unlocks have human readable information: it is not guaranteed that Unlocks will have human readable strings, and your application will have to handle that)
     /// Prefer using failureIndexes instead. These are provided for informational purposes, but have largely been supplanted by failureIndexes.
@@ -85,7 +85,7 @@ pub struct DestinyVendorSaleItemComponent {
     /// A flags enumeration value representing the current state of any "state modifiers" on the item being sold. These are meant to correspond with some sort of visual indicator as to the augmentation: for instance, if an item is on sale or if you already own the item in question.
     /// Determining how you want to represent these in your own app (or if you even want to) is an exercise left for the reader.
     #[serde(rename = "augments")]
-    pub augments: crate::destiny::DestinyVendorItemState,
+    pub augments: enumflags2::BitFlags<crate::destiny::DestinyVendorItemState>,
 
     /// If available, a list that describes which item values (rewards) should be shown (true) or hidden (false).
     #[serde(rename = "itemValueVisibility")]

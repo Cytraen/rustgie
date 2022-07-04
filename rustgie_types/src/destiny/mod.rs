@@ -21,7 +21,8 @@ pub mod sockets;
 pub mod vendors;
 
 use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -114,8 +115,21 @@ pub enum DestinyProgressionRewardItemState {
 }
 
 impl Display for DestinyProgressionRewardItemState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyProgressionRewardItemState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Invisible" => Ok(DestinyProgressionRewardItemState::Invisible),
+            "Earned" => Ok(DestinyProgressionRewardItemState::Earned),
+            "Claimed" => Ok(DestinyProgressionRewardItemState::Claimed),
+            "ClaimAllowed" => Ok(DestinyProgressionRewardItemState::ClaimAllowed),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -135,8 +149,25 @@ pub enum DestinyProgressionScope {
 }
 
 impl Display for DestinyProgressionScope {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyProgressionScope {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Character" => Ok(DestinyProgressionScope::Character),
+            "Clan" => Ok(DestinyProgressionScope::Clan),
+            "Item" => Ok(DestinyProgressionScope::Item),
+            "ImplicitFromEquipment" => Ok(DestinyProgressionScope::ImplicitFromEquipment),
+            "Mapped" => Ok(DestinyProgressionScope::Mapped),
+            "MappedAggregate" => Ok(DestinyProgressionScope::MappedAggregate),
+            "MappedStat" => Ok(DestinyProgressionScope::MappedStat),
+            "MappedUnlockValue" => Ok(DestinyProgressionScope::MappedUnlockValue),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -150,8 +181,19 @@ pub enum DestinyProgressionStepDisplayEffect {
 }
 
 impl Display for DestinyProgressionStepDisplayEffect {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyProgressionStepDisplayEffect {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Character" => Ok(DestinyProgressionStepDisplayEffect::Character),
+            "Item" => Ok(DestinyProgressionStepDisplayEffect::Item),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -188,8 +230,19 @@ pub enum SocketTypeActionType {
 }
 
 impl Display for SocketTypeActionType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for SocketTypeActionType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "InfuseItem" => Ok(SocketTypeActionType::InfuseItem),
+            "ReinitializeSocket" => Ok(SocketTypeActionType::ReinitializeSocket),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -203,8 +256,20 @@ pub enum DestinySocketVisibility {
 }
 
 impl Display for DestinySocketVisibility {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinySocketVisibility {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Hidden" => Ok(DestinySocketVisibility::Hidden),
+            "HiddenWhenEmpty" => Ok(DestinySocketVisibility::HiddenWhenEmpty),
+            "HiddenIfNoPlugsAvailable" => Ok(DestinySocketVisibility::HiddenIfNoPlugsAvailable),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -224,8 +289,25 @@ pub enum DestinySocketCategoryStyle {
 }
 
 impl Display for DestinySocketCategoryStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinySocketCategoryStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Reusable" => Ok(DestinySocketCategoryStyle::Reusable),
+            "Consumable" => Ok(DestinySocketCategoryStyle::Consumable),
+            "Unlockable" => Ok(DestinySocketCategoryStyle::Unlockable),
+            "Intrinsic" => Ok(DestinySocketCategoryStyle::Intrinsic),
+            "EnergyMeter" => Ok(DestinySocketCategoryStyle::EnergyMeter),
+            "LargePerk" => Ok(DestinySocketCategoryStyle::LargePerk),
+            "Abilities" => Ok(DestinySocketCategoryStyle::Abilities),
+            "Supers" => Ok(DestinySocketCategoryStyle::Supers),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -242,8 +324,23 @@ pub enum TierType {
 }
 
 impl Display for TierType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for TierType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Currency" => Ok(TierType::Currency),
+            "Basic" => Ok(TierType::Basic),
+            "Common" => Ok(TierType::Common),
+            "Rare" => Ok(TierType::Rare),
+            "Superior" => Ok(TierType::Superior),
+            "Exotic" => Ok(TierType::Exotic),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -255,8 +352,18 @@ pub enum BucketScope {
 }
 
 impl Display for BucketScope {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for BucketScope {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Account" => Ok(BucketScope::Account),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -271,8 +378,21 @@ pub enum BucketCategory {
 }
 
 impl Display for BucketCategory {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for BucketCategory {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Item" => Ok(BucketCategory::Item),
+            "Currency" => Ok(BucketCategory::Currency),
+            "Equippable" => Ok(BucketCategory::Equippable),
+            "Ignored" => Ok(BucketCategory::Ignored),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -287,8 +407,21 @@ pub enum ItemLocation {
 }
 
 impl Display for ItemLocation {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ItemLocation {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Inventory" => Ok(ItemLocation::Inventory),
+            "Vault" => Ok(ItemLocation::Vault),
+            "Vendor" => Ok(ItemLocation::Vendor),
+            "Postmaster" => Ok(ItemLocation::Postmaster),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -303,8 +436,19 @@ pub enum DestinyStatAggregationType {
 }
 
 impl Display for DestinyStatAggregationType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyStatAggregationType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Character" => Ok(DestinyStatAggregationType::Character),
+            "Item" => Ok(DestinyStatAggregationType::Item),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -319,8 +463,20 @@ pub enum DestinyStatCategory {
 }
 
 impl Display for DestinyStatCategory {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyStatCategory {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Weapon" => Ok(DestinyStatCategory::Weapon),
+            "Defense" => Ok(DestinyStatCategory::Defense),
+            "Primary" => Ok(DestinyStatCategory::Primary),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -332,8 +488,18 @@ pub enum EquippingItemBlockAttributes {
 }
 
 impl Display for EquippingItemBlockAttributes {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for EquippingItemBlockAttributes {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "EquipOnAcquire" => Ok(EquippingItemBlockAttributes::EquipOnAcquire),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -348,8 +514,21 @@ pub enum DestinyAmmunitionType {
 }
 
 impl Display for DestinyAmmunitionType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyAmmunitionType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Primary" => Ok(DestinyAmmunitionType::Primary),
+            "Special" => Ok(DestinyAmmunitionType::Special),
+            "Heavy" => Ok(DestinyAmmunitionType::Heavy),
+            "Unknown" => Ok(DestinyAmmunitionType::Unknown),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -372,8 +551,20 @@ pub enum DestinyClass {
 }
 
 impl Display for DestinyClass {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyClass {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Hunter" => Ok(DestinyClass::Hunter),
+            "Warlock" => Ok(DestinyClass::Warlock),
+            "Unknown" => Ok(DestinyClass::Unknown),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -386,8 +577,19 @@ pub enum DestinyGender {
 }
 
 impl Display for DestinyGender {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyGender {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Female" => Ok(DestinyGender::Female),
+            "Unknown" => Ok(DestinyGender::Unknown),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -404,8 +606,19 @@ pub enum DestinyVendorProgressionType {
 }
 
 impl Display for DestinyVendorProgressionType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyVendorProgressionType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Ritual" => Ok(DestinyVendorProgressionType::Ritual),
+            "NoSeasonalRefresh" => Ok(DestinyVendorProgressionType::NoSeasonalRefresh),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -418,8 +631,18 @@ pub enum VendorDisplayCategorySortOrder {
 }
 
 impl Display for VendorDisplayCategorySortOrder {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for VendorDisplayCategorySortOrder {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "SortByTier" => Ok(VendorDisplayCategorySortOrder::SortByTier),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -433,8 +656,19 @@ pub enum DestinyVendorInteractionRewardSelection {
 }
 
 impl Display for DestinyVendorInteractionRewardSelection {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyVendorInteractionRewardSelection {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "One" => Ok(DestinyVendorInteractionRewardSelection::One),
+            "All" => Ok(DestinyVendorInteractionRewardSelection::All),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -448,8 +682,19 @@ pub enum DestinyVendorReplyType {
 }
 
 impl Display for DestinyVendorReplyType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyVendorReplyType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Decline" => Ok(DestinyVendorReplyType::Decline),
+            "Complete" => Ok(DestinyVendorReplyType::Complete),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -481,8 +726,27 @@ pub enum VendorInteractionType {
 }
 
 impl Display for VendorInteractionType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for VendorInteractionType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Undefined" => Ok(VendorInteractionType::Undefined),
+            "QuestComplete" => Ok(VendorInteractionType::QuestComplete),
+            "QuestContinue" => Ok(VendorInteractionType::QuestContinue),
+            "ReputationPreview" => Ok(VendorInteractionType::ReputationPreview),
+            "RankUpReward" => Ok(VendorInteractionType::RankUpReward),
+            "TokenTurnIn" => Ok(VendorInteractionType::TokenTurnIn),
+            "QuestAccept" => Ok(VendorInteractionType::QuestAccept),
+            "ProgressTab" => Ok(VendorInteractionType::ProgressTab),
+            "End" => Ok(VendorInteractionType::End),
+            "Start" => Ok(VendorInteractionType::Start),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -496,8 +760,19 @@ pub enum DestinyItemSortType {
 }
 
 impl Display for DestinyItemSortType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyItemSortType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Timestamp" => Ok(DestinyItemSortType::Timestamp),
+            "StackSize" => Ok(DestinyItemSortType::StackSize),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -511,8 +786,19 @@ pub enum DestinyVendorItemRefundPolicy {
 }
 
 impl Display for DestinyVendorItemRefundPolicy {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyVendorItemRefundPolicy {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "DeletesItem" => Ok(DestinyVendorItemRefundPolicy::DeletesItem),
+            "RevokesLicense" => Ok(DestinyVendorItemRefundPolicy::RevokesLicense),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -537,8 +823,23 @@ pub enum DestinyGatingScope {
 }
 
 impl Display for DestinyGatingScope {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyGatingScope {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Global" => Ok(DestinyGatingScope::Global),
+            "Clan" => Ok(DestinyGatingScope::Clan),
+            "Profile" => Ok(DestinyGatingScope::Profile),
+            "Character" => Ok(DestinyGatingScope::Character),
+            "Item" => Ok(DestinyGatingScope::Item),
+            "AssumedWorstCase" => Ok(DestinyGatingScope::AssumedWorstCase),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -554,8 +855,21 @@ pub enum ActivityGraphNodeHighlightType {
 }
 
 impl Display for ActivityGraphNodeHighlightType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ActivityGraphNodeHighlightType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Normal" => Ok(ActivityGraphNodeHighlightType::Normal),
+            "Hyper" => Ok(ActivityGraphNodeHighlightType::Hyper),
+            "Comet" => Ok(ActivityGraphNodeHighlightType::Comet),
+            "RiseOfIron" => Ok(ActivityGraphNodeHighlightType::RiseOfIron),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -596,8 +910,31 @@ pub enum DestinyUnlockValueUIStyle {
 }
 
 impl Display for DestinyUnlockValueUIStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyUnlockValueUIStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Fraction" => Ok(DestinyUnlockValueUIStyle::Fraction),
+            "Checkbox" => Ok(DestinyUnlockValueUIStyle::Checkbox),
+            "Percentage" => Ok(DestinyUnlockValueUIStyle::Percentage),
+            "DateTime" => Ok(DestinyUnlockValueUIStyle::DateTime),
+            "FractionFloat" => Ok(DestinyUnlockValueUIStyle::FractionFloat),
+            "Integer" => Ok(DestinyUnlockValueUIStyle::Integer),
+            "TimeDuration" => Ok(DestinyUnlockValueUIStyle::TimeDuration),
+            "Hidden" => Ok(DestinyUnlockValueUIStyle::Hidden),
+            "Multiplier" => Ok(DestinyUnlockValueUIStyle::Multiplier),
+            "GreenPips" => Ok(DestinyUnlockValueUIStyle::GreenPips),
+            "RedPips" => Ok(DestinyUnlockValueUIStyle::RedPips),
+            "ExplicitPercentage" => Ok(DestinyUnlockValueUIStyle::ExplicitPercentage),
+            "RawFloat" => Ok(DestinyUnlockValueUIStyle::RawFloat),
+            "LevelAndReward" => Ok(DestinyUnlockValueUIStyle::LevelAndReward),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -611,8 +948,19 @@ pub enum DestinyObjectiveGrantStyle {
 }
 
 impl Display for DestinyObjectiveGrantStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyObjectiveGrantStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "WhenComplete" => Ok(DestinyObjectiveGrantStyle::WhenComplete),
+            "Always" => Ok(DestinyObjectiveGrantStyle::Always),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -629,8 +977,23 @@ pub enum DamageType {
 }
 
 impl Display for DamageType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DamageType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Kinetic" => Ok(DamageType::Kinetic),
+            "Arc" => Ok(DamageType::Arc),
+            "Thermal" => Ok(DamageType::Thermal),
+            "Void" => Ok(DamageType::Void),
+            "Raid" => Ok(DamageType::Raid),
+            "Stasis" => Ok(DamageType::Stasis),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -648,8 +1011,23 @@ pub enum DestinyObjectiveUiStyle {
 }
 
 impl Display for DestinyObjectiveUiStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyObjectiveUiStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Highlighted" => Ok(DestinyObjectiveUiStyle::Highlighted),
+            "CraftingWeaponLevel" => Ok(DestinyObjectiveUiStyle::CraftingWeaponLevel),
+            "CraftingWeaponLevelProgress" => Ok(DestinyObjectiveUiStyle::CraftingWeaponLevelProgress),
+            "CraftingWeaponTimestamp" => Ok(DestinyObjectiveUiStyle::CraftingWeaponTimestamp),
+            "CraftingMementos" => Ok(DestinyObjectiveUiStyle::CraftingMementos),
+            "CraftingMementoTitle" => Ok(DestinyObjectiveUiStyle::CraftingMementoTitle),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -676,8 +1054,33 @@ pub enum DestinyActivityNavPointType {
 }
 
 impl Display for DestinyActivityNavPointType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyActivityNavPointType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PrimaryObjective" => Ok(DestinyActivityNavPointType::PrimaryObjective),
+            "SecondaryObjective" => Ok(DestinyActivityNavPointType::SecondaryObjective),
+            "TravelObjective" => Ok(DestinyActivityNavPointType::TravelObjective),
+            "PublicEventObjective" => Ok(DestinyActivityNavPointType::PublicEventObjective),
+            "AmmoCache" => Ok(DestinyActivityNavPointType::AmmoCache),
+            "PointTypeFlag" => Ok(DestinyActivityNavPointType::PointTypeFlag),
+            "CapturePoint" => Ok(DestinyActivityNavPointType::CapturePoint),
+            "DefensiveEncounter" => Ok(DestinyActivityNavPointType::DefensiveEncounter),
+            "GhostInteraction" => Ok(DestinyActivityNavPointType::GhostInteraction),
+            "KillAi" => Ok(DestinyActivityNavPointType::KillAi),
+            "QuestItem" => Ok(DestinyActivityNavPointType::QuestItem),
+            "PatrolMission" => Ok(DestinyActivityNavPointType::PatrolMission),
+            "Incoming" => Ok(DestinyActivityNavPointType::Incoming),
+            "ArenaObjective" => Ok(DestinyActivityNavPointType::ArenaObjective),
+            "AutomationHint" => Ok(DestinyActivityNavPointType::AutomationHint),
+            "TrackedQuest" => Ok(DestinyActivityNavPointType::TrackedQuest),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -696,8 +1099,20 @@ pub enum DestinyActivityModeCategory {
 }
 
 impl Display for DestinyActivityModeCategory {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyActivityModeCategory {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PvE" => Ok(DestinyActivityModeCategory::PvE),
+            "PvP" => Ok(DestinyActivityModeCategory::PvP),
+            "PvECompetitive" => Ok(DestinyActivityModeCategory::PvECompetitive),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -745,8 +1160,47 @@ pub enum DestinyItemSubType {
 }
 
 impl Display for DestinyItemSubType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyItemSubType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Crucible" => Ok(DestinyItemSubType::Crucible),
+            "Vanguard" => Ok(DestinyItemSubType::Vanguard),
+            "Exotic" => Ok(DestinyItemSubType::Exotic),
+            "AutoRifle" => Ok(DestinyItemSubType::AutoRifle),
+            "Shotgun" => Ok(DestinyItemSubType::Shotgun),
+            "Machinegun" => Ok(DestinyItemSubType::Machinegun),
+            "HandCannon" => Ok(DestinyItemSubType::HandCannon),
+            "RocketLauncher" => Ok(DestinyItemSubType::RocketLauncher),
+            "FusionRifle" => Ok(DestinyItemSubType::FusionRifle),
+            "SniperRifle" => Ok(DestinyItemSubType::SniperRifle),
+            "PulseRifle" => Ok(DestinyItemSubType::PulseRifle),
+            "ScoutRifle" => Ok(DestinyItemSubType::ScoutRifle),
+            "Crm" => Ok(DestinyItemSubType::Crm),
+            "Sidearm" => Ok(DestinyItemSubType::Sidearm),
+            "Sword" => Ok(DestinyItemSubType::Sword),
+            "Mask" => Ok(DestinyItemSubType::Mask),
+            "Shader" => Ok(DestinyItemSubType::Shader),
+            "Ornament" => Ok(DestinyItemSubType::Ornament),
+            "FusionRifleLine" => Ok(DestinyItemSubType::FusionRifleLine),
+            "GrenadeLauncher" => Ok(DestinyItemSubType::GrenadeLauncher),
+            "SubmachineGun" => Ok(DestinyItemSubType::SubmachineGun),
+            "TraceRifle" => Ok(DestinyItemSubType::TraceRifle),
+            "HelmetArmor" => Ok(DestinyItemSubType::HelmetArmor),
+            "GauntletsArmor" => Ok(DestinyItemSubType::GauntletsArmor),
+            "ChestArmor" => Ok(DestinyItemSubType::ChestArmor),
+            "LegArmor" => Ok(DestinyItemSubType::LegArmor),
+            "ClassArmor" => Ok(DestinyItemSubType::ClassArmor),
+            "Bow" => Ok(DestinyItemSubType::Bow),
+            "DummyRepeatableBounty" => Ok(DestinyItemSubType::DummyRepeatableBounty),
+            "Glaive" => Ok(DestinyItemSubType::Glaive),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -762,8 +1216,21 @@ pub enum DestinyGraphNodeState {
 }
 
 impl Display for DestinyGraphNodeState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyGraphNodeState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Visible" => Ok(DestinyGraphNodeState::Visible),
+            "Teaser" => Ok(DestinyGraphNodeState::Teaser),
+            "Incomplete" => Ok(DestinyGraphNodeState::Incomplete),
+            "Completed" => Ok(DestinyGraphNodeState::Completed),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -779,8 +1246,22 @@ pub enum DestinyPresentationNodeType {
 }
 
 impl Display for DestinyPresentationNodeType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyPresentationNodeType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Category" => Ok(DestinyPresentationNodeType::Category),
+            "Collectibles" => Ok(DestinyPresentationNodeType::Collectibles),
+            "Records" => Ok(DestinyPresentationNodeType::Records),
+            "Metric" => Ok(DestinyPresentationNodeType::Metric),
+            "Craftable" => Ok(DestinyPresentationNodeType::Craftable),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -793,8 +1274,18 @@ pub enum DestinyScope {
 }
 
 impl Display for DestinyScope {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyScope {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Character" => Ok(DestinyScope::Character),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -811,8 +1302,21 @@ pub enum DestinyPresentationDisplayStyle {
 }
 
 impl Display for DestinyPresentationDisplayStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyPresentationDisplayStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Badge" => Ok(DestinyPresentationDisplayStyle::Badge),
+            "Medals" => Ok(DestinyPresentationDisplayStyle::Medals),
+            "Collectible" => Ok(DestinyPresentationDisplayStyle::Collectible),
+            "Record" => Ok(DestinyPresentationDisplayStyle::Record),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -827,8 +1331,21 @@ pub enum DestinyRecordValueStyle {
 }
 
 impl Display for DestinyRecordValueStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyRecordValueStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Percentage" => Ok(DestinyRecordValueStyle::Percentage),
+            "Milliseconds" => Ok(DestinyRecordValueStyle::Milliseconds),
+            "Boolean" => Ok(DestinyRecordValueStyle::Boolean),
+            "Decimal" => Ok(DestinyRecordValueStyle::Decimal),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -847,8 +1364,25 @@ pub enum DestinyRecordToastStyle {
 }
 
 impl Display for DestinyRecordToastStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyRecordToastStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Record" => Ok(DestinyRecordToastStyle::Record),
+            "Lore" => Ok(DestinyRecordToastStyle::Lore),
+            "Badge" => Ok(DestinyRecordToastStyle::Badge),
+            "MetaRecord" => Ok(DestinyRecordToastStyle::MetaRecord),
+            "MedalComplete" => Ok(DestinyRecordToastStyle::MedalComplete),
+            "SeasonChallengeComplete" => Ok(DestinyRecordToastStyle::SeasonChallengeComplete),
+            "GildedTitleComplete" => Ok(DestinyRecordToastStyle::GildedTitleComplete),
+            "CraftingRecipeUnlocked" => Ok(DestinyRecordToastStyle::CraftingRecipeUnlocked),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -865,8 +1399,19 @@ pub enum DestinyPresentationScreenStyle {
 }
 
 impl Display for DestinyPresentationScreenStyle {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyPresentationScreenStyle {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "CategorySets" => Ok(DestinyPresentationScreenStyle::CategorySets),
+            "Badge" => Ok(DestinyPresentationScreenStyle::Badge),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -879,8 +1424,18 @@ pub enum PlugUiStyles {
 }
 
 impl Display for PlugUiStyles {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for PlugUiStyles {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Masterwork" => Ok(PlugUiStyles::Masterwork),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -898,8 +1453,19 @@ pub enum PlugAvailabilityMode {
 }
 
 impl Display for PlugAvailabilityMode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for PlugAvailabilityMode {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "UnavailableIfSocketContainsMatchingPlugCategory" => Ok(PlugAvailabilityMode::UnavailableIfSocketContainsMatchingPlugCategory),
+            "AvailableIfSocketContainsMatchingPlugCategory" => Ok(PlugAvailabilityMode::AvailableIfSocketContainsMatchingPlugCategory),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -917,8 +1483,23 @@ pub enum DestinyEnergyType {
 }
 
 impl Display for DestinyEnergyType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyEnergyType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Arc" => Ok(DestinyEnergyType::Arc),
+            "Thermal" => Ok(DestinyEnergyType::Thermal),
+            "Void" => Ok(DestinyEnergyType::Void),
+            "Ghost" => Ok(DestinyEnergyType::Ghost),
+            "Subclass" => Ok(DestinyEnergyType::Subclass),
+            "Stasis" => Ok(DestinyEnergyType::Stasis),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -942,8 +1523,21 @@ pub enum SocketPlugSources {
 }
 
 impl Display for SocketPlugSources {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for SocketPlugSources {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "InventorySourced" => Ok(SocketPlugSources::InventorySourced),
+            "ReusablePlugItems" => Ok(SocketPlugSources::ReusablePlugItems),
+            "ProfilePlugSet" => Ok(SocketPlugSources::ProfilePlugSet),
+            "CharacterPlugSet" => Ok(SocketPlugSources::CharacterPlugSet),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -957,8 +1551,19 @@ pub enum ItemPerkVisibility {
 }
 
 impl Display for ItemPerkVisibility {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ItemPerkVisibility {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Disabled" => Ok(ItemPerkVisibility::Disabled),
+            "Hidden" => Ok(ItemPerkVisibility::Hidden),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -979,8 +1584,25 @@ pub enum SpecialItemType {
 }
 
 impl Display for SpecialItemType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for SpecialItemType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "SpecialCurrency" => Ok(SpecialItemType::SpecialCurrency),
+            "Armor" => Ok(SpecialItemType::Armor),
+            "Weapon" => Ok(SpecialItemType::Weapon),
+            "Engram" => Ok(SpecialItemType::Engram),
+            "Consumable" => Ok(SpecialItemType::Consumable),
+            "ExchangeMaterial" => Ok(SpecialItemType::ExchangeMaterial),
+            "MissionReward" => Ok(SpecialItemType::MissionReward),
+            "Currency" => Ok(SpecialItemType::Currency),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1022,8 +1644,44 @@ pub enum DestinyItemType {
 }
 
 impl Display for DestinyItemType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyItemType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Currency" => Ok(DestinyItemType::Currency),
+            "Armor" => Ok(DestinyItemType::Armor),
+            "Weapon" => Ok(DestinyItemType::Weapon),
+            "Message" => Ok(DestinyItemType::Message),
+            "Engram" => Ok(DestinyItemType::Engram),
+            "Consumable" => Ok(DestinyItemType::Consumable),
+            "ExchangeMaterial" => Ok(DestinyItemType::ExchangeMaterial),
+            "MissionReward" => Ok(DestinyItemType::MissionReward),
+            "QuestStep" => Ok(DestinyItemType::QuestStep),
+            "QuestStepComplete" => Ok(DestinyItemType::QuestStepComplete),
+            "Emblem" => Ok(DestinyItemType::Emblem),
+            "Quest" => Ok(DestinyItemType::Quest),
+            "Subclass" => Ok(DestinyItemType::Subclass),
+            "ClanBanner" => Ok(DestinyItemType::ClanBanner),
+            "Aura" => Ok(DestinyItemType::Aura),
+            "Mod" => Ok(DestinyItemType::Mod),
+            "Dummy" => Ok(DestinyItemType::Dummy),
+            "Ship" => Ok(DestinyItemType::Ship),
+            "Vehicle" => Ok(DestinyItemType::Vehicle),
+            "Emote" => Ok(DestinyItemType::Emote),
+            "Ghost" => Ok(DestinyItemType::Ghost),
+            "Package" => Ok(DestinyItemType::Package),
+            "Bounty" => Ok(DestinyItemType::Bounty),
+            "Wrapper" => Ok(DestinyItemType::Wrapper),
+            "SeasonalArtifact" => Ok(DestinyItemType::SeasonalArtifact),
+            "Finisher" => Ok(DestinyItemType::Finisher),
+            "Pattern" => Ok(DestinyItemType::Pattern),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1038,8 +1696,20 @@ pub enum DestinyBreakerType {
 }
 
 impl Display for DestinyBreakerType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyBreakerType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ShieldPiercing" => Ok(DestinyBreakerType::ShieldPiercing),
+            "Disruption" => Ok(DestinyBreakerType::Disruption),
+            "Stagger" => Ok(DestinyBreakerType::Stagger),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1052,8 +1722,18 @@ pub enum DestinyProgressionRewardItemAcquisitionBehavior {
 }
 
 impl Display for DestinyProgressionRewardItemAcquisitionBehavior {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyProgressionRewardItemAcquisitionBehavior {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PlayerClaimRequired" => Ok(DestinyProgressionRewardItemAcquisitionBehavior::PlayerClaimRequired),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1067,8 +1747,20 @@ pub enum ItemBindStatus {
 }
 
 impl Display for ItemBindStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ItemBindStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "BoundToCharacter" => Ok(ItemBindStatus::BoundToCharacter),
+            "BoundToAccount" => Ok(ItemBindStatus::BoundToAccount),
+            "BoundToGuild" => Ok(ItemBindStatus::BoundToGuild),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1086,8 +1778,20 @@ pub enum TransferStatuses {
 }
 
 impl Display for TransferStatuses {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for TransferStatuses {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ItemIsEquipped" => Ok(TransferStatuses::ItemIsEquipped),
+            "NotTransferrable" => Ok(TransferStatuses::NotTransferrable),
+            "NoRoomInDestination" => Ok(TransferStatuses::NoRoomInDestination),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1109,8 +1813,22 @@ pub enum ItemState {
 }
 
 impl Display for ItemState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for ItemState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Locked" => Ok(ItemState::Locked),
+            "Tracked" => Ok(ItemState::Tracked),
+            "Masterwork" => Ok(ItemState::Masterwork),
+            "Crafted" => Ok(ItemState::Crafted),
+            "HighlightedObjective" => Ok(ItemState::HighlightedObjective),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1131,8 +1849,26 @@ pub enum DestinyGameVersions {
 }
 
 impl Display for DestinyGameVersions {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyGameVersions {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Destiny2" => Ok(DestinyGameVersions::Destiny2),
+            "DLC1" => Ok(DestinyGameVersions::DLC1),
+            "DLC2" => Ok(DestinyGameVersions::DLC2),
+            "Forsaken" => Ok(DestinyGameVersions::Forsaken),
+            "YearTwoAnnualPass" => Ok(DestinyGameVersions::YearTwoAnnualPass),
+            "Shadowkeep" => Ok(DestinyGameVersions::Shadowkeep),
+            "BeyondLight" => Ok(DestinyGameVersions::BeyondLight),
+            "Anniversary30th" => Ok(DestinyGameVersions::Anniversary30th),
+            "TheWitchQueen" => Ok(DestinyGameVersions::TheWitchQueen),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1219,8 +1955,52 @@ pub enum DestinyComponentType {
 }
 
 impl Display for DestinyComponentType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyComponentType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Profiles" => Ok(DestinyComponentType::Profiles),
+            "VendorReceipts" => Ok(DestinyComponentType::VendorReceipts),
+            "ProfileInventories" => Ok(DestinyComponentType::ProfileInventories),
+            "ProfileCurrencies" => Ok(DestinyComponentType::ProfileCurrencies),
+            "ProfileProgression" => Ok(DestinyComponentType::ProfileProgression),
+            "PlatformSilver" => Ok(DestinyComponentType::PlatformSilver),
+            "Characters" => Ok(DestinyComponentType::Characters),
+            "CharacterInventories" => Ok(DestinyComponentType::CharacterInventories),
+            "CharacterProgressions" => Ok(DestinyComponentType::CharacterProgressions),
+            "CharacterRenderData" => Ok(DestinyComponentType::CharacterRenderData),
+            "CharacterActivities" => Ok(DestinyComponentType::CharacterActivities),
+            "CharacterEquipment" => Ok(DestinyComponentType::CharacterEquipment),
+            "ItemInstances" => Ok(DestinyComponentType::ItemInstances),
+            "ItemObjectives" => Ok(DestinyComponentType::ItemObjectives),
+            "ItemPerks" => Ok(DestinyComponentType::ItemPerks),
+            "ItemRenderData" => Ok(DestinyComponentType::ItemRenderData),
+            "ItemStats" => Ok(DestinyComponentType::ItemStats),
+            "ItemSockets" => Ok(DestinyComponentType::ItemSockets),
+            "ItemTalentGrids" => Ok(DestinyComponentType::ItemTalentGrids),
+            "ItemCommonData" => Ok(DestinyComponentType::ItemCommonData),
+            "ItemPlugStates" => Ok(DestinyComponentType::ItemPlugStates),
+            "ItemPlugObjectives" => Ok(DestinyComponentType::ItemPlugObjectives),
+            "ItemReusablePlugs" => Ok(DestinyComponentType::ItemReusablePlugs),
+            "Vendors" => Ok(DestinyComponentType::Vendors),
+            "VendorCategories" => Ok(DestinyComponentType::VendorCategories),
+            "VendorSales" => Ok(DestinyComponentType::VendorSales),
+            "Kiosks" => Ok(DestinyComponentType::Kiosks),
+            "CurrencyLookups" => Ok(DestinyComponentType::CurrencyLookups),
+            "PresentationNodes" => Ok(DestinyComponentType::PresentationNodes),
+            "Collectibles" => Ok(DestinyComponentType::Collectibles),
+            "Records" => Ok(DestinyComponentType::Records),
+            "Transitory" => Ok(DestinyComponentType::Transitory),
+            "Metrics" => Ok(DestinyComponentType::Metrics),
+            "StringVariables" => Ok(DestinyComponentType::StringVariables),
+            "Craftables" => Ok(DestinyComponentType::Craftables),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1236,8 +2016,19 @@ pub enum DestinyPresentationNodeState {
 }
 
 impl Display for DestinyPresentationNodeState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyPresentationNodeState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Invisible" => Ok(DestinyPresentationNodeState::Invisible),
+            "Obscured" => Ok(DestinyPresentationNodeState::Obscured),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1263,8 +2054,24 @@ pub enum DestinyRecordState {
 }
 
 impl Display for DestinyRecordState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyRecordState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "RecordRedeemed" => Ok(DestinyRecordState::RecordRedeemed),
+            "RewardUnavailable" => Ok(DestinyRecordState::RewardUnavailable),
+            "ObjectiveNotCompleted" => Ok(DestinyRecordState::ObjectiveNotCompleted),
+            "Obscured" => Ok(DestinyRecordState::Obscured),
+            "Invisible" => Ok(DestinyRecordState::Invisible),
+            "EntitlementUnowned" => Ok(DestinyRecordState::EntitlementUnowned),
+            "CanEquipTitle" => Ok(DestinyRecordState::CanEquipTitle),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1292,8 +2099,24 @@ pub enum DestinyCollectibleState {
 }
 
 impl Display for DestinyCollectibleState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyCollectibleState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "NotAcquired" => Ok(DestinyCollectibleState::NotAcquired),
+            "Obscured" => Ok(DestinyCollectibleState::Obscured),
+            "Invisible" => Ok(DestinyCollectibleState::Invisible),
+            "CannotAffordMaterialRequirements" => Ok(DestinyCollectibleState::CannotAffordMaterialRequirements),
+            "InventorySpaceUnavailable" => Ok(DestinyCollectibleState::InventorySpaceUnavailable),
+            "UniquenessViolation" => Ok(DestinyCollectibleState::UniquenessViolation),
+            "PurchaseDisabled" => Ok(DestinyCollectibleState::PurchaseDisabled),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1314,8 +2137,21 @@ pub enum DestinyPartyMemberStates {
 }
 
 impl Display for DestinyPartyMemberStates {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyPartyMemberStates {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "FireteamMember" => Ok(DestinyPartyMemberStates::FireteamMember),
+            "PosseMember" => Ok(DestinyPartyMemberStates::PosseMember),
+            "GroupMember" => Ok(DestinyPartyMemberStates::GroupMember),
+            "PartyLeader" => Ok(DestinyPartyMemberStates::PartyLeader),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1331,8 +2167,21 @@ pub enum DestinyGamePrivacySetting {
 }
 
 impl Display for DestinyGamePrivacySetting {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyGamePrivacySetting {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ClanAndFriendsOnly" => Ok(DestinyGamePrivacySetting::ClanAndFriendsOnly),
+            "FriendsOnly" => Ok(DestinyGamePrivacySetting::FriendsOnly),
+            "InvitationOnly" => Ok(DestinyGamePrivacySetting::InvitationOnly),
+            "Closed" => Ok(DestinyGamePrivacySetting::Closed),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1356,8 +2205,23 @@ pub enum DestinyJoinClosedReasons {
 }
 
 impl Display for DestinyJoinClosedReasons {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyJoinClosedReasons {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "InMatchmaking" => Ok(DestinyJoinClosedReasons::InMatchmaking),
+            "Loading" => Ok(DestinyJoinClosedReasons::Loading),
+            "SoloMode" => Ok(DestinyJoinClosedReasons::SoloMode),
+            "InternalReasons" => Ok(DestinyJoinClosedReasons::InternalReasons),
+            "DisallowedByGameState" => Ok(DestinyJoinClosedReasons::DisallowedByGameState),
+            "Offline" => Ok(DestinyJoinClosedReasons::Offline),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1371,8 +2235,20 @@ pub enum DestinyRace {
 }
 
 impl Display for DestinyRace {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyRace {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Awoken" => Ok(DestinyRace::Awoken),
+            "Exo" => Ok(DestinyRace::Exo),
+            "Unknown" => Ok(DestinyRace::Unknown),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1451,8 +2327,24 @@ pub enum DestinyActivityDifficultyTier {
 }
 
 impl Display for DestinyActivityDifficultyTier {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyActivityDifficultyTier {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Easy" => Ok(DestinyActivityDifficultyTier::Easy),
+            "Normal" => Ok(DestinyActivityDifficultyTier::Normal),
+            "Challenging" => Ok(DestinyActivityDifficultyTier::Challenging),
+            "Hard" => Ok(DestinyActivityDifficultyTier::Hard),
+            "Brave" => Ok(DestinyActivityDifficultyTier::Brave),
+            "AlmostImpossible" => Ok(DestinyActivityDifficultyTier::AlmostImpossible),
+            "Impossible" => Ok(DestinyActivityDifficultyTier::Impossible),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1486,8 +2378,22 @@ pub enum EquipFailureReason {
 }
 
 impl Display for EquipFailureReason {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for EquipFailureReason {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ItemUnequippable" => Ok(EquipFailureReason::ItemUnequippable),
+            "ItemUniqueEquipRestricted" => Ok(EquipFailureReason::ItemUniqueEquipRestricted),
+            "ItemFailedUnlockCheck" => Ok(EquipFailureReason::ItemFailedUnlockCheck),
+            "ItemFailedLevelCheck" => Ok(EquipFailureReason::ItemFailedLevelCheck),
+            "ItemNotOnCharacter" => Ok(EquipFailureReason::ItemNotOnCharacter),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1555,8 +2461,30 @@ pub enum DestinyTalentNodeState {
 }
 
 impl Display for DestinyTalentNodeState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyTalentNodeState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "CanUpgrade" => Ok(DestinyTalentNodeState::CanUpgrade),
+            "NoPoints" => Ok(DestinyTalentNodeState::NoPoints),
+            "NoPrerequisites" => Ok(DestinyTalentNodeState::NoPrerequisites),
+            "NoSteps" => Ok(DestinyTalentNodeState::NoSteps),
+            "NoUnlock" => Ok(DestinyTalentNodeState::NoUnlock),
+            "NoMaterial" => Ok(DestinyTalentNodeState::NoMaterial),
+            "NoGridLevel" => Ok(DestinyTalentNodeState::NoGridLevel),
+            "SwappingLocked" => Ok(DestinyTalentNodeState::SwappingLocked),
+            "MustSwap" => Ok(DestinyTalentNodeState::MustSwap),
+            "Complete" => Ok(DestinyTalentNodeState::Complete),
+            "Unknown" => Ok(DestinyTalentNodeState::Unknown),
+            "CreationOnly" => Ok(DestinyTalentNodeState::CreationOnly),
+            "Hidden" => Ok(DestinyTalentNodeState::Hidden),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1581,8 +2509,18 @@ pub enum DestinyVendorFilter {
 }
 
 impl Display for DestinyVendorFilter {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyVendorFilter {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ApiPurchasable" => Ok(DestinyVendorFilter::ApiPurchasable),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1607,8 +2545,31 @@ pub enum VendorItemStatus {
 }
 
 impl Display for VendorItemStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for VendorItemStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "NoInventorySpace" => Ok(VendorItemStatus::NoInventorySpace),
+            "NoFunds" => Ok(VendorItemStatus::NoFunds),
+            "NoProgression" => Ok(VendorItemStatus::NoProgression),
+            "NoUnlock" => Ok(VendorItemStatus::NoUnlock),
+            "NoQuantity" => Ok(VendorItemStatus::NoQuantity),
+            "OutsidePurchaseWindow" => Ok(VendorItemStatus::OutsidePurchaseWindow),
+            "NotAvailable" => Ok(VendorItemStatus::NotAvailable),
+            "UniquenessViolation" => Ok(VendorItemStatus::UniquenessViolation),
+            "UnknownError" => Ok(VendorItemStatus::UnknownError),
+            "AlreadySelling" => Ok(VendorItemStatus::AlreadySelling),
+            "Unsellable" => Ok(VendorItemStatus::Unsellable),
+            "SellingInhibited" => Ok(VendorItemStatus::SellingInhibited),
+            "AlreadyOwned" => Ok(VendorItemStatus::AlreadyOwned),
+            "DisplayOnly" => Ok(VendorItemStatus::DisplayOnly),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1671,8 +2632,36 @@ pub enum DestinyVendorItemState {
 }
 
 impl Display for DestinyVendorItemState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyVendorItemState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Incomplete" => Ok(DestinyVendorItemState::Incomplete),
+            "RewardAvailable" => Ok(DestinyVendorItemState::RewardAvailable),
+            "Complete" => Ok(DestinyVendorItemState::Complete),
+            "New" => Ok(DestinyVendorItemState::New),
+            "Featured" => Ok(DestinyVendorItemState::Featured),
+            "Ending" => Ok(DestinyVendorItemState::Ending),
+            "OnSale" => Ok(DestinyVendorItemState::OnSale),
+            "Owned" => Ok(DestinyVendorItemState::Owned),
+            "WideView" => Ok(DestinyVendorItemState::WideView),
+            "NexusAttention" => Ok(DestinyVendorItemState::NexusAttention),
+            "SetDiscount" => Ok(DestinyVendorItemState::SetDiscount),
+            "PriceDrop" => Ok(DestinyVendorItemState::PriceDrop),
+            "DailyOffer" => Ok(DestinyVendorItemState::DailyOffer),
+            "Charity" => Ok(DestinyVendorItemState::Charity),
+            "SeasonalRewardExpiration" => Ok(DestinyVendorItemState::SeasonalRewardExpiration),
+            "BestDeal" => Ok(DestinyVendorItemState::BestDeal),
+            "Popular" => Ok(DestinyVendorItemState::Popular),
+            "Free" => Ok(DestinyVendorItemState::Free),
+            "Locked" => Ok(DestinyVendorItemState::Locked),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 

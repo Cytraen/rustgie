@@ -21,11 +21,14 @@ pub mod tags;
 pub mod tokens;
 pub mod trending;
 pub mod user;
+pub mod rustgie_stuff_;
 
 use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
 /// The types of membership the Accounts system supports. This is the external facing enum used in place of the internal-only Bungie.SharedDefinitions.MembershipType.
@@ -45,8 +48,25 @@ pub enum BungieMembershipType {
 }
 
 impl Display for BungieMembershipType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for BungieMembershipType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "TigerXbox" => Ok(BungieMembershipType::TigerXbox),
+            "TigerPsn" => Ok(BungieMembershipType::TigerPsn),
+            "TigerSteam" => Ok(BungieMembershipType::TigerSteam),
+            "TigerBlizzard" => Ok(BungieMembershipType::TigerBlizzard),
+            "TigerStadia" => Ok(BungieMembershipType::TigerStadia),
+            "TigerDemon" => Ok(BungieMembershipType::TigerDemon),
+            "BungieNext" => Ok(BungieMembershipType::BungieNext),
+            "All" => Ok(BungieMembershipType::All),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -70,8 +90,29 @@ pub enum BungieCredentialType {
 }
 
 impl Display for BungieCredentialType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for BungieCredentialType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Xuid" => Ok(BungieCredentialType::Xuid),
+            "Psnid" => Ok(BungieCredentialType::Psnid),
+            "Wlid" => Ok(BungieCredentialType::Wlid),
+            "Fake" => Ok(BungieCredentialType::Fake),
+            "Facebook" => Ok(BungieCredentialType::Facebook),
+            "Google" => Ok(BungieCredentialType::Google),
+            "Windows" => Ok(BungieCredentialType::Windows),
+            "DemonId" => Ok(BungieCredentialType::DemonId),
+            "SteamId" => Ok(BungieCredentialType::SteamId),
+            "BattleNetId" => Ok(BungieCredentialType::BattleNetId),
+            "StadiaId" => Ok(BungieCredentialType::StadiaId),
+            "TwitchId" => Ok(BungieCredentialType::TwitchId),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -444,8 +485,10 @@ pub struct SingleComponentResponseOfDestinyStringVariablesComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::characters::DestinyCharacterComponent>>,
 
@@ -457,8 +500,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyInventoryComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::inventory::DestinyInventoryComponent>>,
 
@@ -470,8 +515,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyInventoryComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterProgressionComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::characters::DestinyCharacterProgressionComponent>>,
 
@@ -483,8 +530,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterProgressionCompo
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRenderComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::characters::DestinyCharacterRenderComponent>>,
 
@@ -496,8 +545,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRenderComponent 
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterActivitiesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::characters::DestinyCharacterActivitiesComponent>>,
 
@@ -509,8 +560,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterActivitiesCompon
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyKiosksComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::kiosks::DestinyKiosksComponent>>,
 
@@ -522,8 +575,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyKiosksComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyPlugSetsComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::plug_sets::DestinyPlugSetsComponent>>,
 
@@ -570,8 +625,10 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemPerksComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyPresentationNodesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::presentation::DestinyPresentationNodesComponent>>,
 
@@ -583,8 +640,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyPresentationNodesComponen
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRecordsComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::records::DestinyCharacterRecordsComponent>>,
 
@@ -596,8 +655,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRecordsComponent
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCollectiblesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::collectibles::DestinyCollectiblesComponent>>,
 
@@ -609,8 +670,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCollectiblesComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyStringVariablesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::string_variables::DestinyStringVariablesComponent>>,
 
@@ -622,8 +685,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyStringVariablesComponent 
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCraftablesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::craftables::DestinyCraftablesComponent>>,
 
@@ -644,8 +709,10 @@ pub struct DestinyBaseItemComponentSetOfint64 {
     pub perks: Option<crate::DictionaryComponentResponseOfint64AndDestinyItemPerksComponent>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemObjectivesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemObjectivesComponent>>,
 
@@ -657,8 +724,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemObjectivesComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemPerksComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemPerksComponent>>,
 
@@ -703,8 +772,10 @@ pub struct DestinyItemComponentSetOfint64 {
     pub perks: Option<crate::DictionaryComponentResponseOfint64AndDestinyItemPerksComponent>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemInstanceComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemInstanceComponent>>,
 
@@ -716,8 +787,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemInstanceComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemRenderComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemRenderComponent>>,
 
@@ -729,8 +802,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemRenderComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemStatsComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemStatsComponent>>,
 
@@ -742,8 +817,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemStatsComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemSocketsComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemSocketsComponent>>,
 
@@ -755,8 +832,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemSocketsComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemReusablePlugsComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::items::DestinyItemReusablePlugsComponent>>,
 
@@ -768,8 +847,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemReusablePlugsComponen
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemPlugObjectivesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::items::DestinyItemPlugObjectivesComponent>>,
 
@@ -781,8 +862,10 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemPlugObjectivesCompone
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemTalentGridComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::items::DestinyItemTalentGridComponent>>,
 
@@ -807,8 +890,10 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemPlugComponent {
     pub disabled: Option<bool>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCurrenciesComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::components::inventory::DestinyCurrenciesComponent>>,
 
@@ -1588,8 +1673,20 @@ pub enum GlobalAlertLevel {
 }
 
 impl Display for GlobalAlertLevel {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GlobalAlertLevel {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Blue" => Ok(GlobalAlertLevel::Blue),
+            "Yellow" => Ok(GlobalAlertLevel::Yellow),
+            "Red" => Ok(GlobalAlertLevel::Red),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -1601,8 +1698,18 @@ pub enum GlobalAlertType {
 }
 
 impl Display for GlobalAlertType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GlobalAlertType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "StreamingAlert" => Ok(GlobalAlertType::StreamingAlert),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 

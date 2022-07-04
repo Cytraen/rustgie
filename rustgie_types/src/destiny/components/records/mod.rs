@@ -18,7 +18,7 @@ pub struct DestinyRecordsComponent {
 #[derive(Deserialize, Serialize)]
 pub struct DestinyRecordComponent {
     #[serde(rename = "state")]
-    pub state: crate::destiny::DestinyRecordState,
+    pub state: enumflags2::BitFlags<crate::destiny::DestinyRecordState>,
 
     #[serde(rename = "objectives")]
     pub objectives: Option<Vec<crate::destiny::quests::DestinyObjectiveProgress>>,

@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -106,8 +107,28 @@ pub enum TrendingEntryType {
 }
 
 impl Display for TrendingEntryType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for TrendingEntryType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "DestinyItem" => Ok(TrendingEntryType::DestinyItem),
+            "DestinyActivity" => Ok(TrendingEntryType::DestinyActivity),
+            "DestinyRitual" => Ok(TrendingEntryType::DestinyRitual),
+            "SupportArticle" => Ok(TrendingEntryType::SupportArticle),
+            "Creation" => Ok(TrendingEntryType::Creation),
+            "Stream" => Ok(TrendingEntryType::Stream),
+            "Update" => Ok(TrendingEntryType::Update),
+            "Link" => Ok(TrendingEntryType::Link),
+            "ForumTag" => Ok(TrendingEntryType::ForumTag),
+            "Container" => Ok(TrendingEntryType::Container),
+            "Release" => Ok(TrendingEntryType::Release),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 

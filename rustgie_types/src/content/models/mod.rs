@@ -1,5 +1,6 @@
 ﻿use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
@@ -219,8 +220,31 @@ pub enum ContentPropertyDataTypeEnum {
 }
 
 impl Display for ContentPropertyDataTypeEnum {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ContentPropertyDataTypeEnum {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Plaintext" => Ok(ContentPropertyDataTypeEnum::Plaintext),
+            "Html" => Ok(ContentPropertyDataTypeEnum::Html),
+            "Dropdown" => Ok(ContentPropertyDataTypeEnum::Dropdown),
+            "List" => Ok(ContentPropertyDataTypeEnum::List),
+            "Json" => Ok(ContentPropertyDataTypeEnum::Json),
+            "Content" => Ok(ContentPropertyDataTypeEnum::Content),
+            "Representation" => Ok(ContentPropertyDataTypeEnum::Representation),
+            "Set" => Ok(ContentPropertyDataTypeEnum::Set),
+            "File" => Ok(ContentPropertyDataTypeEnum::File),
+            "FolderSet" => Ok(ContentPropertyDataTypeEnum::FolderSet),
+            "Date" => Ok(ContentPropertyDataTypeEnum::Date),
+            "MultilinePlaintext" => Ok(ContentPropertyDataTypeEnum::MultilinePlaintext),
+            "DestinyContent" => Ok(ContentPropertyDataTypeEnum::DestinyContent),
+            "Color" => Ok(ContentPropertyDataTypeEnum::Color),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 

@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -20,8 +21,25 @@ pub enum ForumTopicsCategoryFiltersEnum {
 }
 
 impl Display for ForumTopicsCategoryFiltersEnum {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for ForumTopicsCategoryFiltersEnum {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Links" => Ok(ForumTopicsCategoryFiltersEnum::Links),
+            "Questions" => Ok(ForumTopicsCategoryFiltersEnum::Questions),
+            "AnsweredQuestions" => Ok(ForumTopicsCategoryFiltersEnum::AnsweredQuestions),
+            "Media" => Ok(ForumTopicsCategoryFiltersEnum::Media),
+            "TextOnly" => Ok(ForumTopicsCategoryFiltersEnum::TextOnly),
+            "Announcement" => Ok(ForumTopicsCategoryFiltersEnum::Announcement),
+            "BungieOfficial" => Ok(ForumTopicsCategoryFiltersEnum::BungieOfficial),
+            "Polls" => Ok(ForumTopicsCategoryFiltersEnum::Polls),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -36,8 +54,21 @@ pub enum ForumTopicsQuickDateEnum {
 }
 
 impl Display for ForumTopicsQuickDateEnum {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ForumTopicsQuickDateEnum {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "LastYear" => Ok(ForumTopicsQuickDateEnum::LastYear),
+            "LastMonth" => Ok(ForumTopicsQuickDateEnum::LastMonth),
+            "LastWeek" => Ok(ForumTopicsQuickDateEnum::LastWeek),
+            "LastDay" => Ok(ForumTopicsQuickDateEnum::LastDay),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -55,8 +86,24 @@ pub enum ForumTopicsSortEnum {
 }
 
 impl Display for ForumTopicsSortEnum {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for ForumTopicsSortEnum {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "LastReplied" => Ok(ForumTopicsSortEnum::LastReplied),
+            "MostReplied" => Ok(ForumTopicsSortEnum::MostReplied),
+            "Popularity" => Ok(ForumTopicsSortEnum::Popularity),
+            "Controversiality" => Ok(ForumTopicsSortEnum::Controversiality),
+            "Liked" => Ok(ForumTopicsSortEnum::Liked),
+            "HighestRated" => Ok(ForumTopicsSortEnum::HighestRated),
+            "MostUpvoted" => Ok(ForumTopicsSortEnum::MostUpvoted),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -119,8 +166,20 @@ pub enum ForumMediaType {
 }
 
 impl Display for ForumMediaType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ForumMediaType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Image" => Ok(ForumMediaType::Image),
+            "Video" => Ok(ForumMediaType::Video),
+            "Youtube" => Ok(ForumMediaType::Youtube),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -136,8 +195,22 @@ pub enum ForumPostPopularity {
 }
 
 impl Display for ForumPostPopularity {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ForumPostPopularity {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Default" => Ok(ForumPostPopularity::Default),
+            "Discussed" => Ok(ForumPostPopularity::Discussed),
+            "CoolStory" => Ok(ForumPostPopularity::CoolStory),
+            "HeatingUp" => Ok(ForumPostPopularity::HeatingUp),
+            "Hot" => Ok(ForumPostPopularity::Hot),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -266,8 +339,19 @@ pub enum ForumRecruitmentIntensityLabel {
 }
 
 impl Display for ForumRecruitmentIntensityLabel {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for ForumRecruitmentIntensityLabel {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Casual" => Ok(ForumRecruitmentIntensityLabel::Casual),
+            "Professional" => Ok(ForumRecruitmentIntensityLabel::Professional),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -280,8 +364,19 @@ pub enum ForumRecruitmentToneLabel {
 }
 
 impl Display for ForumRecruitmentToneLabel {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for ForumRecruitmentToneLabel {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "FamilyFriendly" => Ok(ForumRecruitmentToneLabel::FamilyFriendly),
+            "Rowdy" => Ok(ForumRecruitmentToneLabel::Rowdy),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -293,8 +388,18 @@ pub enum ForumPostSortEnum {
 }
 
 impl Display for ForumPostSortEnum {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ForumPostSortEnum {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "OldestFirst" => Ok(ForumPostSortEnum::OldestFirst),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -307,7 +412,18 @@ pub enum CommunityContentSortMode {
 }
 
 impl Display for CommunityContentSortMode {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for CommunityContentSortMode {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Latest" => Ok(CommunityContentSortMode::Latest),
+            "HighestRated" => Ok(CommunityContentSortMode::HighestRated),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }

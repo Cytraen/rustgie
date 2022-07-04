@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
@@ -93,8 +94,99 @@ pub enum DestinyActivityModeType {
 }
 
 impl Display for DestinyActivityModeType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyActivityModeType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Story" => Ok(DestinyActivityModeType::Story),
+            "Strike" => Ok(DestinyActivityModeType::Strike),
+            "Raid" => Ok(DestinyActivityModeType::Raid),
+            "AllPvP" => Ok(DestinyActivityModeType::AllPvP),
+            "Patrol" => Ok(DestinyActivityModeType::Patrol),
+            "AllPvE" => Ok(DestinyActivityModeType::AllPvE),
+            "Reserved9" => Ok(DestinyActivityModeType::Reserved9),
+            "Control" => Ok(DestinyActivityModeType::Control),
+            "Reserved11" => Ok(DestinyActivityModeType::Reserved11),
+            "Clash" => Ok(DestinyActivityModeType::Clash),
+            "Reserved13" => Ok(DestinyActivityModeType::Reserved13),
+            "CrimsonDoubles" => Ok(DestinyActivityModeType::CrimsonDoubles),
+            "Nightfall" => Ok(DestinyActivityModeType::Nightfall),
+            "HeroicNightfall" => Ok(DestinyActivityModeType::HeroicNightfall),
+            "AllStrikes" => Ok(DestinyActivityModeType::AllStrikes),
+            "IronBanner" => Ok(DestinyActivityModeType::IronBanner),
+            "Reserved20" => Ok(DestinyActivityModeType::Reserved20),
+            "Reserved21" => Ok(DestinyActivityModeType::Reserved21),
+            "Reserved22" => Ok(DestinyActivityModeType::Reserved22),
+            "Reserved24" => Ok(DestinyActivityModeType::Reserved24),
+            "AllMayhem" => Ok(DestinyActivityModeType::AllMayhem),
+            "Reserved26" => Ok(DestinyActivityModeType::Reserved26),
+            "Reserved27" => Ok(DestinyActivityModeType::Reserved27),
+            "Reserved28" => Ok(DestinyActivityModeType::Reserved28),
+            "Reserved29" => Ok(DestinyActivityModeType::Reserved29),
+            "Reserved30" => Ok(DestinyActivityModeType::Reserved30),
+            "Supremacy" => Ok(DestinyActivityModeType::Supremacy),
+            "PrivateMatchesAll" => Ok(DestinyActivityModeType::PrivateMatchesAll),
+            "Survival" => Ok(DestinyActivityModeType::Survival),
+            "Countdown" => Ok(DestinyActivityModeType::Countdown),
+            "TrialsOfTheNine" => Ok(DestinyActivityModeType::TrialsOfTheNine),
+            "Social" => Ok(DestinyActivityModeType::Social),
+            "TrialsCountdown" => Ok(DestinyActivityModeType::TrialsCountdown),
+            "TrialsSurvival" => Ok(DestinyActivityModeType::TrialsSurvival),
+            "IronBannerControl" => Ok(DestinyActivityModeType::IronBannerControl),
+            "IronBannerClash" => Ok(DestinyActivityModeType::IronBannerClash),
+            "IronBannerSupremacy" => Ok(DestinyActivityModeType::IronBannerSupremacy),
+            "ScoredNightfall" => Ok(DestinyActivityModeType::ScoredNightfall),
+            "ScoredHeroicNightfall" => Ok(DestinyActivityModeType::ScoredHeroicNightfall),
+            "Rumble" => Ok(DestinyActivityModeType::Rumble),
+            "AllDoubles" => Ok(DestinyActivityModeType::AllDoubles),
+            "Doubles" => Ok(DestinyActivityModeType::Doubles),
+            "PrivateMatchesClash" => Ok(DestinyActivityModeType::PrivateMatchesClash),
+            "PrivateMatchesControl" => Ok(DestinyActivityModeType::PrivateMatchesControl),
+            "PrivateMatchesSupremacy" => Ok(DestinyActivityModeType::PrivateMatchesSupremacy),
+            "PrivateMatchesCountdown" => Ok(DestinyActivityModeType::PrivateMatchesCountdown),
+            "PrivateMatchesSurvival" => Ok(DestinyActivityModeType::PrivateMatchesSurvival),
+            "PrivateMatchesMayhem" => Ok(DestinyActivityModeType::PrivateMatchesMayhem),
+            "PrivateMatchesRumble" => Ok(DestinyActivityModeType::PrivateMatchesRumble),
+            "HeroicAdventure" => Ok(DestinyActivityModeType::HeroicAdventure),
+            "Showdown" => Ok(DestinyActivityModeType::Showdown),
+            "Lockdown" => Ok(DestinyActivityModeType::Lockdown),
+            "Scorched" => Ok(DestinyActivityModeType::Scorched),
+            "ScorchedTeam" => Ok(DestinyActivityModeType::ScorchedTeam),
+            "Gambit" => Ok(DestinyActivityModeType::Gambit),
+            "AllPvECompetitive" => Ok(DestinyActivityModeType::AllPvECompetitive),
+            "Breakthrough" => Ok(DestinyActivityModeType::Breakthrough),
+            "BlackArmoryRun" => Ok(DestinyActivityModeType::BlackArmoryRun),
+            "Salvage" => Ok(DestinyActivityModeType::Salvage),
+            "IronBannerSalvage" => Ok(DestinyActivityModeType::IronBannerSalvage),
+            "PvPCompetitive" => Ok(DestinyActivityModeType::PvPCompetitive),
+            "PvPQuickplay" => Ok(DestinyActivityModeType::PvPQuickplay),
+            "ClashQuickplay" => Ok(DestinyActivityModeType::ClashQuickplay),
+            "ClashCompetitive" => Ok(DestinyActivityModeType::ClashCompetitive),
+            "ControlQuickplay" => Ok(DestinyActivityModeType::ControlQuickplay),
+            "ControlCompetitive" => Ok(DestinyActivityModeType::ControlCompetitive),
+            "GambitPrime" => Ok(DestinyActivityModeType::GambitPrime),
+            "Reckoning" => Ok(DestinyActivityModeType::Reckoning),
+            "Menagerie" => Ok(DestinyActivityModeType::Menagerie),
+            "VexOffensive" => Ok(DestinyActivityModeType::VexOffensive),
+            "NightmareHunt" => Ok(DestinyActivityModeType::NightmareHunt),
+            "Elimination" => Ok(DestinyActivityModeType::Elimination),
+            "Momentum" => Ok(DestinyActivityModeType::Momentum),
+            "Dungeon" => Ok(DestinyActivityModeType::Dungeon),
+            "Sundial" => Ok(DestinyActivityModeType::Sundial),
+            "TrialsOfOsiris" => Ok(DestinyActivityModeType::TrialsOfOsiris),
+            "Dares" => Ok(DestinyActivityModeType::Dares),
+            "Offensive" => Ok(DestinyActivityModeType::Offensive),
+            "LostSector" => Ok(DestinyActivityModeType::LostSector),
+            "Rift" => Ok(DestinyActivityModeType::Rift),
+            "ZoneControl" => Ok(DestinyActivityModeType::ZoneControl),
+            "IronBannerRift" => Ok(DestinyActivityModeType::IronBannerRift),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -177,8 +269,25 @@ pub enum DestinyStatsGroupType {
 }
 
 impl Display for DestinyStatsGroupType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyStatsGroupType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "General" => Ok(DestinyStatsGroupType::General),
+            "Weapons" => Ok(DestinyStatsGroupType::Weapons),
+            "Medals" => Ok(DestinyStatsGroupType::Medals),
+            "ReservedGroups" => Ok(DestinyStatsGroupType::ReservedGroups),
+            "Leaderboard" => Ok(DestinyStatsGroupType::Leaderboard),
+            "Activity" => Ok(DestinyStatsGroupType::Activity),
+            "UniqueWeapon" => Ok(DestinyStatsGroupType::UniqueWeapon),
+            "Internal" => Ok(DestinyStatsGroupType::Internal),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -204,8 +313,32 @@ pub enum DestinyStatsCategoryType {
 }
 
 impl Display for DestinyStatsCategoryType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyStatsCategoryType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Kills" => Ok(DestinyStatsCategoryType::Kills),
+            "Assists" => Ok(DestinyStatsCategoryType::Assists),
+            "Deaths" => Ok(DestinyStatsCategoryType::Deaths),
+            "Criticals" => Ok(DestinyStatsCategoryType::Criticals),
+            "KDa" => Ok(DestinyStatsCategoryType::KDa),
+            "KD" => Ok(DestinyStatsCategoryType::KD),
+            "Score" => Ok(DestinyStatsCategoryType::Score),
+            "Entered" => Ok(DestinyStatsCategoryType::Entered),
+            "TimePlayed" => Ok(DestinyStatsCategoryType::TimePlayed),
+            "MedalWins" => Ok(DestinyStatsCategoryType::MedalWins),
+            "MedalGame" => Ok(DestinyStatsCategoryType::MedalGame),
+            "MedalSpecialKills" => Ok(DestinyStatsCategoryType::MedalSpecialKills),
+            "MedalSprees" => Ok(DestinyStatsCategoryType::MedalSprees),
+            "MedalMultiKills" => Ok(DestinyStatsCategoryType::MedalMultiKills),
+            "MedalAbilities" => Ok(DestinyStatsCategoryType::MedalAbilities),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -242,8 +375,30 @@ pub enum UnitType {
 }
 
 impl Display for UnitType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for UnitType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Count" => Ok(UnitType::Count),
+            "PerGame" => Ok(UnitType::PerGame),
+            "Seconds" => Ok(UnitType::Seconds),
+            "Points" => Ok(UnitType::Points),
+            "Team" => Ok(UnitType::Team),
+            "Distance" => Ok(UnitType::Distance),
+            "Percent" => Ok(UnitType::Percent),
+            "Ratio" => Ok(UnitType::Ratio),
+            "Boolean" => Ok(UnitType::Boolean),
+            "WeaponType" => Ok(UnitType::WeaponType),
+            "Standing" => Ok(UnitType::Standing),
+            "Milliseconds" => Ok(UnitType::Milliseconds),
+            "CompletionReason" => Ok(UnitType::CompletionReason),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -259,8 +414,19 @@ pub enum DestinyStatsMergeMethod {
 }
 
 impl Display for DestinyStatsMergeMethod {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyStatsMergeMethod {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Min" => Ok(DestinyStatsMergeMethod::Min),
+            "Max" => Ok(DestinyStatsMergeMethod::Max),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -274,7 +440,19 @@ pub enum PeriodType {
 }
 
 impl Display for PeriodType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for PeriodType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Daily" => Ok(PeriodType::Daily),
+            "AllTime" => Ok(PeriodType::AllTime),
+            "Activity" => Ok(PeriodType::Activity),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }

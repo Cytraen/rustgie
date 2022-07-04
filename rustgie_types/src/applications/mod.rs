@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -42,8 +43,32 @@ pub enum ApplicationScopes {
 }
 
 impl Display for ApplicationScopes {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u64)
+    }
+}
+
+impl FromStr for ApplicationScopes {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ReadBasicUserProfile" => Ok(ApplicationScopes::ReadBasicUserProfile),
+            "ReadGroups" => Ok(ApplicationScopes::ReadGroups),
+            "WriteGroups" => Ok(ApplicationScopes::WriteGroups),
+            "AdminGroups" => Ok(ApplicationScopes::AdminGroups),
+            "BnetWrite" => Ok(ApplicationScopes::BnetWrite),
+            "MoveEquipDestinyItems" => Ok(ApplicationScopes::MoveEquipDestinyItems),
+            "ReadDestinyInventoryAndVault" => Ok(ApplicationScopes::ReadDestinyInventoryAndVault),
+            "ReadUserData" => Ok(ApplicationScopes::ReadUserData),
+            "EditUserData" => Ok(ApplicationScopes::EditUserData),
+            "ReadDestinyVendorsAndAdvisors" => Ok(ApplicationScopes::ReadDestinyVendorsAndAdvisors),
+            "ReadAndApplyTokens" => Ok(ApplicationScopes::ReadAndApplyTokens),
+            "AdvancedWriteActions" => Ok(ApplicationScopes::AdvancedWriteActions),
+            "PartnerOfferGrant" => Ok(ApplicationScopes::PartnerOfferGrant),
+            "DestinyUnlockValueQuery" => Ok(ApplicationScopes::DestinyUnlockValueQuery),
+            "UserPiiRead" => Ok(ApplicationScopes::UserPiiRead),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -153,8 +178,21 @@ pub enum ApplicationStatus {
 }
 
 impl Display for ApplicationStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ApplicationStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Private" => Ok(ApplicationStatus::Private),
+            "Public" => Ok(ApplicationStatus::Public),
+            "Disabled" => Ok(ApplicationStatus::Disabled),
+            "Blocked" => Ok(ApplicationStatus::Blocked),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -179,7 +217,18 @@ pub enum DeveloperRole {
 }
 
 impl Display for DeveloperRole {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DeveloperRole {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Owner" => Ok(DeveloperRole::Owner),
+            "TeamMember" => Ok(DeveloperRole::TeamMember),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }

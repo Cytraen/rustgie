@@ -1,9 +1,12 @@
 ﻿use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DisplayFromStr};
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DestinyPlatformSilverComponent {
     /// If a Profile is played on multiple platforms, this is the silver they have for each platform, keyed by Membership Type.
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "platformSilver")]
     pub platform_silver: Option<HashMap<crate::BungieMembershipType, crate::destiny::entities::items::DestinyItemComponent>>,
 }

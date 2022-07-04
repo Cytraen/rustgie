@@ -1,7 +1,8 @@
 ﻿pub mod models;
 
 use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -363,7 +364,7 @@ pub struct EmailOptInDefinition {
 
     /// The flag value for this opt-in category. For historical reasons, this is defined as a flags enum.
     #[serde(rename = "value")]
-    pub value: crate::user::OptInFlags,
+    pub value: enumflags2::BitFlags<crate::user::OptInFlags>,
 
     /// If true, this opt-in setting should be set by default in situations where accounts are created without explicit choices about what they're opting into.
     #[serde(rename = "setByDefault")]
@@ -390,8 +391,26 @@ pub enum OptInFlags {
 }
 
 impl Display for OptInFlags {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u64)
+    }
+}
+
+impl FromStr for OptInFlags {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Newsletter" => Ok(OptInFlags::Newsletter),
+            "System" => Ok(OptInFlags::System),
+            "Marketing" => Ok(OptInFlags::Marketing),
+            "UserResearch" => Ok(OptInFlags::UserResearch),
+            "CustomerService" => Ok(OptInFlags::CustomerService),
+            "Social" => Ok(OptInFlags::Social),
+            "PlayTests" => Ok(OptInFlags::PlayTests),
+            "PlayTestsLocal" => Ok(OptInFlags::PlayTestsLocal),
+            "Careers" => Ok(OptInFlags::Careers),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -476,7 +495,7 @@ pub struct EmailViewDefinitionSetting {
 
     /// The OptInFlags value to set or clear if this setting is set or cleared in the UI. It is the aggregate of all underlying opt-in flags related to this setting.
     #[serde(rename = "optInAggregateValue")]
-    pub opt_in_aggregate_value: crate::user::OptInFlags,
+    pub opt_in_aggregate_value: enumflags2::BitFlags<crate::user::OptInFlags>,
 
     /// The subscriptions to show as children of this setting, if any.
     #[serde(rename = "subscriptions")]

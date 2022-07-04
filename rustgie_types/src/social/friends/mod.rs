@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -30,7 +31,7 @@ pub struct BungieFriend {
     pub online_status: crate::social::friends::PresenceStatus,
 
     #[serde(rename = "onlineTitle")]
-    pub online_title: crate::social::friends::PresenceOnlineStateFlags,
+    pub online_title: enumflags2::BitFlags<crate::social::friends::PresenceOnlineStateFlags>,
 
     #[serde(rename = "relationship")]
     pub relationship: crate::social::friends::FriendRelationshipState,
@@ -47,8 +48,18 @@ pub enum PresenceStatus {
 }
 
 impl Display for PresenceStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for PresenceStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Online" => Ok(PresenceStatus::Online),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -61,8 +72,19 @@ pub enum PresenceOnlineStateFlags {
 }
 
 impl Display for PresenceOnlineStateFlags {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for PresenceOnlineStateFlags {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Destiny1" => Ok(PresenceOnlineStateFlags::Destiny1),
+            "Destiny2" => Ok(PresenceOnlineStateFlags::Destiny2),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -76,8 +98,20 @@ pub enum FriendRelationshipState {
 }
 
 impl Display for FriendRelationshipState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for FriendRelationshipState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Friend" => Ok(FriendRelationshipState::Friend),
+            "IncomingRequest" => Ok(FriendRelationshipState::IncomingRequest),
+            "OutgoingRequest" => Ok(FriendRelationshipState::OutgoingRequest),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -100,8 +134,20 @@ pub enum PlatformFriendType {
 }
 
 impl Display for PlatformFriendType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for PlatformFriendType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Xbox" => Ok(PlatformFriendType::Xbox),
+            "PSN" => Ok(PlatformFriendType::PSN),
+            "Steam" => Ok(PlatformFriendType::Steam),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 

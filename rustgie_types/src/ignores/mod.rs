@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -9,7 +10,7 @@ pub struct IgnoreResponse {
     pub is_ignored: bool,
 
     #[serde(rename = "ignoreFlags")]
-    pub ignore_flags: crate::ignores::IgnoreStatus,
+    pub ignore_flags: enumflags2::BitFlags<crate::ignores::IgnoreStatus>,
 }
 
 #[bitflags]
@@ -25,8 +26,23 @@ pub enum IgnoreStatus {
 }
 
 impl Display for IgnoreStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for IgnoreStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "IgnoredUser" => Ok(IgnoreStatus::IgnoredUser),
+            "IgnoredGroup" => Ok(IgnoreStatus::IgnoredGroup),
+            "IgnoredByGroup" => Ok(IgnoreStatus::IgnoredByGroup),
+            "IgnoredPost" => Ok(IgnoreStatus::IgnoredPost),
+            "IgnoredTag" => Ok(IgnoreStatus::IgnoredTag),
+            "IgnoredGlobal" => Ok(IgnoreStatus::IgnoredGlobal),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -48,7 +64,27 @@ pub enum IgnoreLength {
 }
 
 impl Display for IgnoreLength {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for IgnoreLength {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Week" => Ok(IgnoreLength::Week),
+            "TwoWeeks" => Ok(IgnoreLength::TwoWeeks),
+            "ThreeWeeks" => Ok(IgnoreLength::ThreeWeeks),
+            "Month" => Ok(IgnoreLength::Month),
+            "ThreeMonths" => Ok(IgnoreLength::ThreeMonths),
+            "SixMonths" => Ok(IgnoreLength::SixMonths),
+            "Year" => Ok(IgnoreLength::Year),
+            "Forever" => Ok(IgnoreLength::Forever),
+            "ThreeMinutes" => Ok(IgnoreLength::ThreeMinutes),
+            "Hour" => Ok(IgnoreLength::Hour),
+            "ThirtyDays" => Ok(IgnoreLength::ThirtyDays),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }

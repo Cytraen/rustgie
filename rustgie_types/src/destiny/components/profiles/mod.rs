@@ -62,7 +62,7 @@ pub struct DestinyProfileTransitoryPartyMember {
 
     /// A Flags Enumeration value indicating the states that the player is in relevant to being on a fireteam.
     #[serde(rename = "status")]
-    pub status: crate::destiny::DestinyPartyMemberStates,
+    pub status: enumflags2::BitFlags<crate::destiny::DestinyPartyMemberStates>,
 }
 
 /// If you are playing in an activity, this is some information about it.
@@ -111,7 +111,7 @@ pub struct DestinyProfileTransitoryJoinability {
 
     /// Reasons why a person can't join this person's fireteam.
     #[serde(rename = "closedReasons")]
-    pub closed_reasons: crate::destiny::DestinyJoinClosedReasons,
+    pub closed_reasons: enumflags2::BitFlags<crate::destiny::DestinyJoinClosedReasons>,
 }
 
 /// This represents a single "thing" being tracked by the player.

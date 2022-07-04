@@ -1,5 +1,6 @@
 ﻿use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -118,8 +119,19 @@ pub enum DestinyMilestoneDisplayPreference {
 }
 
 impl Display for DestinyMilestoneDisplayPreference {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyMilestoneDisplayPreference {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "CurrentQuestSteps" => Ok(DestinyMilestoneDisplayPreference::CurrentQuestSteps),
+            "CurrentActivityChallenges" => Ok(DestinyMilestoneDisplayPreference::CurrentActivityChallenges),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -141,8 +153,22 @@ pub enum DestinyMilestoneType {
 }
 
 impl Display for DestinyMilestoneType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyMilestoneType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Tutorial" => Ok(DestinyMilestoneType::Tutorial),
+            "OneTime" => Ok(DestinyMilestoneType::OneTime),
+            "Weekly" => Ok(DestinyMilestoneType::Weekly),
+            "Daily" => Ok(DestinyMilestoneType::Daily),
+            "Special" => Ok(DestinyMilestoneType::Special),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 

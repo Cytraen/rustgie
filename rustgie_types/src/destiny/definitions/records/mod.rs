@@ -1,5 +1,6 @@
 ﻿use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DisplayFromStr};
 
 #[derive(Deserialize, Serialize)]
 pub struct DestinyRecordDefinition {
@@ -80,11 +81,13 @@ pub struct DestinyRecordDefinition {
     pub redacted: bool,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DestinyRecordTitleBlock {
     #[serde(rename = "hasTitle")]
     pub has_title: bool,
 
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "titlesByGender")]
     pub titles_by_gender: Option<HashMap<crate::destiny::DestinyGender, String>>,
 

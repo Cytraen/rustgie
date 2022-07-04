@@ -104,6 +104,7 @@ pub struct DestinyErrorProfile {
 }
 
 /// The response for GetDestinyProfile, with components for character and item-level data.
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DestinyProfileResponse {
     /// Recent, refundable purchases you have made from vendors. When will you use it? Couldn't say...
@@ -221,6 +222,7 @@ pub struct DestinyProfileResponse {
     /// Unfortunately, we don't live in such a magical world anymore. This is information held on a per-character basis about non-instanced items that the characters have in their inventory - or that reference character-specific state information even if it's in Account-level inventory - and the values related to that item's state in relation to the given character.
     /// To give a concrete example, look at a Moments of Triumph bounty. They exist in a character's inventory, and show/care about a character's progression toward completing the bounty. But the bounty itself is a non-instanced item, like a mod or a currency. This returns that data for the characters who have the bounty in their inventory.
     /// I'm not crying, you're crying Okay we're both crying but it's going to be okay I promise Actually I shouldn't promise that, I don't know if it's going to be okay
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "characterUninstancedItemComponents")]
     pub character_uninstanced_item_components: Option<HashMap<i64, crate::DestinyBaseItemComponentSetOfuint32>>,
 

@@ -23,7 +23,8 @@ pub mod traits;
 pub mod vendors;
 
 use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -1000,7 +1001,7 @@ pub struct DestinyEquippingBlockDefinition {
     /// These are custom attributes on the equippability of the item.
     /// For now, this can only be "equip on acquire", which would mean that the item will be automatically equipped as soon as you pick it up.
     #[serde(rename = "attributes")]
-    pub attributes: crate::destiny::EquippingItemBlockAttributes,
+    pub attributes: enumflags2::BitFlags<crate::destiny::EquippingItemBlockAttributes>,
 
     /// Ammo type used by a weapon is no longer determined by the bucket in which it is contained. If the item has an ammo type - i.e. if it is a weapon - this will be the type of ammunition expected.
     #[serde(rename = "ammoType")]
@@ -1090,6 +1091,7 @@ pub struct DestinyGearArtArrangementReference {
 }
 
 /// Defines a Character Class in Destiny 2. These are types of characters you can play, like Titan, Warlock, and Hunter.
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DestinyClassDefinition {
     /// In Destiny 1, we added a convenience Enumeration for referring to classes. We've kept it, though mostly for posterity. This is the enum value for this definition's class.
@@ -1100,6 +1102,7 @@ pub struct DestinyClassDefinition {
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
 
     /// A localized string referring to the singular form of the Class's name when referred to in gendered form. Keyed by the DestinyGender.
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "genderedClassNames")]
     pub gendered_class_names: Option<HashMap<crate::destiny::DestinyGender, String>>,
 
@@ -2232,19 +2235,19 @@ pub struct DestinySandboxPerkDefinition {
 #[derive(Deserialize, Serialize)]
 pub struct DestinyTalentNodeStepGroups {
     #[serde(rename = "weaponPerformance")]
-    pub weapon_performance: crate::destiny::definitions::DestinyTalentNodeStepWeaponPerformances,
+    pub weapon_performance: enumflags2::BitFlags<crate::destiny::definitions::DestinyTalentNodeStepWeaponPerformances>,
 
     #[serde(rename = "impactEffects")]
-    pub impact_effects: crate::destiny::definitions::DestinyTalentNodeStepImpactEffects,
+    pub impact_effects: enumflags2::BitFlags<crate::destiny::definitions::DestinyTalentNodeStepImpactEffects>,
 
     #[serde(rename = "guardianAttributes")]
-    pub guardian_attributes: crate::destiny::definitions::DestinyTalentNodeStepGuardianAttributes,
+    pub guardian_attributes: enumflags2::BitFlags<crate::destiny::definitions::DestinyTalentNodeStepGuardianAttributes>,
 
     #[serde(rename = "lightAbilities")]
-    pub light_abilities: crate::destiny::definitions::DestinyTalentNodeStepLightAbilities,
+    pub light_abilities: enumflags2::BitFlags<crate::destiny::definitions::DestinyTalentNodeStepLightAbilities>,
 
     #[serde(rename = "damageTypes")]
-    pub damage_types: crate::destiny::definitions::DestinyTalentNodeStepDamageTypes,
+    pub damage_types: enumflags2::BitFlags<crate::destiny::definitions::DestinyTalentNodeStepDamageTypes>,
 }
 
 #[bitflags]
@@ -2267,8 +2270,30 @@ pub enum DestinyTalentNodeStepWeaponPerformances {
 }
 
 impl Display for DestinyTalentNodeStepWeaponPerformances {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyTalentNodeStepWeaponPerformances {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "RateOfFire" => Ok(DestinyTalentNodeStepWeaponPerformances::RateOfFire),
+            "Damage" => Ok(DestinyTalentNodeStepWeaponPerformances::Damage),
+            "Accuracy" => Ok(DestinyTalentNodeStepWeaponPerformances::Accuracy),
+            "Range" => Ok(DestinyTalentNodeStepWeaponPerformances::Range),
+            "Zoom" => Ok(DestinyTalentNodeStepWeaponPerformances::Zoom),
+            "Recoil" => Ok(DestinyTalentNodeStepWeaponPerformances::Recoil),
+            "Ready" => Ok(DestinyTalentNodeStepWeaponPerformances::Ready),
+            "Reload" => Ok(DestinyTalentNodeStepWeaponPerformances::Reload),
+            "HairTrigger" => Ok(DestinyTalentNodeStepWeaponPerformances::HairTrigger),
+            "AmmoAndMagazine" => Ok(DestinyTalentNodeStepWeaponPerformances::AmmoAndMagazine),
+            "TrackingAndDetonation" => Ok(DestinyTalentNodeStepWeaponPerformances::TrackingAndDetonation),
+            "ShotgunSpread" => Ok(DestinyTalentNodeStepWeaponPerformances::ShotgunSpread),
+            "ChargeTime" => Ok(DestinyTalentNodeStepWeaponPerformances::ChargeTime),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -2285,8 +2310,23 @@ pub enum DestinyTalentNodeStepImpactEffects {
 }
 
 impl Display for DestinyTalentNodeStepImpactEffects {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyTalentNodeStepImpactEffects {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "ArmorPiercing" => Ok(DestinyTalentNodeStepImpactEffects::ArmorPiercing),
+            "Ricochet" => Ok(DestinyTalentNodeStepImpactEffects::Ricochet),
+            "Flinch" => Ok(DestinyTalentNodeStepImpactEffects::Flinch),
+            "CollateralDamage" => Ok(DestinyTalentNodeStepImpactEffects::CollateralDamage),
+            "Disorient" => Ok(DestinyTalentNodeStepImpactEffects::Disorient),
+            "HighlightTarget" => Ok(DestinyTalentNodeStepImpactEffects::HighlightTarget),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -2305,8 +2345,25 @@ pub enum DestinyTalentNodeStepGuardianAttributes {
 }
 
 impl Display for DestinyTalentNodeStepGuardianAttributes {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyTalentNodeStepGuardianAttributes {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Stats" => Ok(DestinyTalentNodeStepGuardianAttributes::Stats),
+            "Shields" => Ok(DestinyTalentNodeStepGuardianAttributes::Shields),
+            "Health" => Ok(DestinyTalentNodeStepGuardianAttributes::Health),
+            "Revive" => Ok(DestinyTalentNodeStepGuardianAttributes::Revive),
+            "AimUnderFire" => Ok(DestinyTalentNodeStepGuardianAttributes::AimUnderFire),
+            "Radar" => Ok(DestinyTalentNodeStepGuardianAttributes::Radar),
+            "Invisibility" => Ok(DestinyTalentNodeStepGuardianAttributes::Invisibility),
+            "Reputations" => Ok(DestinyTalentNodeStepGuardianAttributes::Reputations),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -2323,8 +2380,23 @@ pub enum DestinyTalentNodeStepLightAbilities {
 }
 
 impl Display for DestinyTalentNodeStepLightAbilities {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyTalentNodeStepLightAbilities {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Grenades" => Ok(DestinyTalentNodeStepLightAbilities::Grenades),
+            "Melee" => Ok(DestinyTalentNodeStepLightAbilities::Melee),
+            "MovementModes" => Ok(DestinyTalentNodeStepLightAbilities::MovementModes),
+            "Orbs" => Ok(DestinyTalentNodeStepLightAbilities::Orbs),
+            "SuperEnergy" => Ok(DestinyTalentNodeStepLightAbilities::SuperEnergy),
+            "SuperMods" => Ok(DestinyTalentNodeStepLightAbilities::SuperMods),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -2339,8 +2411,21 @@ pub enum DestinyTalentNodeStepDamageTypes {
 }
 
 impl Display for DestinyTalentNodeStepDamageTypes {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for DestinyTalentNodeStepDamageTypes {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Kinetic" => Ok(DestinyTalentNodeStepDamageTypes::Kinetic),
+            "Arc" => Ok(DestinyTalentNodeStepDamageTypes::Arc),
+            "Solar" => Ok(DestinyTalentNodeStepDamageTypes::Solar),
+            "Void" => Ok(DestinyTalentNodeStepDamageTypes::Void),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -3022,8 +3107,20 @@ pub enum DestinyRewardSourceCategory {
 }
 
 impl Display for DestinyRewardSourceCategory {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for DestinyRewardSourceCategory {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Activity" => Ok(DestinyRewardSourceCategory::Activity),
+            "Vendor" => Ok(DestinyRewardSourceCategory::Vendor),
+            "Aggregate" => Ok(DestinyRewardSourceCategory::Aggregate),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -3202,7 +3299,7 @@ pub struct DestinyItemSocketEntryDefinition {
 
     /// Indicates where you should go to get plugs for this socket. This will affect how you populate your UI, as well as what plugs are valid for this socket. It's an alternative to having to check for the existence of certain properties (reusablePlugItems for example) to infer where plugs should come from.
     #[serde(rename = "plugSources")]
-    pub plug_sources: crate::destiny::SocketPlugSources,
+    pub plug_sources: enumflags2::BitFlags<crate::destiny::SocketPlugSources>,
 
     /// If this socket's plugs come from a reusable DestinyPlugSetDefinition, this is the identifier for that set. We added this concept to reduce some major duplication that's going to come from sockets as replacements for what was once implemented as large sets of items and kiosks (like Emotes).
     /// As of Shadowkeep, these will come up much more frequently and be driven by game content rather than custom curation.
@@ -3767,6 +3864,7 @@ pub struct DestinyProgressionRewardItemQuantity {
 }
 
 /// In Destiny, "Races" are really more like "Species". Sort of. I mean, are the Awoken a separate species from humans? I'm not sure. But either way, they're defined here. You'll see Exo, Awoken, and Human as examples of these Species. Players will choose one for their character.
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DestinyRaceDefinition {
     #[serde(rename = "displayProperties")]
@@ -3777,6 +3875,7 @@ pub struct DestinyRaceDefinition {
     pub race_type: crate::destiny::DestinyRace,
 
     /// A localized string referring to the singular form of the Race's name when referred to in gendered form. Keyed by the DestinyGender.
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "genderedRaceNames")]
     pub gendered_race_names: Option<HashMap<crate::destiny::DestinyGender, String>>,
 

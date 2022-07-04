@@ -120,7 +120,7 @@ pub struct DestinyItemPlugDefinition {
     pub ui_plug_label: Option<String>,
 
     #[serde(rename = "plugStyle")]
-    pub plug_style: crate::destiny::PlugUiStyles,
+    pub plug_style: enumflags2::BitFlags<crate::destiny::PlugUiStyles>,
 
     /// Indicates the rules about when this plug can be used. See the PlugAvailabilityMode enumeration for more information!
     #[serde(rename = "plugAvailability")]
@@ -132,7 +132,7 @@ pub struct DestinyItemPlugDefinition {
 
     /// The alternate plug of the plug: only applies when the item is in states that only the server can know about and control, unfortunately. See AlternateUiPlugLabel for the related label info.
     #[serde(rename = "alternatePlugStyle")]
-    pub alternate_plug_style: crate::destiny::PlugUiStyles,
+    pub alternate_plug_style: enumflags2::BitFlags<crate::destiny::PlugUiStyles>,
 
     /// If TRUE, this plug is used for UI display purposes only, and doesn't have any interesting effects of its own.
     #[serde(rename = "isDummyPlug")]

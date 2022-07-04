@@ -35,7 +35,7 @@ pub struct DestinyItemComponent {
 
     /// If there is a known error state that would cause this item to not be transferable, this Flags enum will indicate all of those error states. Otherwise, it will be 0 (CanTransfer).
     #[serde(rename = "transferStatus")]
-    pub transfer_status: crate::destiny::TransferStatuses,
+    pub transfer_status: enumflags2::BitFlags<crate::destiny::TransferStatuses>,
 
     /// If the item can be locked, this will indicate that state.
     #[serde(rename = "lockable")]
@@ -43,7 +43,7 @@ pub struct DestinyItemComponent {
 
     /// A flags enumeration indicating the transient/custom states of the item that affect how it is rendered: whether it's tracked or locked for example, or whether it has a masterwork plug inserted.
     #[serde(rename = "state")]
-    pub state: crate::destiny::ItemState,
+    pub state: enumflags2::BitFlags<crate::destiny::ItemState>,
 
     /// If populated, this is the hash of the item whose icon (and other secondary styles, but *not* the human readable strings) should override whatever icons/styles are on the item being sold.
     /// If you don't do this, certain items whose styles are being overridden by socketed items - such as the "Recycle Shader" item - would show whatever their default icon/style is, and it wouldn't be pretty or look accurate.
@@ -155,7 +155,7 @@ pub struct DestinyItemInstanceComponent {
 
     /// If you cannot equip the item, this is a flags enum that enumerates all of the reasons why you couldn't equip the item. You may need to refine your UI further by using unlockHashesRequiredToEquip and equipRequiredLevel.
     #[serde(rename = "cannotEquipReason")]
-    pub cannot_equip_reason: crate::destiny::EquipFailureReason,
+    pub cannot_equip_reason: enumflags2::BitFlags<crate::destiny::EquipFailureReason>,
 
     /// If populated, this item has a breaker type corresponding to the given value. See DestinyBreakerTypeDefinition for more details.
     #[serde(rename = "breakerType")]

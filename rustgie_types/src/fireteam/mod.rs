@@ -1,4 +1,5 @@
-﻿use std::fmt::{Display, Formatter, Result};
+﻿use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
@@ -15,8 +16,21 @@ pub enum FireteamDateRange {
 }
 
 impl Display for FireteamDateRange {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for FireteamDateRange {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Now" => Ok(FireteamDateRange::Now),
+            "TwentyFourHours" => Ok(FireteamDateRange::TwentyFourHours),
+            "FortyEightHours" => Ok(FireteamDateRange::FortyEightHours),
+            "ThisWeek" => Ok(FireteamDateRange::ThisWeek),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -32,8 +46,22 @@ pub enum FireteamPlatform {
 }
 
 impl Display for FireteamPlatform {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for FireteamPlatform {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Playstation4" => Ok(FireteamPlatform::Playstation4),
+            "XboxOne" => Ok(FireteamPlatform::XboxOne),
+            "Blizzard" => Ok(FireteamPlatform::Blizzard),
+            "Steam" => Ok(FireteamPlatform::Steam),
+            "Stadia" => Ok(FireteamPlatform::Stadia),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -46,8 +74,19 @@ pub enum FireteamPublicSearchOption {
 }
 
 impl Display for FireteamPublicSearchOption {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for FireteamPublicSearchOption {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PublicOnly" => Ok(FireteamPublicSearchOption::PublicOnly),
+            "PrivateOnly" => Ok(FireteamPublicSearchOption::PrivateOnly),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -60,8 +99,19 @@ pub enum FireteamSlotSearch {
 }
 
 impl Display for FireteamSlotSearch {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for FireteamSlotSearch {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "HasOpenPlayerSlots" => Ok(FireteamSlotSearch::HasOpenPlayerSlots),
+            "HasOpenPlayerOrAltSlots" => Ok(FireteamSlotSearch::HasOpenPlayerOrAltSlots),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -238,7 +288,20 @@ pub enum FireteamPlatformInviteResult {
 }
 
 impl Display for FireteamPlatformInviteResult {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u8)
+    }
+}
+
+impl FromStr for FireteamPlatformInviteResult {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Success" => Ok(FireteamPlatformInviteResult::Success),
+            "AlreadyInFireteam" => Ok(FireteamPlatformInviteResult::AlreadyInFireteam),
+            "Throttled" => Ok(FireteamPlatformInviteResult::Throttled),
+            "ServiceError" => Ok(FireteamPlatformInviteResult::ServiceError),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }

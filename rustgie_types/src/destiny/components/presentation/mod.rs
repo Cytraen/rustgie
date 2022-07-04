@@ -10,7 +10,7 @@ pub struct DestinyPresentationNodesComponent {
 #[derive(Deserialize, Serialize)]
 pub struct DestinyPresentationNodeComponent {
     #[serde(rename = "state")]
-    pub state: crate::destiny::DestinyPresentationNodeState,
+    pub state: enumflags2::BitFlags<crate::destiny::DestinyPresentationNodeState>,
 
     /// An optional property: presentation nodes MAY have objectives, which can be used to infer more human readable data about the progress. However, progressValue and completionValue ought to be considered the canonical values for progress on Progression Nodes.
     #[serde(rename = "objective")]

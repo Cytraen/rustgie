@@ -1,5 +1,6 @@
 ﻿use std::collections::HashMap;
-use std::fmt::{Display, Formatter, Result};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
@@ -60,6 +61,7 @@ pub struct GroupUserInfoCard {
     pub bungie_global_display_name_code: Option<i16>,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct GroupResponse {
     #[serde(rename = "detail")]
@@ -85,10 +87,12 @@ pub struct GroupResponse {
     pub current_user_memberships_inactive_for_destiny: bool,
 
     /// This property will be populated if the authenticated user is a member of the group. Note that because of account linking, a user can sometimes be part of a clan more than once. As such, this returns the highest member type available.
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "currentUserMemberMap")]
     pub current_user_member_map: Option<HashMap<crate::BungieMembershipType, crate::groups_v2::GroupMember>>,
 
     /// This property will be populated if the authenticated user is an applicant or has an outstanding invitation to join. Note that because of account linking, a user can sometimes be part of a clan more than once.
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "currentUserPotentialMemberMap")]
     pub current_user_potential_member_map: Option<HashMap<crate::BungieMembershipType, crate::groups_v2::GroupPotentialMember>>,
 }
@@ -196,8 +200,18 @@ pub enum GroupType {
 }
 
 impl Display for GroupType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Clan" => Ok(GroupType::Clan),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -209,8 +223,18 @@ pub enum ChatSecuritySetting {
 }
 
 impl Display for ChatSecuritySetting {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for ChatSecuritySetting {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Admins" => Ok(ChatSecuritySetting::Admins),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -223,8 +247,19 @@ pub enum GroupHomepage {
 }
 
 impl Display for GroupHomepage {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupHomepage {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Forum" => Ok(GroupHomepage::Forum),
+            "AllianceForum" => Ok(GroupHomepage::AllianceForum),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -237,8 +272,19 @@ pub enum MembershipOption {
 }
 
 impl Display for MembershipOption {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for MembershipOption {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Open" => Ok(MembershipOption::Open),
+            "Closed" => Ok(MembershipOption::Closed),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -251,8 +297,19 @@ pub enum GroupPostPublicity {
 }
 
 impl Display for GroupPostPublicity {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupPostPublicity {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Alliance" => Ok(GroupPostPublicity::Alliance),
+            "Private" => Ok(GroupPostPublicity::Private),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -266,7 +323,7 @@ pub struct GroupFeatures {
     pub maximum_memberships_of_group_type: i32,
 
     #[serde(rename = "capabilities")]
-    pub capabilities: crate::groups_v2::Capabilities,
+    pub capabilities: enumflags2::BitFlags<crate::groups_v2::Capabilities>,
 
     #[serde(rename = "membershipTypes")]
     pub membership_types: Option<Vec<crate::BungieMembershipType>>,
@@ -319,8 +376,24 @@ pub enum Capabilities {
 }
 
 impl Display for Capabilities {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as u32)
+    }
+}
+
+impl FromStr for Capabilities {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Leaderboards" => Ok(Capabilities::Leaderboards),
+            "Callsign" => Ok(Capabilities::Callsign),
+            "OptionalConversations" => Ok(Capabilities::OptionalConversations),
+            "ClanBanner" => Ok(Capabilities::ClanBanner),
+            "D2InvestmentData" => Ok(Capabilities::D2InvestmentData),
+            "Tags" => Ok(Capabilities::Tags),
+            "Alliances" => Ok(Capabilities::Alliances),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -334,8 +407,19 @@ pub enum HostGuidedGamesPermissionLevel {
 }
 
 impl Display for HostGuidedGamesPermissionLevel {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for HostGuidedGamesPermissionLevel {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Beginner" => Ok(HostGuidedGamesPermissionLevel::Beginner),
+            "Member" => Ok(HostGuidedGamesPermissionLevel::Member),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -352,8 +436,22 @@ pub enum RuntimeGroupMemberType {
 }
 
 impl Display for RuntimeGroupMemberType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for RuntimeGroupMemberType {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Beginner" => Ok(RuntimeGroupMemberType::Beginner),
+            "Member" => Ok(RuntimeGroupMemberType::Member),
+            "Admin" => Ok(RuntimeGroupMemberType::Admin),
+            "ActingFounder" => Ok(RuntimeGroupMemberType::ActingFounder),
+            "Founder" => Ok(RuntimeGroupMemberType::Founder),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -459,8 +557,19 @@ pub enum GroupAllianceStatus {
 }
 
 impl Display for GroupAllianceStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupAllianceStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Parent" => Ok(GroupAllianceStatus::Parent),
+            "Child" => Ok(GroupAllianceStatus::Child),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -494,8 +603,19 @@ pub enum GroupPotentialMemberStatus {
 }
 
 impl Display for GroupPotentialMemberStatus {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupPotentialMemberStatus {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Applicant" => Ok(GroupPotentialMemberStatus::Applicant),
+            "Invitee" => Ok(GroupPotentialMemberStatus::Invitee),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -510,8 +630,21 @@ pub enum GroupDateRange {
 }
 
 impl Display for GroupDateRange {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupDateRange {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "PastDay" => Ok(GroupDateRange::PastDay),
+            "PastWeek" => Ok(GroupDateRange::PastWeek),
+            "PastMonth" => Ok(GroupDateRange::PastMonth),
+            "PastYear" => Ok(GroupDateRange::PastYear),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -549,7 +682,7 @@ pub struct GroupV2Card {
     pub membership_option: crate::groups_v2::MembershipOption,
 
     #[serde(rename = "capabilities")]
-    pub capabilities: crate::groups_v2::Capabilities,
+    pub capabilities: enumflags2::BitFlags<crate::groups_v2::Capabilities>,
 
     #[serde(rename = "clanInfo")]
     pub clan_info: Option<crate::groups_v2::GroupV2ClanInfo>,
@@ -634,8 +767,20 @@ pub enum GroupSortBy {
 }
 
 impl Display for GroupSortBy {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupSortBy {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Date" => Ok(GroupSortBy::Date),
+            "Popularity" => Ok(GroupSortBy::Popularity),
+            "Id" => Ok(GroupSortBy::Id),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -649,8 +794,20 @@ pub enum GroupMemberCountFilter {
 }
 
 impl Display for GroupMemberCountFilter {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupMemberCountFilter {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "OneToTen" => Ok(GroupMemberCountFilter::OneToTen),
+            "ElevenToOneHundred" => Ok(GroupMemberCountFilter::ElevenToOneHundred),
+            "GreaterThanOneHundred" => Ok(GroupMemberCountFilter::GreaterThanOneHundred),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -888,8 +1045,20 @@ pub enum GroupApplicationResolveState {
 }
 
 impl Display for GroupApplicationResolveState {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupApplicationResolveState {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Accepted" => Ok(GroupApplicationResolveState::Accepted),
+            "Denied" => Ok(GroupApplicationResolveState::Denied),
+            "Rescinded" => Ok(GroupApplicationResolveState::Rescinded),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -917,8 +1086,19 @@ pub enum GroupsForMemberFilter {
 }
 
 impl Display for GroupsForMemberFilter {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", *self as i32)
+    }
+}
+
+impl FromStr for GroupsForMemberFilter {
+    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "Founded" => Ok(GroupsForMemberFilter::Founded),
+            "NonFounded" => Ok(GroupsForMemberFilter::NonFounded),
+            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+        }
     }
 }
 
@@ -962,10 +1142,12 @@ pub struct GroupMembershipSearchResponse {
     pub use_total_results: bool,
 }
 
+#[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct GetGroupsForMemberResponse {
     /// A convenience property that indicates if every membership this user has that is a part of this group are part of an account that is considered inactive - for example, overridden accounts in Cross Save.
     /// The key is the Group ID for the group being checked, and the value is true if the users' memberships for that group are all inactive.
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "areAllMembershipsInactive")]
     pub are_all_memberships_inactive: Option<HashMap<i64, bool>>,
 

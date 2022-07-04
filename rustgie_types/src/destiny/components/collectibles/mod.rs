@@ -18,7 +18,7 @@ pub struct DestinyCollectiblesComponent {
 #[derive(Deserialize, Serialize)]
 pub struct DestinyCollectibleComponent {
     #[serde(rename = "state")]
-    pub state: crate::destiny::DestinyCollectibleState,
+    pub state: enumflags2::BitFlags<crate::destiny::DestinyCollectibleState>,
 }
 
 #[derive(Deserialize, Serialize)]

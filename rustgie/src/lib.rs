@@ -148,13 +148,16 @@ impl RustgieClient {
             Err(_) => { return Err("There was an error deserializing the JSON response".to_string()) }
         };
 
-        if deserialized_response.error_code != rustgie_types::exceptions::PlatformErrorCodes::Success {
-            return Err(format!("The Bungie API returned a PlatformErrorCode of {}", deserialized_response.error_code))
-        }
-
-        match deserialized_response.response {
-            None => { Err("The Bungie API did not include a response".to_string()) }
-            Some(resp) => { Ok(resp) }
+        match deserialized_response.error_code {
+            rustgie_types::exceptions::PlatformErrorCodes::Success => {
+                match deserialized_response.response {
+                    None => { Err("The Bungie API did not include a response".to_string()) }
+                    Some(resp) => { Ok(resp) }
+                }
+            }
+            error_code => {
+                    Err(format!("The Bungie API returned a PlatformErrorCode of {error_code}"))
+            }
         }
     }
 
@@ -291,7 +294,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("start", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/App/ApiUsage/{}/", application_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/App/ApiUsage/{application_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::applications::ApiUsage>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -305,7 +308,7 @@ impl RustgieClient {
     }
 
     pub async fn community_content_get_community_content<S: Display+AsRef<str>>(&self, media_filter: rustgie_types::forum::ForumTopicsCategoryFiltersEnum, page: i32, sort: rustgie_types::forum::CommunityContentSortMode, access_token: Option<S>) -> RustgieResult<rustgie_types::forum::PostSearchResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/CommunityContent/Get/{}/{}/{}/", sort, media_filter, page)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/CommunityContent/Get/{sort}/{media_filter}/{page}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -317,7 +320,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("head", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/GetContentById/{}/{}/", id, locale), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/GetContentById/{id}/{locale}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::content::ContentItemPublicContract>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -329,15 +332,22 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("head", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/GetContentByTagAndType/{}/{}/{}/", tag, r#type, locale), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/GetContentByTagAndType/{tag}/{type}/{locale}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::content::ContentItemPublicContract>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn content_get_content_type<S: Display+AsRef<str>>(&self, r#type: S, access_token: Option<S>) -> RustgieResult<rustgie_types::content::models::ContentTypeDescription> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Content/GetContentType/{}/", r#type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Content/GetContentType/{type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::content::models::ContentTypeDescription>(self, url, access_token).await?) }
+            Err(_) => { Err("There was an error while parsing the URL".to_string()) }
+        }
+    }
+
+    pub async fn content_rss_news_articles<S: Display+AsRef<str>>(&self, page_token: S, access_token: Option<S>) -> RustgieResult<rustgie_types::content::NewsArticleRssResponse> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Content/Rss/NewsArticles/{page_token}/")) {
+            Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::content::NewsArticleRssResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
@@ -356,7 +366,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("itemsperpage", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/SearchContentByTagAndType/{}/{}/{}/", tag, r#type, locale), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/SearchContentByTagAndType/{tag}/{type}/{locale}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfContentItemPublicContract>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -388,21 +398,21 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("tag", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/Search/{}/", locale), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Content/Search/{locale}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfContentItemPublicContract>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn content_search_help_articles<S: Display+AsRef<str>>(&self, searchtext: S, size: S, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::definitions::DestinyDefinition> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Content/SearchHelpArticles/{}/{}/", searchtext, size)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Content/SearchHelpArticles/{searchtext}/{size}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::definitions::DestinyDefinition>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_awa_get_action_token<S: Display+AsRef<str>>(&self, correlation_id: S, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::advanced::AwaAuthorizationResult> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Awa/GetActionToken/{}/", correlation_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Awa/GetActionToken/{correlation_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::advanced::AwaAuthorizationResult>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -450,7 +460,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("page", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Account/{}/Character/{}/Stats/Activities/", membership_type, destiny_membership_id, character_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Account/{destiny_membership_id}/Character/{character_id}/Stats/Activities/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::historical_stats::DestinyActivityHistoryResults>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -462,7 +472,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("components", val.iter().map(std::string::ToString::to_string).collect::<Vec<_>>().join(","))); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/Character/{}/", membership_type, destiny_membership_id, character_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{destiny_membership_id}/Character/{character_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyCharacterResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -474,7 +484,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("modes", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/AggregateClanStats/{}/", group_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/AggregateClanStats/{group_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, Vec<rustgie_types::destiny::historical_stats::DestinyClanAggregateStat>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -501,14 +511,14 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("statid", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/Leaderboards/Clans/{}/", group_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/Leaderboards/Clans/{group_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<String, HashMap<String, rustgie_types::destiny::historical_stats::DestinyLeaderboard>>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_get_clan_weekly_reward_state<S: Display+AsRef<str>>(&self, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::milestones::DestinyMilestone> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Clan/{}/WeeklyRewardState/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Clan/{group_id}/WeeklyRewardState/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::milestones::DestinyMilestone>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -520,21 +530,21 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("components", val.iter().map(std::string::ToString::to_string).collect::<Vec<_>>().join(","))); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/Character/{}/Collectibles/{}/", membership_type, destiny_membership_id, character_id, collectible_presentation_node_hash), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{destiny_membership_id}/Character/{character_id}/Collectibles/{collectible_presentation_node_hash}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyCollectibleNodeDetailResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_get_destiny_aggregate_activity_stats<S: Display+AsRef<str>>(&self, character_id: i64, destiny_membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::historical_stats::DestinyAggregateActivityResults> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Account/{}/Character/{}/Stats/AggregateActivityStats/", membership_type, destiny_membership_id, character_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Account/{destiny_membership_id}/Character/{character_id}/Stats/AggregateActivityStats/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::historical_stats::DestinyAggregateActivityResults>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_get_destiny_entity_definition<S: Display+AsRef<str>>(&self, entity_type: S, hash_identifier: u32, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::definitions::DestinyDefinition> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Manifest/{}/{}/", entity_type, hash_identifier)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Manifest/{entity_type}/{hash_identifier}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::definitions::DestinyDefinition>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -569,7 +579,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("periodType", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Account/{}/Character/{}/Stats/", membership_type, destiny_membership_id, character_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Account/{destiny_membership_id}/Character/{character_id}/Stats/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<String, rustgie_types::destiny::historical_stats::DestinyHistoricalStatsByPeriod>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -588,7 +598,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("groups", val.iter().map(std::string::ToString::to_string).collect::<Vec<_>>().join(","))); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Account/{}/Stats/", membership_type, destiny_membership_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Account/{destiny_membership_id}/Stats/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::historical_stats::DestinyHistoricalStatsAccountResult>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -600,7 +610,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("components", val.iter().map(std::string::ToString::to_string).collect::<Vec<_>>().join(","))); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/Item/{}/", membership_type, destiny_membership_id, item_instance_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{destiny_membership_id}/Item/{item_instance_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyItemResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -620,7 +630,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("statid", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Account/{}/Stats/Leaderboards/", membership_type, destiny_membership_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Account/{destiny_membership_id}/Stats/Leaderboards/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<String, HashMap<String, rustgie_types::destiny::historical_stats::DestinyLeaderboard>>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -640,7 +650,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("statid", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/Leaderboards/{}/{}/{}/", membership_type, destiny_membership_id, character_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/Leaderboards/{membership_type}/{destiny_membership_id}/{character_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<String, HashMap<String, rustgie_types::destiny::historical_stats::DestinyLeaderboard>>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -652,14 +662,14 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("getAllMemberships", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/LinkedProfiles/", membership_type, membership_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{membership_id}/LinkedProfiles/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyLinkedProfilesResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_get_post_game_carnage_report<S: Display+AsRef<str>>(&self, activity_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::historical_stats::DestinyPostGameCarnageReportData> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/PostGameCarnageReport/{}/", activity_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/PostGameCarnageReport/{activity_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::historical_stats::DestinyPostGameCarnageReportData>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -671,14 +681,14 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("components", val.iter().map(std::string::ToString::to_string).collect::<Vec<_>>().join(","))); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/", membership_type, destiny_membership_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{destiny_membership_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyProfileResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_get_public_milestone_content<S: Display+AsRef<str>>(&self, milestone_hash: u32, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::milestones::DestinyMilestoneContent> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Milestones/{}/Content/", milestone_hash)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Milestones/{milestone_hash}/Content/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::milestones::DestinyMilestoneContent>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -704,7 +714,7 @@ impl RustgieClient {
     }
 
     pub async fn destiny2_get_unique_weapon_history<S: Display+AsRef<str>>(&self, character_id: i64, destiny_membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::destiny::historical_stats::DestinyHistoricalWeaponStatsData> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Account/{}/Character/{}/Stats/UniqueWeapons/", membership_type, destiny_membership_id, character_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Account/{destiny_membership_id}/Character/{character_id}/Stats/UniqueWeapons/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::historical_stats::DestinyHistoricalWeaponStatsData>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -716,7 +726,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("components", val.iter().map(std::string::ToString::to_string).collect::<Vec<_>>().join(","))); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/Character/{}/Vendors/{}/", membership_type, destiny_membership_id, character_id, vendor_hash), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{destiny_membership_id}/Character/{character_id}/Vendors/{vendor_hash}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyVendorResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -732,7 +742,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("filter", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{}/Profile/{}/Character/{}/Vendors/", membership_type, destiny_membership_id, character_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/{membership_type}/Profile/{destiny_membership_id}/Character/{character_id}/Vendors/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::responses::DestinyVendorsResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -760,7 +770,7 @@ impl RustgieClient {
     }
 
     pub async fn destiny2_report_offensive_post_game_carnage_report_player<S: Display+AsRef<str>>(&self, activity_id: i64, request_body: rustgie_types::destiny::reporting::requests::DestinyReportOffensePgcrRequest, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/PostGameCarnageReport/{}/Report/", activity_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/Stats/PostGameCarnageReport/{activity_id}/Report/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i32, rustgie_types::destiny::reporting::requests::DestinyReportOffensePgcrRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -772,14 +782,14 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("page", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Armory/Search/{}/{}/", r#type, search_term), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Destiny2/Armory/Search/{type}/{search_term}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::destiny::definitions::DestinyEntitySearchResult>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn destiny2_search_destiny_player_by_bungie_name<S: Display+AsRef<str>>(&self, membership_type: rustgie_types::BungieMembershipType, request_body: rustgie_types::user::ExactSearchRequest, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::user::UserInfoCard>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/SearchDestinyPlayerByBungieName/{}/", membership_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Destiny2/SearchDestinyPlayerByBungieName/{membership_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, Vec<rustgie_types::user::UserInfoCard>, rustgie_types::user::ExactSearchRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -807,7 +817,7 @@ impl RustgieClient {
     }
 
     pub async fn fireteam_get_active_private_clan_fireteam_count<S: Display+AsRef<str>>(&self, group_id: i64, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{}/ActiveCount/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{group_id}/ActiveCount/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, i32>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -819,14 +829,14 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("langFilter", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{}/Available/{}/{}/{}/{}/{}/{}/", group_id, platform, activity_type, date_range, slot_filter, public_only, page), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{group_id}/Available/{platform}/{activity_type}/{date_range}/{slot_filter}/{public_only}/{page}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfFireteamSummary>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn fireteam_get_clan_fireteam<S: Display+AsRef<str>>(&self, fireteam_id: i64, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::fireteam::FireteamResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{}/Summary/{}/", group_id, fireteam_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{group_id}/Summary/{fireteam_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::fireteam::FireteamResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -842,7 +852,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("langFilter", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{}/My/{}/{}/{}/", group_id, platform, include_closed, page), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Fireteam/Clan/{group_id}/My/{platform}/{include_closed}/{page}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfFireteamResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -854,7 +864,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("langFilter", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Fireteam/Search/Available/{}/{}/{}/{}/{}/", platform, activity_type, date_range, slot_filter, page), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Fireteam/Search/Available/{platform}/{activity_type}/{date_range}/{slot_filter}/{page}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfFireteamSummary>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -866,7 +876,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("locales", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetCoreTopicsPaged/{}/{}/{}/{}/", page, sort, quick_date, category_filter), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetCoreTopicsPaged/{page}/{sort}/{quick_date}/{category_filter}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -885,7 +895,7 @@ impl RustgieClient {
     }
 
     pub async fn forum_get_poll<S: Display+AsRef<str>>(&self, topic_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::forum::PostSearchResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Forum/Poll/{}/", topic_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Forum/Poll/{topic_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -897,7 +907,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("showbanned", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostAndParent/{}/", child_post_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostAndParent/{child_post_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -909,7 +919,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("showbanned", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostAndParentAwaitingApproval/{}/", child_post_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostAndParentAwaitingApproval/{child_post_id}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -921,7 +931,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("showbanned", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostsThreadedPaged/{}/{}/{}/{}/{}/{}/{}/", parent_post_id, page, page_size, reply_size, get_parent_post, root_thread_mode, sort_mode), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostsThreadedPaged/{parent_post_id}/{page}/{page_size}/{reply_size}/{get_parent_post}/{root_thread_mode}/{sort_mode}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -933,7 +943,7 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("showbanned", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostsThreadedPagedFromChild/{}/{}/{}/{}/{}/{}/", child_post_id, page, page_size, reply_size, root_thread_mode, sort_mode), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetPostsThreadedPagedFromChild/{child_post_id}/{page}/{page_size}/{reply_size}/{root_thread_mode}/{sort_mode}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -947,7 +957,7 @@ impl RustgieClient {
     }
 
     pub async fn forum_get_topic_for_content<S: Display+AsRef<str>>(&self, content_id: i64, access_token: Option<S>) -> RustgieResult<i64> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Forum/GetTopicForContent/{}/", content_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Forum/GetTopicForContent/{content_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, i64>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -963,105 +973,105 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("tagstring", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetTopicsPaged/{}/{}/{}/{}/{}/{}/", page, page_size, group, sort, quick_date, category_filter), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/Forum/GetTopicsPaged/{page}/{page_size}/{group}/{sort}/{quick_date}/{category_filter}/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::forum::PostSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_abdicate_foundership<S: Display+AsRef<str>>(&self, founder_id_new: i64, group_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Admin/AbdicateFoundership/{}/{}/", group_id, membership_type, founder_id_new)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Admin/AbdicateFoundership/{membership_type}/{founder_id_new}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_add_optional_conversation<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupOptionalConversationAddRequest, access_token: Option<S>) -> RustgieResult<i64> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/OptionalConversations/Add/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/OptionalConversations/Add/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i64, rustgie_types::groups_v2::GroupOptionalConversationAddRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_approve_all_pending<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupApplicationRequest, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::entities::EntityActionResult>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/ApproveAll/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/ApproveAll/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, Vec<rustgie_types::entities::EntityActionResult>, rustgie_types::groups_v2::GroupApplicationRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_approve_pending<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, request_body: rustgie_types::groups_v2::GroupApplicationRequest, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/Approve/{}/{}/", group_id, membership_type, membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/Approve/{membership_type}/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, bool, rustgie_types::groups_v2::GroupApplicationRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_approve_pending_for_list<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupApplicationListRequest, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::entities::EntityActionResult>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/ApproveList/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/ApproveList/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, Vec<rustgie_types::entities::EntityActionResult>, rustgie_types::groups_v2::GroupApplicationListRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_ban_member<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, request_body: rustgie_types::groups_v2::GroupBanRequest, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/{}/{}/Ban/", group_id, membership_type, membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/{membership_type}/{membership_id}/Ban/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i32, rustgie_types::groups_v2::GroupBanRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_deny_all_pending<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupApplicationRequest, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::entities::EntityActionResult>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/DenyAll/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/DenyAll/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, Vec<rustgie_types::entities::EntityActionResult>, rustgie_types::groups_v2::GroupApplicationRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_deny_pending_for_list<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupApplicationListRequest, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::entities::EntityActionResult>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/DenyList/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/DenyList/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, Vec<rustgie_types::entities::EntityActionResult>, rustgie_types::groups_v2::GroupApplicationListRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_edit_clan_banner<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::ClanBanner, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/EditClanBanner/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/EditClanBanner/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i32, rustgie_types::groups_v2::ClanBanner>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_edit_founder_options<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupOptionsEditAction, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/EditFounderOptions/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/EditFounderOptions/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i32, rustgie_types::groups_v2::GroupOptionsEditAction>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_edit_group<S: Display+AsRef<str>>(&self, group_id: i64, request_body: rustgie_types::groups_v2::GroupEditAction, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Edit/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Edit/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i32, rustgie_types::groups_v2::GroupEditAction>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_edit_group_membership<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, member_type: rustgie_types::groups_v2::RuntimeGroupMemberType, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/{}/{}/SetMembershipType/{}/", group_id, membership_type, membership_id, member_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/{membership_type}/{membership_id}/SetMembershipType/{member_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, i32>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_edit_optional_conversation<S: Display+AsRef<str>>(&self, conversation_id: i64, group_id: i64, request_body: rustgie_types::groups_v2::GroupOptionalConversationEditRequest, access_token: Option<S>) -> RustgieResult<i64> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/OptionalConversations/Edit/{}/", group_id, conversation_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/OptionalConversations/Edit/{conversation_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, i64, rustgie_types::groups_v2::GroupOptionalConversationEditRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
-    pub async fn group_v2_get_admins_and_founder_of_group<S: Display+AsRef<str>>(&self, _currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMember> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/AdminsAndFounder/", group_id)) {
+    pub async fn group_v2_get_admins_and_founder_of_group<S: Display+AsRef<str>>(&self, currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMember> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/AdminsAndFounder/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfGroupMember>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1081,22 +1091,22 @@ impl RustgieClient {
         }
     }
 
-    pub async fn group_v2_get_banned_members_of_group<S: Display+AsRef<str>>(&self, _currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupBan> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Banned/", group_id)) {
+    pub async fn group_v2_get_banned_members_of_group<S: Display+AsRef<str>>(&self, currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupBan> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Banned/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfGroupBan>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_get_group<S: Display+AsRef<str>>(&self, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::groups_v2::GroupResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_get_group_by_name<S: Display+AsRef<str>>(&self, group_name: S, group_type: rustgie_types::groups_v2::GroupType, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/Name/{}/{}/", group_name, group_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/Name/{group_name}/{group_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::groups_v2::GroupResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1110,27 +1120,27 @@ impl RustgieClient {
     }
 
     pub async fn group_v2_get_group_optional_conversations<S: Display+AsRef<str>>(&self, group_id: i64, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::groups_v2::GroupOptionalConversation>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/OptionalConversations/", group_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/OptionalConversations/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, Vec<rustgie_types::groups_v2::GroupOptionalConversation>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_get_groups_for_member<S: Display+AsRef<str>>(&self, filter: rustgie_types::groups_v2::GroupsForMemberFilter, group_type: rustgie_types::groups_v2::GroupType, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GetGroupsForMemberResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/User/{}/{}/{}/{}/", membership_type, membership_id, filter, group_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/User/{membership_type}/{membership_id}/{filter}/{group_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::groups_v2::GetGroupsForMemberResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
-    pub async fn group_v2_get_invited_individuals<S: Display+AsRef<str>>(&self, _currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMemberApplication> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/InvitedIndividuals/", group_id)) {
+    pub async fn group_v2_get_invited_individuals<S: Display+AsRef<str>>(&self, currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMemberApplication> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/InvitedIndividuals/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfGroupMemberApplication>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
-    pub async fn group_v2_get_members_of_group<S: Display+AsRef<str>>(&self, _currentpage: i32, group_id: i64, member_type: Option<rustgie_types::groups_v2::RuntimeGroupMemberType>, name_search: Option<S>, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMember> {
+    pub async fn group_v2_get_members_of_group<S: Display+AsRef<str>>(&self, currentpage: i32, group_id: i64, member_type: Option<rustgie_types::groups_v2::RuntimeGroupMemberType>, name_search: Option<S>, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMember> {
         let mut query_params: Vec<(&str, String)> = Vec::new();
         match member_type {
             None => {}
@@ -1140,35 +1150,35 @@ impl RustgieClient {
             None => {}
             Some(val) => { query_params.push(("nameSearch", val.to_string())); }
         }
-        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/", group_id), query_params) {
+        match Url::parse_with_params(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/"), query_params) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfGroupMember>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
-    pub async fn group_v2_get_pending_memberships<S: Display+AsRef<str>>(&self, _currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMemberApplication> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/Pending/", group_id)) {
+    pub async fn group_v2_get_pending_memberships<S: Display+AsRef<str>>(&self, currentpage: i32, group_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfGroupMemberApplication> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/Pending/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfGroupMemberApplication>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_get_potential_groups_for_member<S: Display+AsRef<str>>(&self, filter: rustgie_types::groups_v2::GroupPotentialMemberStatus, group_type: rustgie_types::groups_v2::GroupType, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupPotentialMembershipSearchResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/User/Potential/{}/{}/{}/{}/", membership_type, membership_id, filter, group_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/User/Potential/{membership_type}/{membership_id}/{filter}/{group_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::groups_v2::GroupPotentialMembershipSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_get_recommended_groups<S: Display+AsRef<str>>(&self, create_date_range: rustgie_types::groups_v2::GroupDateRange, group_type: rustgie_types::groups_v2::GroupType, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::groups_v2::GroupV2Card>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/Recommended/{}/{}/", group_type, create_date_range)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/Recommended/{group_type}/{create_date_range}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, Vec<rustgie_types::groups_v2::GroupV2Card>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_get_user_clan_invite_setting<S: Display+AsRef<str>>(&self, m_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/GetUserClanInviteSetting/{}/", m_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/GetUserClanInviteSetting/{m_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1182,49 +1192,49 @@ impl RustgieClient {
     }
 
     pub async fn group_v2_individual_group_invite<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, request_body: rustgie_types::groups_v2::GroupApplicationRequest, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupApplicationResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/IndividualInvite/{}/{}/", group_id, membership_type, membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/IndividualInvite/{membership_type}/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, rustgie_types::groups_v2::GroupApplicationResponse, rustgie_types::groups_v2::GroupApplicationRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_individual_group_invite_cancel<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupApplicationResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/IndividualInviteCancel/{}/{}/", group_id, membership_type, membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/IndividualInviteCancel/{membership_type}/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, rustgie_types::groups_v2::GroupApplicationResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_kick_member<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupMemberLeaveResult> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/{}/{}/Kick/", group_id, membership_type, membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/{membership_type}/{membership_id}/Kick/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, rustgie_types::groups_v2::GroupMemberLeaveResult>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_recover_group_for_founder<S: Display+AsRef<str>>(&self, group_type: rustgie_types::groups_v2::GroupType, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::groups_v2::GroupMembershipSearchResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/Recover/{}/{}/{}/", membership_type, membership_id, group_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/Recover/{membership_type}/{membership_id}/{group_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::groups_v2::GroupMembershipSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn group_v2_unban_member<S: Display+AsRef<str>>(&self, group_id: i64, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<i32> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{}/Members/{}/{}/Unban/", group_id, membership_type, membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/{membership_type}/{membership_id}/Unban/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, i32>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn social_accept_friend_request<S: Display+AsRef<str>>(&self, membership_id: S, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Requests/Accept/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Requests/Accept/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn social_decline_friend_request<S: Display+AsRef<str>>(&self, membership_id: S, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Requests/Decline/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Requests/Decline/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1245,35 +1255,35 @@ impl RustgieClient {
     }
 
     pub async fn social_get_platform_friend_list<S: Display+AsRef<str>>(&self, friend_platform: rustgie_types::social::friends::PlatformFriendType, page: S, access_token: Option<S>) -> RustgieResult<rustgie_types::social::friends::PlatformFriendResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/PlatformFriends/{}/{}/", friend_platform, page)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/PlatformFriends/{friend_platform}/{page}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::social::friends::PlatformFriendResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn social_issue_friend_request<S: Display+AsRef<str>>(&self, membership_id: S, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Add/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Add/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn social_remove_friend<S: Display+AsRef<str>>(&self, membership_id: S, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Remove/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Remove/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn social_remove_friend_request<S: Display+AsRef<str>>(&self, membership_id: S, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Requests/Remove/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Social/Friends/Requests/Remove/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn tokens_apply_missing_partner_offers_without_claim<S: Display+AsRef<str>>(&self, partner_application_id: i32, target_bnet_membership_id: i64, access_token: Option<S>) -> RustgieResult<bool> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Partner/ApplyMissingOffers/{}/{}/", partner_application_id, target_bnet_membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Partner/ApplyMissingOffers/{partner_application_id}/{target_bnet_membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1286,8 +1296,22 @@ impl RustgieClient {
         }
     }
 
+    pub async fn tokens_force_drops_repair<S: Display+AsRef<str>>(&self, access_token: Option<S>) -> RustgieResult<bool> {
+        match Url::parse("https://www.bungie.net/Platform/Tokens/Partner/ForceDropsRepair/") {
+            Ok(url) => { Ok(RustgieClient::bungie_api_post::<_, bool>(self, url, access_token).await?) }
+            Err(_) => { Err("There was an error while parsing the URL".to_string()) }
+        }
+    }
+
+    pub async fn tokens_get_bungie_rewards_for_platform_user<S: Display+AsRef<str>>(&self, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<HashMap<String, rustgie_types::tokens::BungieRewardDisplay>> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Rewards/GetRewardsForPlatformUser/{membership_id}/{membership_type}/")) {
+            Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<String, rustgie_types::tokens::BungieRewardDisplay>>(self, url, access_token).await?) }
+            Err(_) => { Err("There was an error while parsing the URL".to_string()) }
+        }
+    }
+
     pub async fn tokens_get_bungie_rewards_for_user<S: Display+AsRef<str>>(&self, membership_id: i64, access_token: Option<S>) -> RustgieResult<HashMap<String, rustgie_types::tokens::BungieRewardDisplay>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Rewards/GetRewardsForUser/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Rewards/GetRewardsForUser/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<String, rustgie_types::tokens::BungieRewardDisplay>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1301,8 +1325,15 @@ impl RustgieClient {
     }
 
     pub async fn tokens_get_partner_offer_sku_history<S: Display+AsRef<str>>(&self, partner_application_id: i32, target_bnet_membership_id: i64, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::tokens::PartnerOfferSkuHistoryResponse>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Partner/History/{}/{}/", partner_application_id, target_bnet_membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Partner/History/{partner_application_id}/{target_bnet_membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, Vec<rustgie_types::tokens::PartnerOfferSkuHistoryResponse>>(self, url, access_token).await?) }
+            Err(_) => { Err("There was an error while parsing the URL".to_string()) }
+        }
+    }
+
+    pub async fn tokens_get_partner_reward_history<S: Display+AsRef<str>>(&self, partner_application_id: i32, target_bnet_membership_id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::tokens::PartnerRewardHistoryResponse> {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Tokens/Partner/History/{target_bnet_membership_id}/Application/{partner_application_id}/")) {
+            Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::tokens::PartnerRewardHistoryResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
@@ -1315,14 +1346,14 @@ impl RustgieClient {
     }
 
     pub async fn trending_get_trending_category<S: Display+AsRef<str>>(&self, category_id: S, page_number: i32, access_token: Option<S>) -> RustgieResult<rustgie_types::SearchResultOfTrendingEntry> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Trending/Categories/{}/{}/", category_id, page_number)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Trending/Categories/{category_id}/{page_number}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::SearchResultOfTrendingEntry>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn trending_get_trending_entry_detail<S: Display+AsRef<str>>(&self, identifier: S, trending_entry_type: rustgie_types::trending::TrendingEntryType, access_token: Option<S>) -> RustgieResult<rustgie_types::trending::TrendingDetail> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/Trending/Details/{}/{}/", trending_entry_type, identifier)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/Trending/Details/{trending_entry_type}/{identifier}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::trending::TrendingDetail>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1336,21 +1367,21 @@ impl RustgieClient {
     }
 
     pub async fn user_get_bungie_net_user_by_id<S: Display+AsRef<str>>(&self, id: i64, access_token: Option<S>) -> RustgieResult<rustgie_types::user::GeneralUser> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetBungieNetUserById/{}/", id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetBungieNetUserById/{id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::user::GeneralUser>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn user_get_credential_types_for_target_account<S: Display+AsRef<str>>(&self, membership_id: i64, access_token: Option<S>) -> RustgieResult<Vec<rustgie_types::user::models::GetCredentialTypesForAccountResponse>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetCredentialTypesForTargetAccount/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetCredentialTypesForTargetAccount/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, Vec<rustgie_types::user::models::GetCredentialTypesForAccountResponse>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn user_get_membership_data_by_id<S: Display+AsRef<str>>(&self, membership_id: i64, membership_type: rustgie_types::BungieMembershipType, access_token: Option<S>) -> RustgieResult<rustgie_types::user::UserMembershipData> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetMembershipsById/{}/{}/", membership_id, membership_type)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetMembershipsById/{membership_id}/{membership_type}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::user::UserMembershipData>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
@@ -1364,28 +1395,28 @@ impl RustgieClient {
     }
 
     pub async fn user_get_membership_from_hard_linked_credential<S: Display+AsRef<str>>(&self, credential: S, cr_type: rustgie_types::BungieCredentialType, access_token: Option<S>) -> RustgieResult<rustgie_types::user::HardLinkedUserMembership> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetMembershipFromHardLinkedCredential/{}/{}/", cr_type, credential)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetMembershipFromHardLinkedCredential/{cr_type}/{credential}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::user::HardLinkedUserMembership>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn user_get_sanitized_platform_display_names<S: Display+AsRef<str>>(&self, membership_id: i64, access_token: Option<S>) -> RustgieResult<HashMap<u8, String>> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetSanitizedPlatformDisplayNames/{}/", membership_id)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/GetSanitizedPlatformDisplayNames/{membership_id}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, HashMap<u8, String>>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn user_search_by_global_name_post<S: Display+AsRef<str>>(&self, page: i32, request_body: rustgie_types::user::UserSearchPrefixRequest, access_token: Option<S>) -> RustgieResult<rustgie_types::user::UserSearchResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/Search/GlobalName/{}/", page)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/Search/GlobalName/{page}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_post_with_body::<_, rustgie_types::user::UserSearchResponse, rustgie_types::user::UserSearchPrefixRequest>(self, url, request_body, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }
     }
 
     pub async fn user_search_by_global_name_prefix<S: Display+AsRef<str>>(&self, display_name_prefix: S, page: i32, access_token: Option<S>) -> RustgieResult<rustgie_types::user::UserSearchResponse> {
-        match Url::parse(&*format!("https://www.bungie.net/Platform/User/Search/Prefix/{}/{}/", display_name_prefix, page)) {
+        match Url::parse(&*format!("https://www.bungie.net/Platform/User/Search/Prefix/{display_name_prefix}/{page}/")) {
             Ok(url) => { Ok(RustgieClient::bungie_api_get::<_, rustgie_types::user::UserSearchResponse>(self, url, access_token).await?) }
             Err(_) => { Err("There was an error while parsing the URL".to_string()) }
         }

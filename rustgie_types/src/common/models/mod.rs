@@ -18,6 +18,9 @@ pub struct CoreSettingsConfiguration {
     #[serde(rename = "groupAvatars")]
     pub group_avatars: Option<Vec<crate::common::models::CoreSetting>>,
 
+    #[serde(rename = "defaultGroupTheme")]
+    pub default_group_theme: Option<crate::common::models::CoreSetting>,
+
     #[serde(rename = "destinyMembershipTypes")]
     pub destiny_membership_types: Option<Vec<crate::common::models::CoreSetting>>,
 

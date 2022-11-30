@@ -1,5 +1,4 @@
-﻿pub mod api_response_;
-pub mod applications;
+﻿pub mod applications;
 pub mod common;
 pub mod components;
 pub mod config;
@@ -17,10 +16,12 @@ pub mod interpolation;
 pub mod links;
 pub mod queries;
 pub mod social;
+pub mod streaming;
 pub mod tags;
 pub mod tokens;
 pub mod trending;
 pub mod user;
+pub mod api_response_;
 pub mod rustgie_stuff_;
 
 use std::collections::HashMap;
@@ -41,6 +42,7 @@ pub enum BungieMembershipType {
     TigerSteam = 3,
     TigerBlizzard = 4,
     TigerStadia = 5,
+    TigerEgs = 6,
     TigerDemon = 10,
     BungieNext = 254,
     /// "All" is only valid for searching capabilities: you need to pass the actual matching BungieMembershipType for any query where you pass a known membershipId.
@@ -62,6 +64,7 @@ impl FromStr for BungieMembershipType {
             "TigerSteam" => Ok(BungieMembershipType::TigerSteam),
             "TigerBlizzard" => Ok(BungieMembershipType::TigerBlizzard),
             "TigerStadia" => Ok(BungieMembershipType::TigerStadia),
+            "TigerEgs" => Ok(BungieMembershipType::TigerEgs),
             "TigerDemon" => Ok(BungieMembershipType::TigerDemon),
             "BungieNext" => Ok(BungieMembershipType::BungieNext),
             "All" => Ok(BungieMembershipType::All),
@@ -87,6 +90,7 @@ pub enum BungieCredentialType {
     BattleNetId = 14,
     StadiaId = 16,
     TwitchId = 18,
+    EgsId = 20,
 }
 
 impl Display for BungieCredentialType {
@@ -111,6 +115,7 @@ impl FromStr for BungieCredentialType {
             "BattleNetId" => Ok(BungieCredentialType::BattleNetId),
             "StadiaId" => Ok(BungieCredentialType::StadiaId),
             "TwitchId" => Ok(BungieCredentialType::TwitchId),
+            "EgsId" => Ok(BungieCredentialType::EgsId),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }

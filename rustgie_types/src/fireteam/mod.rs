@@ -43,6 +43,7 @@ pub enum FireteamPlatform {
     Blizzard = 3,
     Steam = 4,
     Stadia = 5,
+    Egs = 6,
 }
 
 impl Display for FireteamPlatform {
@@ -60,6 +61,7 @@ impl FromStr for FireteamPlatform {
             "Blizzard" => Ok(FireteamPlatform::Blizzard),
             "Steam" => Ok(FireteamPlatform::Steam),
             "Stadia" => Ok(FireteamPlatform::Stadia),
+            "Egs" => Ok(FireteamPlatform::Egs),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }

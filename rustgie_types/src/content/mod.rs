@@ -82,3 +82,37 @@ pub struct CommentSummary {
     #[serde(rename = "commentCount")]
     pub comment_count: i32,
 }
+
+#[derive(Deserialize, Serialize)]
+pub struct NewsArticleRssResponse {
+    #[serde(rename = "NewsArticles")]
+    pub news_articles: Option<Vec<crate::content::NewsArticleRssItem>>,
+
+    #[serde(rename = "CurrentPaginationToken")]
+    pub current_pagination_token: i32,
+
+    #[serde(rename = "NextPaginationToken")]
+    pub next_pagination_token: Option<i32>,
+
+    #[serde(rename = "ResultCountThisPage")]
+    pub result_count_this_page: i32,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct NewsArticleRssItem {
+    #[serde(rename = "Title")]
+    pub title: Option<String>,
+
+    #[serde(rename = "Link")]
+    pub link: Option<String>,
+
+    #[serde(with = "time::serde::rfc3339")]
+    #[serde(rename = "PubDate")]
+    pub pub_date: OffsetDateTime,
+
+    #[serde(rename = "UniqueIdentifier")]
+    pub unique_identifier: Option<String>,
+
+    #[serde(rename = "Description")]
+    pub description: Option<String>,
+}

@@ -34,7 +34,7 @@ pub enum ApplicationScopes {
     ReadAndApplyTokens = 1024,
     /// Can perform actions that will result in a prompt to the user via the Destiny app.
     AdvancedWriteActions = 2048,
-    /// Can user the partner offer api to claim rewards defined for a partner
+    /// Can use the partner offer api to claim rewards defined for a partner
     PartnerOfferGrant = 4096,
     /// Allows an app to query sensitive information like unlock flags and values not available through normal methods.
     DestinyUnlockValueQuery = 8192,

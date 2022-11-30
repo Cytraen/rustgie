@@ -1,4 +1,5 @@
 ﻿use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
 /// Defines a canonical "Season" of Destiny: a range of a few months where the game highlights certain challenges, provides new loot, has new Clan-related rewards and celebrates various seasonal events.
@@ -114,4 +115,77 @@ pub struct DestinySeasonPassDefinition {
     /// If this is true, then there is an entity with this identifier/type combination, but BNet is not yet allowed to show it. Sorry!
     #[serde(rename = "redacted")]
     pub redacted: bool,
+}
+
+/// Defines the properties of an 'Event Card' in Destiny 2, to coincide with a seasonal event for additional challenges, premium rewards, a new seal, and a special title. For example: Solstice of Heroes 2022.
+#[serde_as]
+#[derive(Deserialize, Serialize)]
+pub struct DestinyEventCardDefinition {
+    #[serde(rename = "displayProperties")]
+    pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
+
+    #[serde(rename = "linkRedirectPath")]
+    pub link_redirect_path: Option<String>,
+
+    #[serde(rename = "color")]
+    pub color: Option<crate::destiny::misc::DestinyColor>,
+
+    #[serde(rename = "images")]
+    pub images: Option<crate::destiny::definitions::seasons::DestinyEventCardImages>,
+
+    #[serde(rename = "triumphsPresentationNodeHash")]
+    pub triumphs_presentation_node_hash: u32,
+
+    #[serde(rename = "sealPresentationNodeHash")]
+    pub seal_presentation_node_hash: u32,
+
+    #[serde(rename = "ticketCurrencyItemHash")]
+    pub ticket_currency_item_hash: u32,
+
+    #[serde(rename = "ticketVendorHash")]
+    pub ticket_vendor_hash: u32,
+
+    #[serde(rename = "ticketVendorCategoryHash")]
+    pub ticket_vendor_category_hash: u32,
+
+    #[serde_as(as = "DisplayFromStr")]
+    #[serde(rename = "endTime")]
+    pub end_time: i64,
+
+    /// The unique identifier for this entity. Guaranteed to be unique for the type of entity, but not globally.
+    /// When entities refer to each other in Destiny content, it is this hash that they are referring to.
+    #[serde(rename = "hash")]
+    pub hash: u32,
+
+    /// The index of the entity as it was found in the investment tables.
+    #[serde(rename = "index")]
+    pub index: i32,
+
+    /// If this is true, then there is an entity with this identifier/type combination, but BNet is not yet allowed to show it. Sorry!
+    #[serde(rename = "redacted")]
+    pub redacted: bool,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct DestinyEventCardImages {
+    #[serde(rename = "unownedCardSleeveImagePath")]
+    pub unowned_card_sleeve_image_path: Option<String>,
+
+    #[serde(rename = "unownedCardSleeveWrapImagePath")]
+    pub unowned_card_sleeve_wrap_image_path: Option<String>,
+
+    #[serde(rename = "cardIncompleteImagePath")]
+    pub card_incomplete_image_path: Option<String>,
+
+    #[serde(rename = "cardCompleteImagePath")]
+    pub card_complete_image_path: Option<String>,
+
+    #[serde(rename = "cardCompleteWrapImagePath")]
+    pub card_complete_wrap_image_path: Option<String>,
+
+    #[serde(rename = "progressIconImagePath")]
+    pub progress_icon_image_path: Option<String>,
+
+    #[serde(rename = "themeBackgroundImagePath")]
+    pub theme_background_image_path: Option<String>,
 }

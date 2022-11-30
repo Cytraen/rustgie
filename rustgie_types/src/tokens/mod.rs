@@ -74,6 +74,32 @@ pub struct PartnerOfferHistoryResponse {
 }
 
 #[derive(Deserialize, Serialize)]
+pub struct PartnerRewardHistoryResponse {
+    #[serde(rename = "PartnerOffers")]
+    pub partner_offers: Option<Vec<crate::tokens::PartnerOfferSkuHistoryResponse>>,
+
+    #[serde(rename = "TwitchDrops")]
+    pub twitch_drops: Option<Vec<crate::tokens::TwitchDropHistoryResponse>>,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct TwitchDropHistoryResponse {
+    #[serde(rename = "Title")]
+    pub title: Option<String>,
+
+    #[serde(rename = "Description")]
+    pub description: Option<String>,
+
+    #[serde(with = "time::serde::rfc3339::option")]
+    #[serde(default)]
+    #[serde(rename = "CreatedAt")]
+    pub created_at: Option<OffsetDateTime>,
+
+    #[serde(rename = "ClaimState")]
+    pub claim_state: Option<u8>,
+}
+
+#[derive(Deserialize, Serialize)]
 pub struct BungieRewardDisplay {
     #[serde(rename = "UserRewardAvailabilityModel")]
     pub user_reward_availability_model: Option<crate::tokens::UserRewardAvailabilityModel>,

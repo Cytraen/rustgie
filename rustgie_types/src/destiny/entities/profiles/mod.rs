@@ -36,6 +36,10 @@ pub struct DestinyProfileComponent {
     #[serde(rename = "seasonHashes")]
     pub season_hashes: Option<Vec<u32>>,
 
+    /// A list of hashes for event cards that a profile owns. Unlike most values in versionsOwned, these stay with the profile across all platforms.
+    #[serde(rename = "eventCardHashesOwned")]
+    pub event_card_hashes_owned: Option<Vec<u32>>,
+
     /// If populated, this is a reference to the season that is currently active.
     #[serde(rename = "currentSeasonHash")]
     pub current_season_hash: Option<u32>,
@@ -43,4 +47,8 @@ pub struct DestinyProfileComponent {
     /// If populated, this is the reward power cap for the current season.
     #[serde(rename = "currentSeasonRewardPowerCap")]
     pub current_season_reward_power_cap: Option<i32>,
+
+    /// If populated, this is a reference to the event card that is currently active.
+    #[serde(rename = "activeEventCardHash")]
+    pub active_event_card_hash: Option<u32>,
 }

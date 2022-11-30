@@ -131,6 +131,7 @@ pub enum PlatformFriendType {
     Xbox = 1,
     PSN = 2,
     Steam = 3,
+    Egs = 4,
 }
 
 impl Display for PlatformFriendType {
@@ -146,6 +147,7 @@ impl FromStr for PlatformFriendType {
             "Xbox" => Ok(PlatformFriendType::Xbox),
             "PSN" => Ok(PlatformFriendType::PSN),
             "Steam" => Ok(PlatformFriendType::Steam),
+            "Egs" => Ok(PlatformFriendType::Egs),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }

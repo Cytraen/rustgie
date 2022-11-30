@@ -241,6 +241,9 @@ pub struct GeneralUser {
 
     #[serde(rename = "cachedBungieGlobalDisplayNameCode")]
     pub cached_bungie_global_display_name_code: Option<i16>,
+
+    #[serde(rename = "egsDisplayName")]
+    pub egs_display_name: Option<String>,
 }
 
 #[derive(Deserialize, Serialize)]

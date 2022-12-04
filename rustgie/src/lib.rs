@@ -1,4 +1,6 @@
-﻿use reqwest::{Response, Url};
+﻿#![forbid(unsafe_code)]
+
+use reqwest::{Response, Url};
 use rustgie_types::api_response_::BungieApiResponse;
 use std::collections::HashMap;
 

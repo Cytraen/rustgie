@@ -1,4 +1,6 @@
-﻿pub mod applications;
+﻿#![forbid(unsafe_code)]
+
+pub mod applications;
 pub mod common;
 pub mod components;
 pub mod config;

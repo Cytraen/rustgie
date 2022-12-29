@@ -3,6 +3,7 @@ name = "rustgie"
 version = "0.3.0-beta"
 authors = ["ashakoor"]
 edition = "2021"
+rust-version = "1.60"
 description = "A Bungie.net API client."
 repository = "https://github.com/ashakoor/rustgie/"
 license = "MIT OR Apache-2.0"

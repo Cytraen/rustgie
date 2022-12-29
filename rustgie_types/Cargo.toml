@@ -3,6 +3,7 @@ name = "rustgie_types"
 version = "0.3.0-beta"
 authors = ["ashakoor"]
 edition = "2021"
+rust-version = "1.60"
 description = "Types for rustgie."
 repository = "https://github.com/ashakoor/rustgie/"
 license = "MIT OR Apache-2.0"

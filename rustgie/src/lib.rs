@@ -2,6 +2,8 @@
 
 pub mod endpoints;
 
+pub use rustgie_types as types;
+
 use anyhow::{anyhow, Result, Context};
 use reqwest::Url;
 use rustgie_types::api_response_::BungieApiResponse;

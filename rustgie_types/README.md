@@ -1,6 +1,9 @@
 # rustgie_types
 
-Types for `rustgie` or your own client implementation.
+Types for `rustgie` or your own client implementation.  
+Currently covers the full API surface of API v2.17.0 (2022-12-06, Season of the Seraph)
+
+`rustgie` re-exports this as `rustgie::types` as of v0.3.0 so having both is redundant.
 
 ## License
 

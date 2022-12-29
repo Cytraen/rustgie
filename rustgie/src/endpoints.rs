@@ -1,4 +1,4 @@
-use anyhow::{Result, Context};
+﻿use anyhow::{Result, Context};
 use reqwest::Url;
 use std::collections::HashMap;
 
@@ -97,9 +97,18 @@ impl crate::RustgieClient {
         ).await?)
     }
 
-    pub async fn content_rss_news_articles(&self, page_token: &str, access_token: Option<&str>) -> Result<rustgie_types::content::NewsArticleRssResponse> {
+    pub async fn content_rss_news_articles(&self, page_token: &str, categoryfilter: Option<&str>, includebody: Option<bool>, access_token: Option<&str>) -> Result<rustgie_types::content::NewsArticleRssResponse> {
+        let mut query_params: Vec<(&str, String)> = Vec::new();
+        match categoryfilter {
+            None => {}
+            Some(val) => { query_params.push(("categoryfilter", val.to_string())); }
+        }
+        match includebody {
+            None => {}
+            Some(val) => { query_params.push(("includebody", val.to_string())); }
+        }
         Ok(self.bungie_api_get::<rustgie_types::content::NewsArticleRssResponse>(
-            Url::parse(&format!("https://www.bungie.net/Platform/Content/Rss/NewsArticles/{page_token}/")).with_context(|| "Error parsing URL")?,
+            Url::parse_with_params(&format!("https://www.bungie.net/Platform/Content/Rss/NewsArticles/{page_token}/"), query_params).with_context(|| "Error parsing URL")?,
             access_token
         ).await?)
     }

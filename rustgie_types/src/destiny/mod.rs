@@ -1846,6 +1846,7 @@ pub enum DestinyGameVersions {
     BeyondLight = 64,
     Anniversary30th = 128,
     TheWitchQueen = 256,
+    Lightfall = 512,
 }
 
 impl Display for DestinyGameVersions {
@@ -1867,6 +1868,7 @@ impl FromStr for DestinyGameVersions {
             "BeyondLight" => Ok(DestinyGameVersions::BeyondLight),
             "Anniversary30th" => Ok(DestinyGameVersions::Anniversary30th),
             "TheWitchQueen" => Ok(DestinyGameVersions::TheWitchQueen),
+            "Lightfall" => Ok(DestinyGameVersions::Lightfall),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }
@@ -2373,8 +2375,14 @@ pub enum EquipFailureReason {
     ItemFailedUnlockCheck = 4,
     /// This item requires you to have reached a specific character level in order to equip it, and you haven't reached that level yet.
     ItemFailedLevelCheck = 8,
-    /// This item can't be equipped on the character requested, because it must be in that character's inventory first. Transfer the item to the character you want to equip it before you attempt to equip it.
-    ItemNotOnCharacter = 16,
+    /// This item is 'wrapped' and must be unwrapped before being equipped. NOTE: This value used to be called ItemNotOnCharacter but that is no longer accurate.
+    ItemWrapped = 16,
+    /// This item is not yet loaded and cannot be equipped yet.
+    ItemNotLoaded = 32,
+    /// This item is block-listed and cannot be equipped.
+    ItemEquipBlocklisted = 64,
+    /// This item does not meet the loadout requirements for the current activity
+    ItemLoadoutRequirementNotMet = 128,
 }
 
 impl Display for EquipFailureReason {
@@ -2391,7 +2399,10 @@ impl FromStr for EquipFailureReason {
             "ItemUniqueEquipRestricted" => Ok(EquipFailureReason::ItemUniqueEquipRestricted),
             "ItemFailedUnlockCheck" => Ok(EquipFailureReason::ItemFailedUnlockCheck),
             "ItemFailedLevelCheck" => Ok(EquipFailureReason::ItemFailedLevelCheck),
-            "ItemNotOnCharacter" => Ok(EquipFailureReason::ItemNotOnCharacter),
+            "ItemWrapped" => Ok(EquipFailureReason::ItemWrapped),
+            "ItemNotLoaded" => Ok(EquipFailureReason::ItemNotLoaded),
+            "ItemEquipBlocklisted" => Ok(EquipFailureReason::ItemEquipBlocklisted),
+            "ItemLoadoutRequirementNotMet" => Ok(EquipFailureReason::ItemLoadoutRequirementNotMet),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }
@@ -2629,6 +2640,9 @@ pub enum DestinyVendorItemState {
     Free = 131072,
     /// This indicates that the sale item is locked.
     Locked = 262144,
+    /// This indicates that the sale item is paracausal.
+    Paracausal = 524288,
+    Cryptarch = 1048576,
 }
 
 impl Display for DestinyVendorItemState {
@@ -2660,6 +2674,8 @@ impl FromStr for DestinyVendorItemState {
             "Popular" => Ok(DestinyVendorItemState::Popular),
             "Free" => Ok(DestinyVendorItemState::Free),
             "Locked" => Ok(DestinyVendorItemState::Locked),
+            "Paracausal" => Ok(DestinyVendorItemState::Paracausal),
+            "Cryptarch" => Ok(DestinyVendorItemState::Cryptarch),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }

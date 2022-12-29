@@ -107,6 +107,18 @@ pub struct DestinyErrorProfile {
 #[serde_as]
 #[derive(Deserialize, Serialize)]
 pub struct DestinyProfileResponse {
+    /// Records the timestamp of when most components were last generated from the world server source. Unless the component type is specified in the documentation for secondaryComponentsMintedTimestamp, this value is sufficient to do data freshness.
+    #[serde(with = "time::serde::rfc3339")]
+    #[serde(rename = "responseMintedTimestamp")]
+    pub response_minted_timestamp: OffsetDateTime,
+
+    /// Some secondary components are not tracked in the primary response timestamp and have their timestamp tracked here. If your component is any of the following, this field is where you will find your timestamp value:
+    /// PresentationNodes, Records, Collectibles, Metrics, StringVariables, Craftables, Transitory
+    /// All other component types may use the primary timestamp property.
+    #[serde(with = "time::serde::rfc3339")]
+    #[serde(rename = "secondaryComponentsMintedTimestamp")]
+    pub secondary_components_minted_timestamp: OffsetDateTime,
+
     /// Recent, refundable purchases you have made from vendors. When will you use it? Couldn't say...
     /// COMPONENT TYPE: VendorReceipts
     #[serde(rename = "vendorReceipts")]

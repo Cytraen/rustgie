@@ -96,6 +96,9 @@ pub struct NewsArticleRssResponse {
 
     #[serde(rename = "ResultCountThisPage")]
     pub result_count_this_page: i32,
+
+    #[serde(rename = "CategoryFilter")]
+    pub category_filter: Option<String>,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -115,4 +118,13 @@ pub struct NewsArticleRssItem {
 
     #[serde(rename = "Description")]
     pub description: Option<String>,
+
+    #[serde(rename = "HtmlContent")]
+    pub html_content: Option<String>,
+
+    #[serde(rename = "ImagePath")]
+    pub image_path: Option<String>,
+
+    #[serde(rename = "OptionalMobileImagePath")]
+    pub optional_mobile_image_path: Option<String>,
 }

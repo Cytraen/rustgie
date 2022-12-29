@@ -91,6 +91,7 @@ pub enum DestinyActivityModeType {
     Rift = 88,
     ZoneControl = 89,
     IronBannerRift = 90,
+    IronBannerZoneControl = 91,
 }
 
 impl Display for DestinyActivityModeType {
@@ -185,6 +186,7 @@ impl FromStr for DestinyActivityModeType {
             "Rift" => Ok(DestinyActivityModeType::Rift),
             "ZoneControl" => Ok(DestinyActivityModeType::ZoneControl),
             "IronBannerRift" => Ok(DestinyActivityModeType::IronBannerRift),
+            "IronBannerZoneControl" => Ok(DestinyActivityModeType::IronBannerZoneControl),
             _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
         }
     }

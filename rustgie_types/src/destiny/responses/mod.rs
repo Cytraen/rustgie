@@ -1,6 +1,6 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
 use time::OffsetDateTime;
 
 /// I know what you seek. You seek linked accounts. Found them, you have.

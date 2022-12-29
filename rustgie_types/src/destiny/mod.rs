@@ -20,13 +20,14 @@ pub mod responses;
 pub mod sockets;
 pub mod vendors;
 
-use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 /// Information about a current character's status with a Progression. A progression is a value that can increase with activity and has levels. Think Character Level and Reputation Levels. Combine this "live" data with the related DestinyProgressionDefinition for a full picture of the Progression.
 #[derive(Deserialize, Serialize)]
@@ -121,14 +122,14 @@ impl Display for DestinyProgressionRewardItemState {
 }
 
 impl FromStr for DestinyProgressionRewardItemState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Invisible" => Ok(DestinyProgressionRewardItemState::Invisible),
             "Earned" => Ok(DestinyProgressionRewardItemState::Earned),
             "Claimed" => Ok(DestinyProgressionRewardItemState::Claimed),
             "ClaimAllowed" => Ok(DestinyProgressionRewardItemState::ClaimAllowed),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyProgressionRewardItemState", s)),
         }
     }
 }
@@ -155,9 +156,10 @@ impl Display for DestinyProgressionScope {
 }
 
 impl FromStr for DestinyProgressionScope {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Account" => Ok(DestinyProgressionScope::Account),
             "Character" => Ok(DestinyProgressionScope::Character),
             "Clan" => Ok(DestinyProgressionScope::Clan),
             "Item" => Ok(DestinyProgressionScope::Item),
@@ -166,7 +168,7 @@ impl FromStr for DestinyProgressionScope {
             "MappedAggregate" => Ok(DestinyProgressionScope::MappedAggregate),
             "MappedStat" => Ok(DestinyProgressionScope::MappedStat),
             "MappedUnlockValue" => Ok(DestinyProgressionScope::MappedUnlockValue),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyProgressionScope", s)),
         }
     }
 }
@@ -187,12 +189,13 @@ impl Display for DestinyProgressionStepDisplayEffect {
 }
 
 impl FromStr for DestinyProgressionStepDisplayEffect {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyProgressionStepDisplayEffect::None),
             "Character" => Ok(DestinyProgressionStepDisplayEffect::Character),
             "Item" => Ok(DestinyProgressionStepDisplayEffect::Item),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyProgressionStepDisplayEffect", s)),
         }
     }
 }
@@ -236,12 +239,13 @@ impl Display for SocketTypeActionType {
 }
 
 impl FromStr for SocketTypeActionType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "InsertPlug" => Ok(SocketTypeActionType::InsertPlug),
             "InfuseItem" => Ok(SocketTypeActionType::InfuseItem),
             "ReinitializeSocket" => Ok(SocketTypeActionType::ReinitializeSocket),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to SocketTypeActionType", s)),
         }
     }
 }
@@ -262,13 +266,14 @@ impl Display for DestinySocketVisibility {
 }
 
 impl FromStr for DestinySocketVisibility {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Visible" => Ok(DestinySocketVisibility::Visible),
             "Hidden" => Ok(DestinySocketVisibility::Hidden),
             "HiddenWhenEmpty" => Ok(DestinySocketVisibility::HiddenWhenEmpty),
             "HiddenIfNoPlugsAvailable" => Ok(DestinySocketVisibility::HiddenIfNoPlugsAvailable),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinySocketVisibility", s)),
         }
     }
 }
@@ -295,9 +300,10 @@ impl Display for DestinySocketCategoryStyle {
 }
 
 impl FromStr for DestinySocketCategoryStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(DestinySocketCategoryStyle::Unknown),
             "Reusable" => Ok(DestinySocketCategoryStyle::Reusable),
             "Consumable" => Ok(DestinySocketCategoryStyle::Consumable),
             "Unlockable" => Ok(DestinySocketCategoryStyle::Unlockable),
@@ -306,7 +312,7 @@ impl FromStr for DestinySocketCategoryStyle {
             "LargePerk" => Ok(DestinySocketCategoryStyle::LargePerk),
             "Abilities" => Ok(DestinySocketCategoryStyle::Abilities),
             "Supers" => Ok(DestinySocketCategoryStyle::Supers),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinySocketCategoryStyle", s)),
         }
     }
 }
@@ -330,16 +336,17 @@ impl Display for TierType {
 }
 
 impl FromStr for TierType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(TierType::Unknown),
             "Currency" => Ok(TierType::Currency),
             "Basic" => Ok(TierType::Basic),
             "Common" => Ok(TierType::Common),
             "Rare" => Ok(TierType::Rare),
             "Superior" => Ok(TierType::Superior),
             "Exotic" => Ok(TierType::Exotic),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to TierType", s)),
         }
     }
 }
@@ -358,11 +365,12 @@ impl Display for BucketScope {
 }
 
 impl FromStr for BucketScope {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Character" => Ok(BucketScope::Character),
             "Account" => Ok(BucketScope::Account),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to BucketScope", s)),
         }
     }
 }
@@ -384,14 +392,15 @@ impl Display for BucketCategory {
 }
 
 impl FromStr for BucketCategory {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Invisible" => Ok(BucketCategory::Invisible),
             "Item" => Ok(BucketCategory::Item),
             "Currency" => Ok(BucketCategory::Currency),
             "Equippable" => Ok(BucketCategory::Equippable),
             "Ignored" => Ok(BucketCategory::Ignored),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to BucketCategory", s)),
         }
     }
 }
@@ -413,14 +422,15 @@ impl Display for ItemLocation {
 }
 
 impl FromStr for ItemLocation {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(ItemLocation::Unknown),
             "Inventory" => Ok(ItemLocation::Inventory),
             "Vault" => Ok(ItemLocation::Vault),
             "Vendor" => Ok(ItemLocation::Vendor),
             "Postmaster" => Ok(ItemLocation::Postmaster),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ItemLocation", s)),
         }
     }
 }
@@ -442,12 +452,13 @@ impl Display for DestinyStatAggregationType {
 }
 
 impl FromStr for DestinyStatAggregationType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "CharacterAverage" => Ok(DestinyStatAggregationType::CharacterAverage),
             "Character" => Ok(DestinyStatAggregationType::Character),
             "Item" => Ok(DestinyStatAggregationType::Item),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyStatAggregationType", s)),
         }
     }
 }
@@ -469,13 +480,14 @@ impl Display for DestinyStatCategory {
 }
 
 impl FromStr for DestinyStatCategory {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Gameplay" => Ok(DestinyStatCategory::Gameplay),
             "Weapon" => Ok(DestinyStatCategory::Weapon),
             "Defense" => Ok(DestinyStatCategory::Defense),
             "Primary" => Ok(DestinyStatCategory::Primary),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyStatCategory", s)),
         }
     }
 }
@@ -494,11 +506,11 @@ impl Display for EquippingItemBlockAttributes {
 }
 
 impl FromStr for EquippingItemBlockAttributes {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "EquipOnAcquire" => Ok(EquippingItemBlockAttributes::EquipOnAcquire),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to EquippingItemBlockAttributes", s)),
         }
     }
 }
@@ -520,14 +532,15 @@ impl Display for DestinyAmmunitionType {
 }
 
 impl FromStr for DestinyAmmunitionType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyAmmunitionType::None),
             "Primary" => Ok(DestinyAmmunitionType::Primary),
             "Special" => Ok(DestinyAmmunitionType::Special),
             "Heavy" => Ok(DestinyAmmunitionType::Heavy),
             "Unknown" => Ok(DestinyAmmunitionType::Unknown),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyAmmunitionType", s)),
         }
     }
 }
@@ -557,13 +570,14 @@ impl Display for DestinyClass {
 }
 
 impl FromStr for DestinyClass {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Titan" => Ok(DestinyClass::Titan),
             "Hunter" => Ok(DestinyClass::Hunter),
             "Warlock" => Ok(DestinyClass::Warlock),
             "Unknown" => Ok(DestinyClass::Unknown),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyClass", s)),
         }
     }
 }
@@ -583,12 +597,13 @@ impl Display for DestinyGender {
 }
 
 impl FromStr for DestinyGender {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Male" => Ok(DestinyGender::Male),
             "Female" => Ok(DestinyGender::Female),
             "Unknown" => Ok(DestinyGender::Unknown),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyGender", s)),
         }
     }
 }
@@ -612,12 +627,13 @@ impl Display for DestinyVendorProgressionType {
 }
 
 impl FromStr for DestinyVendorProgressionType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(DestinyVendorProgressionType::Default),
             "Ritual" => Ok(DestinyVendorProgressionType::Ritual),
             "NoSeasonalRefresh" => Ok(DestinyVendorProgressionType::NoSeasonalRefresh),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyVendorProgressionType", s)),
         }
     }
 }
@@ -637,11 +653,12 @@ impl Display for VendorDisplayCategorySortOrder {
 }
 
 impl FromStr for VendorDisplayCategorySortOrder {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(VendorDisplayCategorySortOrder::Default),
             "SortByTier" => Ok(VendorDisplayCategorySortOrder::SortByTier),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to VendorDisplayCategorySortOrder", s)),
         }
     }
 }
@@ -662,12 +679,13 @@ impl Display for DestinyVendorInteractionRewardSelection {
 }
 
 impl FromStr for DestinyVendorInteractionRewardSelection {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyVendorInteractionRewardSelection::None),
             "One" => Ok(DestinyVendorInteractionRewardSelection::One),
             "All" => Ok(DestinyVendorInteractionRewardSelection::All),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyVendorInteractionRewardSelection", s)),
         }
     }
 }
@@ -688,12 +706,13 @@ impl Display for DestinyVendorReplyType {
 }
 
 impl FromStr for DestinyVendorReplyType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Accept" => Ok(DestinyVendorReplyType::Accept),
             "Decline" => Ok(DestinyVendorReplyType::Decline),
             "Complete" => Ok(DestinyVendorReplyType::Complete),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyVendorReplyType", s)),
         }
     }
 }
@@ -732,9 +751,10 @@ impl Display for VendorInteractionType {
 }
 
 impl FromStr for VendorInteractionType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(VendorInteractionType::Unknown),
             "Undefined" => Ok(VendorInteractionType::Undefined),
             "QuestComplete" => Ok(VendorInteractionType::QuestComplete),
             "QuestContinue" => Ok(VendorInteractionType::QuestContinue),
@@ -745,7 +765,7 @@ impl FromStr for VendorInteractionType {
             "ProgressTab" => Ok(VendorInteractionType::ProgressTab),
             "End" => Ok(VendorInteractionType::End),
             "Start" => Ok(VendorInteractionType::Start),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to VendorInteractionType", s)),
         }
     }
 }
@@ -766,12 +786,13 @@ impl Display for DestinyItemSortType {
 }
 
 impl FromStr for DestinyItemSortType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "ItemId" => Ok(DestinyItemSortType::ItemId),
             "Timestamp" => Ok(DestinyItemSortType::Timestamp),
             "StackSize" => Ok(DestinyItemSortType::StackSize),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyItemSortType", s)),
         }
     }
 }
@@ -792,12 +813,13 @@ impl Display for DestinyVendorItemRefundPolicy {
 }
 
 impl FromStr for DestinyVendorItemRefundPolicy {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "NotRefundable" => Ok(DestinyVendorItemRefundPolicy::NotRefundable),
             "DeletesItem" => Ok(DestinyVendorItemRefundPolicy::DeletesItem),
             "RevokesLicense" => Ok(DestinyVendorItemRefundPolicy::RevokesLicense),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyVendorItemRefundPolicy", s)),
         }
     }
 }
@@ -829,16 +851,17 @@ impl Display for DestinyGatingScope {
 }
 
 impl FromStr for DestinyGatingScope {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyGatingScope::None),
             "Global" => Ok(DestinyGatingScope::Global),
             "Clan" => Ok(DestinyGatingScope::Clan),
             "Profile" => Ok(DestinyGatingScope::Profile),
             "Character" => Ok(DestinyGatingScope::Character),
             "Item" => Ok(DestinyGatingScope::Item),
             "AssumedWorstCase" => Ok(DestinyGatingScope::AssumedWorstCase),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyGatingScope", s)),
         }
     }
 }
@@ -861,14 +884,15 @@ impl Display for ActivityGraphNodeHighlightType {
 }
 
 impl FromStr for ActivityGraphNodeHighlightType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ActivityGraphNodeHighlightType::None),
             "Normal" => Ok(ActivityGraphNodeHighlightType::Normal),
             "Hyper" => Ok(ActivityGraphNodeHighlightType::Hyper),
             "Comet" => Ok(ActivityGraphNodeHighlightType::Comet),
             "RiseOfIron" => Ok(ActivityGraphNodeHighlightType::RiseOfIron),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ActivityGraphNodeHighlightType", s)),
         }
     }
 }
@@ -916,9 +940,10 @@ impl Display for DestinyUnlockValueUIStyle {
 }
 
 impl FromStr for DestinyUnlockValueUIStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Automatic" => Ok(DestinyUnlockValueUIStyle::Automatic),
             "Fraction" => Ok(DestinyUnlockValueUIStyle::Fraction),
             "Checkbox" => Ok(DestinyUnlockValueUIStyle::Checkbox),
             "Percentage" => Ok(DestinyUnlockValueUIStyle::Percentage),
@@ -933,7 +958,7 @@ impl FromStr for DestinyUnlockValueUIStyle {
             "ExplicitPercentage" => Ok(DestinyUnlockValueUIStyle::ExplicitPercentage),
             "RawFloat" => Ok(DestinyUnlockValueUIStyle::RawFloat),
             "LevelAndReward" => Ok(DestinyUnlockValueUIStyle::LevelAndReward),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyUnlockValueUIStyle", s)),
         }
     }
 }
@@ -954,12 +979,13 @@ impl Display for DestinyObjectiveGrantStyle {
 }
 
 impl FromStr for DestinyObjectiveGrantStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "WhenIncomplete" => Ok(DestinyObjectiveGrantStyle::WhenIncomplete),
             "WhenComplete" => Ok(DestinyObjectiveGrantStyle::WhenComplete),
             "Always" => Ok(DestinyObjectiveGrantStyle::Always),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyObjectiveGrantStyle", s)),
         }
     }
 }
@@ -983,16 +1009,17 @@ impl Display for DamageType {
 }
 
 impl FromStr for DamageType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DamageType::None),
             "Kinetic" => Ok(DamageType::Kinetic),
             "Arc" => Ok(DamageType::Arc),
             "Thermal" => Ok(DamageType::Thermal),
             "Void" => Ok(DamageType::Void),
             "Raid" => Ok(DamageType::Raid),
             "Stasis" => Ok(DamageType::Stasis),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DamageType", s)),
         }
     }
 }
@@ -1017,16 +1044,17 @@ impl Display for DestinyObjectiveUiStyle {
 }
 
 impl FromStr for DestinyObjectiveUiStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyObjectiveUiStyle::None),
             "Highlighted" => Ok(DestinyObjectiveUiStyle::Highlighted),
             "CraftingWeaponLevel" => Ok(DestinyObjectiveUiStyle::CraftingWeaponLevel),
             "CraftingWeaponLevelProgress" => Ok(DestinyObjectiveUiStyle::CraftingWeaponLevelProgress),
             "CraftingWeaponTimestamp" => Ok(DestinyObjectiveUiStyle::CraftingWeaponTimestamp),
             "CraftingMementos" => Ok(DestinyObjectiveUiStyle::CraftingMementos),
             "CraftingMementoTitle" => Ok(DestinyObjectiveUiStyle::CraftingMementoTitle),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyObjectiveUiStyle", s)),
         }
     }
 }
@@ -1060,9 +1088,10 @@ impl Display for DestinyActivityNavPointType {
 }
 
 impl FromStr for DestinyActivityNavPointType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Inactive" => Ok(DestinyActivityNavPointType::Inactive),
             "PrimaryObjective" => Ok(DestinyActivityNavPointType::PrimaryObjective),
             "SecondaryObjective" => Ok(DestinyActivityNavPointType::SecondaryObjective),
             "TravelObjective" => Ok(DestinyActivityNavPointType::TravelObjective),
@@ -1079,7 +1108,7 @@ impl FromStr for DestinyActivityNavPointType {
             "ArenaObjective" => Ok(DestinyActivityNavPointType::ArenaObjective),
             "AutomationHint" => Ok(DestinyActivityNavPointType::AutomationHint),
             "TrackedQuest" => Ok(DestinyActivityNavPointType::TrackedQuest),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyActivityNavPointType", s)),
         }
     }
 }
@@ -1105,13 +1134,14 @@ impl Display for DestinyActivityModeCategory {
 }
 
 impl FromStr for DestinyActivityModeCategory {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyActivityModeCategory::None),
             "PvE" => Ok(DestinyActivityModeCategory::PvE),
             "PvP" => Ok(DestinyActivityModeCategory::PvP),
             "PvECompetitive" => Ok(DestinyActivityModeCategory::PvECompetitive),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyActivityModeCategory", s)),
         }
     }
 }
@@ -1166,9 +1196,10 @@ impl Display for DestinyItemSubType {
 }
 
 impl FromStr for DestinyItemSubType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyItemSubType::None),
             "Crucible" => Ok(DestinyItemSubType::Crucible),
             "Vanguard" => Ok(DestinyItemSubType::Vanguard),
             "Exotic" => Ok(DestinyItemSubType::Exotic),
@@ -1199,7 +1230,7 @@ impl FromStr for DestinyItemSubType {
             "Bow" => Ok(DestinyItemSubType::Bow),
             "DummyRepeatableBounty" => Ok(DestinyItemSubType::DummyRepeatableBounty),
             "Glaive" => Ok(DestinyItemSubType::Glaive),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyItemSubType", s)),
         }
     }
 }
@@ -1222,14 +1253,15 @@ impl Display for DestinyGraphNodeState {
 }
 
 impl FromStr for DestinyGraphNodeState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Hidden" => Ok(DestinyGraphNodeState::Hidden),
             "Visible" => Ok(DestinyGraphNodeState::Visible),
             "Teaser" => Ok(DestinyGraphNodeState::Teaser),
             "Incomplete" => Ok(DestinyGraphNodeState::Incomplete),
             "Completed" => Ok(DestinyGraphNodeState::Completed),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyGraphNodeState", s)),
         }
     }
 }
@@ -1252,15 +1284,16 @@ impl Display for DestinyPresentationNodeType {
 }
 
 impl FromStr for DestinyPresentationNodeType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(DestinyPresentationNodeType::Default),
             "Category" => Ok(DestinyPresentationNodeType::Category),
             "Collectibles" => Ok(DestinyPresentationNodeType::Collectibles),
             "Records" => Ok(DestinyPresentationNodeType::Records),
             "Metric" => Ok(DestinyPresentationNodeType::Metric),
             "Craftable" => Ok(DestinyPresentationNodeType::Craftable),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyPresentationNodeType", s)),
         }
     }
 }
@@ -1280,11 +1313,12 @@ impl Display for DestinyScope {
 }
 
 impl FromStr for DestinyScope {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Profile" => Ok(DestinyScope::Profile),
             "Character" => Ok(DestinyScope::Character),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyScope", s)),
         }
     }
 }
@@ -1308,14 +1342,15 @@ impl Display for DestinyPresentationDisplayStyle {
 }
 
 impl FromStr for DestinyPresentationDisplayStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Category" => Ok(DestinyPresentationDisplayStyle::Category),
             "Badge" => Ok(DestinyPresentationDisplayStyle::Badge),
             "Medals" => Ok(DestinyPresentationDisplayStyle::Medals),
             "Collectible" => Ok(DestinyPresentationDisplayStyle::Collectible),
             "Record" => Ok(DestinyPresentationDisplayStyle::Record),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyPresentationDisplayStyle", s)),
         }
     }
 }
@@ -1337,14 +1372,15 @@ impl Display for DestinyRecordValueStyle {
 }
 
 impl FromStr for DestinyRecordValueStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Integer" => Ok(DestinyRecordValueStyle::Integer),
             "Percentage" => Ok(DestinyRecordValueStyle::Percentage),
             "Milliseconds" => Ok(DestinyRecordValueStyle::Milliseconds),
             "Boolean" => Ok(DestinyRecordValueStyle::Boolean),
             "Decimal" => Ok(DestinyRecordValueStyle::Decimal),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyRecordValueStyle", s)),
         }
     }
 }
@@ -1370,9 +1406,10 @@ impl Display for DestinyRecordToastStyle {
 }
 
 impl FromStr for DestinyRecordToastStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyRecordToastStyle::None),
             "Record" => Ok(DestinyRecordToastStyle::Record),
             "Lore" => Ok(DestinyRecordToastStyle::Lore),
             "Badge" => Ok(DestinyRecordToastStyle::Badge),
@@ -1381,7 +1418,7 @@ impl FromStr for DestinyRecordToastStyle {
             "SeasonChallengeComplete" => Ok(DestinyRecordToastStyle::SeasonChallengeComplete),
             "GildedTitleComplete" => Ok(DestinyRecordToastStyle::GildedTitleComplete),
             "CraftingRecipeUnlocked" => Ok(DestinyRecordToastStyle::CraftingRecipeUnlocked),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyRecordToastStyle", s)),
         }
     }
 }
@@ -1405,12 +1442,13 @@ impl Display for DestinyPresentationScreenStyle {
 }
 
 impl FromStr for DestinyPresentationScreenStyle {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(DestinyPresentationScreenStyle::Default),
             "CategorySets" => Ok(DestinyPresentationScreenStyle::CategorySets),
             "Badge" => Ok(DestinyPresentationScreenStyle::Badge),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyPresentationScreenStyle", s)),
         }
     }
 }
@@ -1430,11 +1468,11 @@ impl Display for PlugUiStyles {
 }
 
 impl FromStr for PlugUiStyles {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Masterwork" => Ok(PlugUiStyles::Masterwork),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PlugUiStyles", s)),
         }
     }
 }
@@ -1459,12 +1497,13 @@ impl Display for PlugAvailabilityMode {
 }
 
 impl FromStr for PlugAvailabilityMode {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Normal" => Ok(PlugAvailabilityMode::Normal),
             "UnavailableIfSocketContainsMatchingPlugCategory" => Ok(PlugAvailabilityMode::UnavailableIfSocketContainsMatchingPlugCategory),
             "AvailableIfSocketContainsMatchingPlugCategory" => Ok(PlugAvailabilityMode::AvailableIfSocketContainsMatchingPlugCategory),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PlugAvailabilityMode", s)),
         }
     }
 }
@@ -1489,16 +1528,17 @@ impl Display for DestinyEnergyType {
 }
 
 impl FromStr for DestinyEnergyType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Any" => Ok(DestinyEnergyType::Any),
             "Arc" => Ok(DestinyEnergyType::Arc),
             "Thermal" => Ok(DestinyEnergyType::Thermal),
             "Void" => Ok(DestinyEnergyType::Void),
             "Ghost" => Ok(DestinyEnergyType::Ghost),
             "Subclass" => Ok(DestinyEnergyType::Subclass),
             "Stasis" => Ok(DestinyEnergyType::Stasis),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyEnergyType", s)),
         }
     }
 }
@@ -1529,14 +1569,14 @@ impl Display for SocketPlugSources {
 }
 
 impl FromStr for SocketPlugSources {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "InventorySourced" => Ok(SocketPlugSources::InventorySourced),
             "ReusablePlugItems" => Ok(SocketPlugSources::ReusablePlugItems),
             "ProfilePlugSet" => Ok(SocketPlugSources::ProfilePlugSet),
             "CharacterPlugSet" => Ok(SocketPlugSources::CharacterPlugSet),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to SocketPlugSources", s)),
         }
     }
 }
@@ -1557,12 +1597,13 @@ impl Display for ItemPerkVisibility {
 }
 
 impl FromStr for ItemPerkVisibility {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Visible" => Ok(ItemPerkVisibility::Visible),
             "Disabled" => Ok(ItemPerkVisibility::Disabled),
             "Hidden" => Ok(ItemPerkVisibility::Hidden),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ItemPerkVisibility", s)),
         }
     }
 }
@@ -1590,9 +1631,10 @@ impl Display for SpecialItemType {
 }
 
 impl FromStr for SpecialItemType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(SpecialItemType::None),
             "SpecialCurrency" => Ok(SpecialItemType::SpecialCurrency),
             "Armor" => Ok(SpecialItemType::Armor),
             "Weapon" => Ok(SpecialItemType::Weapon),
@@ -1601,7 +1643,7 @@ impl FromStr for SpecialItemType {
             "ExchangeMaterial" => Ok(SpecialItemType::ExchangeMaterial),
             "MissionReward" => Ok(SpecialItemType::MissionReward),
             "Currency" => Ok(SpecialItemType::Currency),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to SpecialItemType", s)),
         }
     }
 }
@@ -1650,9 +1692,10 @@ impl Display for DestinyItemType {
 }
 
 impl FromStr for DestinyItemType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyItemType::None),
             "Currency" => Ok(DestinyItemType::Currency),
             "Armor" => Ok(DestinyItemType::Armor),
             "Weapon" => Ok(DestinyItemType::Weapon),
@@ -1680,7 +1723,7 @@ impl FromStr for DestinyItemType {
             "SeasonalArtifact" => Ok(DestinyItemType::SeasonalArtifact),
             "Finisher" => Ok(DestinyItemType::Finisher),
             "Pattern" => Ok(DestinyItemType::Pattern),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyItemType", s)),
         }
     }
 }
@@ -1702,13 +1745,14 @@ impl Display for DestinyBreakerType {
 }
 
 impl FromStr for DestinyBreakerType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyBreakerType::None),
             "ShieldPiercing" => Ok(DestinyBreakerType::ShieldPiercing),
             "Disruption" => Ok(DestinyBreakerType::Disruption),
             "Stagger" => Ok(DestinyBreakerType::Stagger),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyBreakerType", s)),
         }
     }
 }
@@ -1728,11 +1772,12 @@ impl Display for DestinyProgressionRewardItemAcquisitionBehavior {
 }
 
 impl FromStr for DestinyProgressionRewardItemAcquisitionBehavior {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Instant" => Ok(DestinyProgressionRewardItemAcquisitionBehavior::Instant),
             "PlayerClaimRequired" => Ok(DestinyProgressionRewardItemAcquisitionBehavior::PlayerClaimRequired),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyProgressionRewardItemAcquisitionBehavior", s)),
         }
     }
 }
@@ -1753,13 +1798,14 @@ impl Display for ItemBindStatus {
 }
 
 impl FromStr for ItemBindStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "NotBound" => Ok(ItemBindStatus::NotBound),
             "BoundToCharacter" => Ok(ItemBindStatus::BoundToCharacter),
             "BoundToAccount" => Ok(ItemBindStatus::BoundToAccount),
             "BoundToGuild" => Ok(ItemBindStatus::BoundToGuild),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ItemBindStatus", s)),
         }
     }
 }
@@ -1784,13 +1830,13 @@ impl Display for TransferStatuses {
 }
 
 impl FromStr for TransferStatuses {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "ItemIsEquipped" => Ok(TransferStatuses::ItemIsEquipped),
             "NotTransferrable" => Ok(TransferStatuses::NotTransferrable),
             "NoRoomInDestination" => Ok(TransferStatuses::NoRoomInDestination),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to TransferStatuses", s)),
         }
     }
 }
@@ -1819,15 +1865,15 @@ impl Display for ItemState {
 }
 
 impl FromStr for ItemState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Locked" => Ok(ItemState::Locked),
             "Tracked" => Ok(ItemState::Tracked),
             "Masterwork" => Ok(ItemState::Masterwork),
             "Crafted" => Ok(ItemState::Crafted),
             "HighlightedObjective" => Ok(ItemState::HighlightedObjective),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ItemState", s)),
         }
     }
 }
@@ -1856,8 +1902,8 @@ impl Display for DestinyGameVersions {
 }
 
 impl FromStr for DestinyGameVersions {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Destiny2" => Ok(DestinyGameVersions::Destiny2),
             "DLC1" => Ok(DestinyGameVersions::DLC1),
@@ -1869,7 +1915,7 @@ impl FromStr for DestinyGameVersions {
             "Anniversary30th" => Ok(DestinyGameVersions::Anniversary30th),
             "TheWitchQueen" => Ok(DestinyGameVersions::TheWitchQueen),
             "Lightfall" => Ok(DestinyGameVersions::Lightfall),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyGameVersions", s)),
         }
     }
 }
@@ -1963,9 +2009,10 @@ impl Display for DestinyComponentType {
 }
 
 impl FromStr for DestinyComponentType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyComponentType::None),
             "Profiles" => Ok(DestinyComponentType::Profiles),
             "VendorReceipts" => Ok(DestinyComponentType::VendorReceipts),
             "ProfileInventories" => Ok(DestinyComponentType::ProfileInventories),
@@ -2001,7 +2048,7 @@ impl FromStr for DestinyComponentType {
             "Metrics" => Ok(DestinyComponentType::Metrics),
             "StringVariables" => Ok(DestinyComponentType::StringVariables),
             "Craftables" => Ok(DestinyComponentType::Craftables),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyComponentType", s)),
         }
     }
 }
@@ -2024,12 +2071,12 @@ impl Display for DestinyPresentationNodeState {
 }
 
 impl FromStr for DestinyPresentationNodeState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Invisible" => Ok(DestinyPresentationNodeState::Invisible),
             "Obscured" => Ok(DestinyPresentationNodeState::Obscured),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyPresentationNodeState", s)),
         }
     }
 }
@@ -2062,8 +2109,8 @@ impl Display for DestinyRecordState {
 }
 
 impl FromStr for DestinyRecordState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "RecordRedeemed" => Ok(DestinyRecordState::RecordRedeemed),
             "RewardUnavailable" => Ok(DestinyRecordState::RewardUnavailable),
@@ -2072,7 +2119,7 @@ impl FromStr for DestinyRecordState {
             "Invisible" => Ok(DestinyRecordState::Invisible),
             "EntitlementUnowned" => Ok(DestinyRecordState::EntitlementUnowned),
             "CanEquipTitle" => Ok(DestinyRecordState::CanEquipTitle),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyRecordState", s)),
         }
     }
 }
@@ -2107,8 +2154,8 @@ impl Display for DestinyCollectibleState {
 }
 
 impl FromStr for DestinyCollectibleState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "NotAcquired" => Ok(DestinyCollectibleState::NotAcquired),
             "Obscured" => Ok(DestinyCollectibleState::Obscured),
@@ -2117,7 +2164,7 @@ impl FromStr for DestinyCollectibleState {
             "InventorySpaceUnavailable" => Ok(DestinyCollectibleState::InventorySpaceUnavailable),
             "UniquenessViolation" => Ok(DestinyCollectibleState::UniquenessViolation),
             "PurchaseDisabled" => Ok(DestinyCollectibleState::PurchaseDisabled),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyCollectibleState", s)),
         }
     }
 }
@@ -2145,14 +2192,14 @@ impl Display for DestinyPartyMemberStates {
 }
 
 impl FromStr for DestinyPartyMemberStates {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "FireteamMember" => Ok(DestinyPartyMemberStates::FireteamMember),
             "PosseMember" => Ok(DestinyPartyMemberStates::PosseMember),
             "GroupMember" => Ok(DestinyPartyMemberStates::GroupMember),
             "PartyLeader" => Ok(DestinyPartyMemberStates::PartyLeader),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyPartyMemberStates", s)),
         }
     }
 }
@@ -2175,14 +2222,15 @@ impl Display for DestinyGamePrivacySetting {
 }
 
 impl FromStr for DestinyGamePrivacySetting {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Open" => Ok(DestinyGamePrivacySetting::Open),
             "ClanAndFriendsOnly" => Ok(DestinyGamePrivacySetting::ClanAndFriendsOnly),
             "FriendsOnly" => Ok(DestinyGamePrivacySetting::FriendsOnly),
             "InvitationOnly" => Ok(DestinyGamePrivacySetting::InvitationOnly),
             "Closed" => Ok(DestinyGamePrivacySetting::Closed),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyGamePrivacySetting", s)),
         }
     }
 }
@@ -2213,8 +2261,8 @@ impl Display for DestinyJoinClosedReasons {
 }
 
 impl FromStr for DestinyJoinClosedReasons {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "InMatchmaking" => Ok(DestinyJoinClosedReasons::InMatchmaking),
             "Loading" => Ok(DestinyJoinClosedReasons::Loading),
@@ -2222,7 +2270,7 @@ impl FromStr for DestinyJoinClosedReasons {
             "InternalReasons" => Ok(DestinyJoinClosedReasons::InternalReasons),
             "DisallowedByGameState" => Ok(DestinyJoinClosedReasons::DisallowedByGameState),
             "Offline" => Ok(DestinyJoinClosedReasons::Offline),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyJoinClosedReasons", s)),
         }
     }
 }
@@ -2243,13 +2291,14 @@ impl Display for DestinyRace {
 }
 
 impl FromStr for DestinyRace {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Human" => Ok(DestinyRace::Human),
             "Awoken" => Ok(DestinyRace::Awoken),
             "Exo" => Ok(DestinyRace::Exo),
             "Unknown" => Ok(DestinyRace::Unknown),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyRace", s)),
         }
     }
 }
@@ -2335,9 +2384,10 @@ impl Display for DestinyActivityDifficultyTier {
 }
 
 impl FromStr for DestinyActivityDifficultyTier {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Trivial" => Ok(DestinyActivityDifficultyTier::Trivial),
             "Easy" => Ok(DestinyActivityDifficultyTier::Easy),
             "Normal" => Ok(DestinyActivityDifficultyTier::Normal),
             "Challenging" => Ok(DestinyActivityDifficultyTier::Challenging),
@@ -2345,7 +2395,7 @@ impl FromStr for DestinyActivityDifficultyTier {
             "Brave" => Ok(DestinyActivityDifficultyTier::Brave),
             "AlmostImpossible" => Ok(DestinyActivityDifficultyTier::AlmostImpossible),
             "Impossible" => Ok(DestinyActivityDifficultyTier::Impossible),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyActivityDifficultyTier", s)),
         }
     }
 }
@@ -2392,8 +2442,8 @@ impl Display for EquipFailureReason {
 }
 
 impl FromStr for EquipFailureReason {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "ItemUnequippable" => Ok(EquipFailureReason::ItemUnequippable),
             "ItemUniqueEquipRestricted" => Ok(EquipFailureReason::ItemUniqueEquipRestricted),
@@ -2403,7 +2453,7 @@ impl FromStr for EquipFailureReason {
             "ItemNotLoaded" => Ok(EquipFailureReason::ItemNotLoaded),
             "ItemEquipBlocklisted" => Ok(EquipFailureReason::ItemEquipBlocklisted),
             "ItemLoadoutRequirementNotMet" => Ok(EquipFailureReason::ItemLoadoutRequirementNotMet),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to EquipFailureReason", s)),
         }
     }
 }
@@ -2478,9 +2528,10 @@ impl Display for DestinyTalentNodeState {
 }
 
 impl FromStr for DestinyTalentNodeState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Invalid" => Ok(DestinyTalentNodeState::Invalid),
             "CanUpgrade" => Ok(DestinyTalentNodeState::CanUpgrade),
             "NoPoints" => Ok(DestinyTalentNodeState::NoPoints),
             "NoPrerequisites" => Ok(DestinyTalentNodeState::NoPrerequisites),
@@ -2494,7 +2545,7 @@ impl FromStr for DestinyTalentNodeState {
             "Unknown" => Ok(DestinyTalentNodeState::Unknown),
             "CreationOnly" => Ok(DestinyTalentNodeState::CreationOnly),
             "Hidden" => Ok(DestinyTalentNodeState::Hidden),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyTalentNodeState", s)),
         }
     }
 }
@@ -2526,11 +2577,12 @@ impl Display for DestinyVendorFilter {
 }
 
 impl FromStr for DestinyVendorFilter {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyVendorFilter::None),
             "ApiPurchasable" => Ok(DestinyVendorFilter::ApiPurchasable),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyVendorFilter", s)),
         }
     }
 }
@@ -2562,8 +2614,8 @@ impl Display for VendorItemStatus {
 }
 
 impl FromStr for VendorItemStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "NoInventorySpace" => Ok(VendorItemStatus::NoInventorySpace),
             "NoFunds" => Ok(VendorItemStatus::NoFunds),
@@ -2579,7 +2631,7 @@ impl FromStr for VendorItemStatus {
             "SellingInhibited" => Ok(VendorItemStatus::SellingInhibited),
             "AlreadyOwned" => Ok(VendorItemStatus::AlreadyOwned),
             "DisplayOnly" => Ok(VendorItemStatus::DisplayOnly),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to VendorItemStatus", s)),
         }
     }
 }
@@ -2652,8 +2704,8 @@ impl Display for DestinyVendorItemState {
 }
 
 impl FromStr for DestinyVendorItemState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Incomplete" => Ok(DestinyVendorItemState::Incomplete),
             "RewardAvailable" => Ok(DestinyVendorItemState::RewardAvailable),
@@ -2676,7 +2728,7 @@ impl FromStr for DestinyVendorItemState {
             "Locked" => Ok(DestinyVendorItemState::Locked),
             "Paracausal" => Ok(DestinyVendorItemState::Paracausal),
             "Cryptarch" => Ok(DestinyVendorItemState::Cryptarch),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyVendorItemState", s)),
         }
     }
 }

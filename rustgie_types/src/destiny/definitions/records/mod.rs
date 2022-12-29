@@ -1,6 +1,6 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
 
 #[derive(Deserialize, Serialize)]
 pub struct DestinyRecordDefinition {

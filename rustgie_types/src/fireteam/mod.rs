@@ -1,8 +1,9 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[repr(u8)]
@@ -22,14 +23,15 @@ impl Display for FireteamDateRange {
 }
 
 impl FromStr for FireteamDateRange {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "All" => Ok(FireteamDateRange::All),
             "Now" => Ok(FireteamDateRange::Now),
             "TwentyFourHours" => Ok(FireteamDateRange::TwentyFourHours),
             "FortyEightHours" => Ok(FireteamDateRange::FortyEightHours),
             "ThisWeek" => Ok(FireteamDateRange::ThisWeek),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to FireteamDateRange", s)),
         }
     }
 }
@@ -53,16 +55,17 @@ impl Display for FireteamPlatform {
 }
 
 impl FromStr for FireteamPlatform {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Any" => Ok(FireteamPlatform::Any),
             "Playstation4" => Ok(FireteamPlatform::Playstation4),
             "XboxOne" => Ok(FireteamPlatform::XboxOne),
             "Blizzard" => Ok(FireteamPlatform::Blizzard),
             "Steam" => Ok(FireteamPlatform::Steam),
             "Stadia" => Ok(FireteamPlatform::Stadia),
             "Egs" => Ok(FireteamPlatform::Egs),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to FireteamPlatform", s)),
         }
     }
 }
@@ -82,12 +85,13 @@ impl Display for FireteamPublicSearchOption {
 }
 
 impl FromStr for FireteamPublicSearchOption {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "PublicAndPrivate" => Ok(FireteamPublicSearchOption::PublicAndPrivate),
             "PublicOnly" => Ok(FireteamPublicSearchOption::PublicOnly),
             "PrivateOnly" => Ok(FireteamPublicSearchOption::PrivateOnly),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to FireteamPublicSearchOption", s)),
         }
     }
 }
@@ -107,12 +111,13 @@ impl Display for FireteamSlotSearch {
 }
 
 impl FromStr for FireteamSlotSearch {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "NoSlotRestriction" => Ok(FireteamSlotSearch::NoSlotRestriction),
             "HasOpenPlayerSlots" => Ok(FireteamSlotSearch::HasOpenPlayerSlots),
             "HasOpenPlayerOrAltSlots" => Ok(FireteamSlotSearch::HasOpenPlayerOrAltSlots),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to FireteamSlotSearch", s)),
         }
     }
 }
@@ -296,14 +301,15 @@ impl Display for FireteamPlatformInviteResult {
 }
 
 impl FromStr for FireteamPlatformInviteResult {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(FireteamPlatformInviteResult::None),
             "Success" => Ok(FireteamPlatformInviteResult::Success),
             "AlreadyInFireteam" => Ok(FireteamPlatformInviteResult::AlreadyInFireteam),
             "Throttled" => Ok(FireteamPlatformInviteResult::Throttled),
             "ServiceError" => Ok(FireteamPlatformInviteResult::ServiceError),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to FireteamPlatformInviteResult", s)),
         }
     }
 }

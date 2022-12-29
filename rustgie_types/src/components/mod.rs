@@ -1,7 +1,8 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 /// The base class for any component-returning object that may need to indicate information about the state of the component being returned.
 #[derive(Deserialize, Serialize)]
@@ -30,12 +31,13 @@ impl Display for ComponentPrivacySetting {
 }
 
 impl FromStr for ComponentPrivacySetting {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ComponentPrivacySetting::None),
             "Public" => Ok(ComponentPrivacySetting::Public),
             "Private" => Ok(ComponentPrivacySetting::Private),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ComponentPrivacySetting", s)),
         }
     }
 }

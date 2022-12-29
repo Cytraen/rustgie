@@ -1,5 +1,5 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 /// If you're going to report someone for a Terms of Service violation, you need to choose a category and reason for the report. This definition holds both the categories and the reasons within those categories, for simplicity and my own laziness' sake.
 /// Note tha this means that, to refer to a Reason by reasonHash, you need a combination of the reasonHash *and* the associated ReasonCategory's hash: there are some reasons defined under multiple categories.

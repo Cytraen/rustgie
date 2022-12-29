@@ -1,6 +1,7 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[repr(u8)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
@@ -17,12 +18,13 @@ impl Display for DropStateEnum {
 }
 
 impl FromStr for DropStateEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Claimed" => Ok(DropStateEnum::Claimed),
             "Applied" => Ok(DropStateEnum::Applied),
             "Fulfilled" => Ok(DropStateEnum::Fulfilled),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DropStateEnum", s)),
         }
     }
 }

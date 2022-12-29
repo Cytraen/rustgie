@@ -1,8 +1,9 @@
-﻿use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Deserialize, Serialize)]
 pub struct ContentTypeDescription {
@@ -226,9 +227,10 @@ impl Display for ContentPropertyDataTypeEnum {
 }
 
 impl FromStr for ContentPropertyDataTypeEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ContentPropertyDataTypeEnum::None),
             "Plaintext" => Ok(ContentPropertyDataTypeEnum::Plaintext),
             "Html" => Ok(ContentPropertyDataTypeEnum::Html),
             "Dropdown" => Ok(ContentPropertyDataTypeEnum::Dropdown),
@@ -243,7 +245,7 @@ impl FromStr for ContentPropertyDataTypeEnum {
             "MultilinePlaintext" => Ok(ContentPropertyDataTypeEnum::MultilinePlaintext),
             "DestinyContent" => Ok(ContentPropertyDataTypeEnum::DestinyContent),
             "Color" => Ok(ContentPropertyDataTypeEnum::Color),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ContentPropertyDataTypeEnum", s)),
         }
     }
 }

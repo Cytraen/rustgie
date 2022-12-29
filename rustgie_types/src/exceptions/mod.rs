@@ -1,6 +1,7 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[repr(i32)]
 #[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
@@ -859,9 +860,10 @@ impl Display for PlatformErrorCodes {
 }
 
 impl FromStr for PlatformErrorCodes {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(PlatformErrorCodes::None),
             "Success" => Ok(PlatformErrorCodes::Success),
             "TransportException" => Ok(PlatformErrorCodes::TransportException),
             "UnhandledException" => Ok(PlatformErrorCodes::UnhandledException),
@@ -1705,7 +1707,7 @@ impl FromStr for PlatformErrorCodes {
             "ErrorEgsJwksMissing" => Ok(PlatformErrorCodes::ErrorEgsJwksMissing),
             "ErrorEgsJwtMalformedHeader" => Ok(PlatformErrorCodes::ErrorEgsJwtMalformedHeader),
             "ErrorEgsJwtMalformedPayload" => Ok(PlatformErrorCodes::ErrorEgsJwtMalformedPayload),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PlatformErrorCodes", s)),
         }
     }
 }

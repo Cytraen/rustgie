@@ -1,9 +1,10 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Deserialize, Serialize)]
 pub struct BungieFriendListResponse {
@@ -54,11 +55,12 @@ impl Display for PresenceStatus {
 }
 
 impl FromStr for PresenceStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "OfflineOrUnknown" => Ok(PresenceStatus::OfflineOrUnknown),
             "Online" => Ok(PresenceStatus::Online),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PresenceStatus", s)),
         }
     }
 }
@@ -78,12 +80,12 @@ impl Display for PresenceOnlineStateFlags {
 }
 
 impl FromStr for PresenceOnlineStateFlags {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Destiny1" => Ok(PresenceOnlineStateFlags::Destiny1),
             "Destiny2" => Ok(PresenceOnlineStateFlags::Destiny2),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PresenceOnlineStateFlags", s)),
         }
     }
 }
@@ -104,13 +106,14 @@ impl Display for FriendRelationshipState {
 }
 
 impl FromStr for FriendRelationshipState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(FriendRelationshipState::Unknown),
             "Friend" => Ok(FriendRelationshipState::Friend),
             "IncomingRequest" => Ok(FriendRelationshipState::IncomingRequest),
             "OutgoingRequest" => Ok(FriendRelationshipState::OutgoingRequest),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to FriendRelationshipState", s)),
         }
     }
 }
@@ -141,14 +144,15 @@ impl Display for PlatformFriendType {
 }
 
 impl FromStr for PlatformFriendType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(PlatformFriendType::Unknown),
             "Xbox" => Ok(PlatformFriendType::Xbox),
             "PSN" => Ok(PlatformFriendType::PSN),
             "Steam" => Ok(PlatformFriendType::Steam),
             "Egs" => Ok(PlatformFriendType::Egs),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PlatformFriendType", s)),
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[derive(Deserialize, Serialize)]
@@ -55,11 +56,12 @@ impl Display for AwaType {
 }
 
 impl FromStr for AwaType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(AwaType::None),
             "InsertPlugs" => Ok(AwaType::InsertPlugs),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to AwaType", s)),
         }
     }
 }
@@ -94,12 +96,13 @@ impl Display for AwaUserSelection {
 }
 
 impl FromStr for AwaUserSelection {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(AwaUserSelection::None),
             "Rejected" => Ok(AwaUserSelection::Rejected),
             "Approved" => Ok(AwaUserSelection::Approved),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to AwaUserSelection", s)),
         }
     }
 }
@@ -159,13 +162,14 @@ impl Display for AwaResponseReason {
 }
 
 impl FromStr for AwaResponseReason {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(AwaResponseReason::None),
             "Answered" => Ok(AwaResponseReason::Answered),
             "TimedOut" => Ok(AwaResponseReason::TimedOut),
             "Replaced" => Ok(AwaResponseReason::Replaced),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to AwaResponseReason", s)),
         }
     }
 }

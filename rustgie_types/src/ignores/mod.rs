@@ -1,8 +1,9 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Deserialize, Serialize)]
 pub struct IgnoreResponse {
@@ -32,8 +33,8 @@ impl Display for IgnoreStatus {
 }
 
 impl FromStr for IgnoreStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "IgnoredUser" => Ok(IgnoreStatus::IgnoredUser),
             "IgnoredGroup" => Ok(IgnoreStatus::IgnoredGroup),
@@ -41,7 +42,7 @@ impl FromStr for IgnoreStatus {
             "IgnoredPost" => Ok(IgnoreStatus::IgnoredPost),
             "IgnoredTag" => Ok(IgnoreStatus::IgnoredTag),
             "IgnoredGlobal" => Ok(IgnoreStatus::IgnoredGlobal),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to IgnoreStatus", s)),
         }
     }
 }
@@ -70,9 +71,10 @@ impl Display for IgnoreLength {
 }
 
 impl FromStr for IgnoreLength {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(IgnoreLength::None),
             "Week" => Ok(IgnoreLength::Week),
             "TwoWeeks" => Ok(IgnoreLength::TwoWeeks),
             "ThreeWeeks" => Ok(IgnoreLength::ThreeWeeks),
@@ -84,7 +86,7 @@ impl FromStr for IgnoreLength {
             "ThreeMinutes" => Ok(IgnoreLength::ThreeMinutes),
             "Hour" => Ok(IgnoreLength::Hour),
             "ThirtyDays" => Ok(IgnoreLength::ThirtyDays),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to IgnoreLength", s)),
         }
     }
 }

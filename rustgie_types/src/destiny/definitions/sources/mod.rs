@@ -1,5 +1,5 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 /// Properties of a DestinyInventoryItemDefinition that store all of the information we were able to discern about how the item spawns, and where you can find the item.
 /// Items will have many of these sources, one per level at which it spawns, to try and give more granular data about where items spawn for specific level ranges.

@@ -1,6 +1,6 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
 use time::OffsetDateTime;
 
 /// This component contains base properties of the character. You'll probably want to always request this component, but hey you do you.

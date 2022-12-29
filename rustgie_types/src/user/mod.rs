@@ -1,12 +1,13 @@
 ﻿pub mod models;
 
-use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 /// Very basic info about a user as returned by the Account server.
@@ -400,8 +401,8 @@ impl Display for OptInFlags {
 }
 
 impl FromStr for OptInFlags {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Newsletter" => Ok(OptInFlags::Newsletter),
             "System" => Ok(OptInFlags::System),
@@ -412,7 +413,7 @@ impl FromStr for OptInFlags {
             "PlayTests" => Ok(OptInFlags::PlayTests),
             "PlayTestsLocal" => Ok(OptInFlags::PlayTestsLocal),
             "Careers" => Ok(OptInFlags::Careers),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to OptInFlags", s)),
         }
     }
 }

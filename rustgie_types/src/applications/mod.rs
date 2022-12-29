@@ -1,9 +1,10 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[bitflags]
@@ -49,8 +50,8 @@ impl Display for ApplicationScopes {
 }
 
 impl FromStr for ApplicationScopes {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "ReadBasicUserProfile" => Ok(ApplicationScopes::ReadBasicUserProfile),
             "ReadGroups" => Ok(ApplicationScopes::ReadGroups),
@@ -67,7 +68,7 @@ impl FromStr for ApplicationScopes {
             "PartnerOfferGrant" => Ok(ApplicationScopes::PartnerOfferGrant),
             "DestinyUnlockValueQuery" => Ok(ApplicationScopes::DestinyUnlockValueQuery),
             "UserPiiRead" => Ok(ApplicationScopes::UserPiiRead),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ApplicationScopes", s)),
         }
     }
 }
@@ -184,14 +185,15 @@ impl Display for ApplicationStatus {
 }
 
 impl FromStr for ApplicationStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ApplicationStatus::None),
             "Private" => Ok(ApplicationStatus::Private),
             "Public" => Ok(ApplicationStatus::Public),
             "Disabled" => Ok(ApplicationStatus::Disabled),
             "Blocked" => Ok(ApplicationStatus::Blocked),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ApplicationStatus", s)),
         }
     }
 }
@@ -223,12 +225,13 @@ impl Display for DeveloperRole {
 }
 
 impl FromStr for DeveloperRole {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DeveloperRole::None),
             "Owner" => Ok(DeveloperRole::Owner),
             "TeamMember" => Ok(DeveloperRole::TeamMember),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DeveloperRole", s)),
         }
     }
 }

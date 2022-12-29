@@ -1,8 +1,9 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[derive(Deserialize, Serialize)]
 pub struct DestinyActionRequest {
@@ -150,11 +151,12 @@ impl Display for DestinySocketArrayType {
 }
 
 impl FromStr for DestinySocketArrayType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(DestinySocketArrayType::Default),
             "Intrinsic" => Ok(DestinySocketArrayType::Intrinsic),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinySocketArrayType", s)),
         }
     }
 }

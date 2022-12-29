@@ -1,8 +1,9 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[derive(Deserialize, Serialize)]
@@ -113,9 +114,10 @@ impl Display for TrendingEntryType {
 }
 
 impl FromStr for TrendingEntryType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "News" => Ok(TrendingEntryType::News),
             "DestinyItem" => Ok(TrendingEntryType::DestinyItem),
             "DestinyActivity" => Ok(TrendingEntryType::DestinyActivity),
             "DestinyRitual" => Ok(TrendingEntryType::DestinyRitual),
@@ -127,7 +129,7 @@ impl FromStr for TrendingEntryType {
             "ForumTag" => Ok(TrendingEntryType::ForumTag),
             "Container" => Ok(TrendingEntryType::Container),
             "Release" => Ok(TrendingEntryType::Release),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to TrendingEntryType", s)),
         }
     }
 }

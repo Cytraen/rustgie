@@ -1,10 +1,11 @@
-﻿use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[serde_as]
@@ -206,11 +207,12 @@ impl Display for GroupType {
 }
 
 impl FromStr for GroupType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "General" => Ok(GroupType::General),
             "Clan" => Ok(GroupType::Clan),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupType", s)),
         }
     }
 }
@@ -229,11 +231,12 @@ impl Display for ChatSecuritySetting {
 }
 
 impl FromStr for ChatSecuritySetting {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Group" => Ok(ChatSecuritySetting::Group),
             "Admins" => Ok(ChatSecuritySetting::Admins),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ChatSecuritySetting", s)),
         }
     }
 }
@@ -253,12 +256,13 @@ impl Display for GroupHomepage {
 }
 
 impl FromStr for GroupHomepage {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Wall" => Ok(GroupHomepage::Wall),
             "Forum" => Ok(GroupHomepage::Forum),
             "AllianceForum" => Ok(GroupHomepage::AllianceForum),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupHomepage", s)),
         }
     }
 }
@@ -278,12 +282,13 @@ impl Display for MembershipOption {
 }
 
 impl FromStr for MembershipOption {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Reviewed" => Ok(MembershipOption::Reviewed),
             "Open" => Ok(MembershipOption::Open),
             "Closed" => Ok(MembershipOption::Closed),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to MembershipOption", s)),
         }
     }
 }
@@ -303,12 +308,13 @@ impl Display for GroupPostPublicity {
 }
 
 impl FromStr for GroupPostPublicity {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Public" => Ok(GroupPostPublicity::Public),
             "Alliance" => Ok(GroupPostPublicity::Alliance),
             "Private" => Ok(GroupPostPublicity::Private),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupPostPublicity", s)),
         }
     }
 }
@@ -382,8 +388,8 @@ impl Display for Capabilities {
 }
 
 impl FromStr for Capabilities {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Leaderboards" => Ok(Capabilities::Leaderboards),
             "Callsign" => Ok(Capabilities::Callsign),
@@ -392,7 +398,7 @@ impl FromStr for Capabilities {
             "D2InvestmentData" => Ok(Capabilities::D2InvestmentData),
             "Tags" => Ok(Capabilities::Tags),
             "Alliances" => Ok(Capabilities::Alliances),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to Capabilities", s)),
         }
     }
 }
@@ -413,12 +419,13 @@ impl Display for HostGuidedGamesPermissionLevel {
 }
 
 impl FromStr for HostGuidedGamesPermissionLevel {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(HostGuidedGamesPermissionLevel::None),
             "Beginner" => Ok(HostGuidedGamesPermissionLevel::Beginner),
             "Member" => Ok(HostGuidedGamesPermissionLevel::Member),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to HostGuidedGamesPermissionLevel", s)),
         }
     }
 }
@@ -442,15 +449,16 @@ impl Display for RuntimeGroupMemberType {
 }
 
 impl FromStr for RuntimeGroupMemberType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(RuntimeGroupMemberType::None),
             "Beginner" => Ok(RuntimeGroupMemberType::Beginner),
             "Member" => Ok(RuntimeGroupMemberType::Member),
             "Admin" => Ok(RuntimeGroupMemberType::Admin),
             "ActingFounder" => Ok(RuntimeGroupMemberType::ActingFounder),
             "Founder" => Ok(RuntimeGroupMemberType::Founder),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to RuntimeGroupMemberType", s)),
         }
     }
 }
@@ -563,12 +571,13 @@ impl Display for GroupAllianceStatus {
 }
 
 impl FromStr for GroupAllianceStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unallied" => Ok(GroupAllianceStatus::Unallied),
             "Parent" => Ok(GroupAllianceStatus::Parent),
             "Child" => Ok(GroupAllianceStatus::Child),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupAllianceStatus", s)),
         }
     }
 }
@@ -609,12 +618,13 @@ impl Display for GroupPotentialMemberStatus {
 }
 
 impl FromStr for GroupPotentialMemberStatus {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(GroupPotentialMemberStatus::None),
             "Applicant" => Ok(GroupPotentialMemberStatus::Applicant),
             "Invitee" => Ok(GroupPotentialMemberStatus::Invitee),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupPotentialMemberStatus", s)),
         }
     }
 }
@@ -636,14 +646,15 @@ impl Display for GroupDateRange {
 }
 
 impl FromStr for GroupDateRange {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "All" => Ok(GroupDateRange::All),
             "PastDay" => Ok(GroupDateRange::PastDay),
             "PastWeek" => Ok(GroupDateRange::PastWeek),
             "PastMonth" => Ok(GroupDateRange::PastMonth),
             "PastYear" => Ok(GroupDateRange::PastYear),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupDateRange", s)),
         }
     }
 }
@@ -773,13 +784,14 @@ impl Display for GroupSortBy {
 }
 
 impl FromStr for GroupSortBy {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Name" => Ok(GroupSortBy::Name),
             "Date" => Ok(GroupSortBy::Date),
             "Popularity" => Ok(GroupSortBy::Popularity),
             "Id" => Ok(GroupSortBy::Id),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupSortBy", s)),
         }
     }
 }
@@ -800,13 +812,14 @@ impl Display for GroupMemberCountFilter {
 }
 
 impl FromStr for GroupMemberCountFilter {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "All" => Ok(GroupMemberCountFilter::All),
             "OneToTen" => Ok(GroupMemberCountFilter::OneToTen),
             "ElevenToOneHundred" => Ok(GroupMemberCountFilter::ElevenToOneHundred),
             "GreaterThanOneHundred" => Ok(GroupMemberCountFilter::GreaterThanOneHundred),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupMemberCountFilter", s)),
         }
     }
 }
@@ -1051,13 +1064,14 @@ impl Display for GroupApplicationResolveState {
 }
 
 impl FromStr for GroupApplicationResolveState {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unresolved" => Ok(GroupApplicationResolveState::Unresolved),
             "Accepted" => Ok(GroupApplicationResolveState::Accepted),
             "Denied" => Ok(GroupApplicationResolveState::Denied),
             "Rescinded" => Ok(GroupApplicationResolveState::Rescinded),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupApplicationResolveState", s)),
         }
     }
 }
@@ -1092,12 +1106,13 @@ impl Display for GroupsForMemberFilter {
 }
 
 impl FromStr for GroupsForMemberFilter {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "All" => Ok(GroupsForMemberFilter::All),
             "Founded" => Ok(GroupsForMemberFilter::Founded),
             "NonFounded" => Ok(GroupsForMemberFilter::NonFounded),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GroupsForMemberFilter", s)),
         }
     }
 }

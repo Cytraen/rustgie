@@ -1,7 +1,8 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 /// For historical reasons, this list will have both D1 and D2-relevant Activity Modes in it. Please don't take this to mean that some D1-only feature is coming back!
 #[repr(i32)]
@@ -101,9 +102,10 @@ impl Display for DestinyActivityModeType {
 }
 
 impl FromStr for DestinyActivityModeType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyActivityModeType::None),
             "Story" => Ok(DestinyActivityModeType::Story),
             "Strike" => Ok(DestinyActivityModeType::Strike),
             "Raid" => Ok(DestinyActivityModeType::Raid),
@@ -187,7 +189,7 @@ impl FromStr for DestinyActivityModeType {
             "ZoneControl" => Ok(DestinyActivityModeType::ZoneControl),
             "IronBannerRift" => Ok(DestinyActivityModeType::IronBannerRift),
             "IronBannerZoneControl" => Ok(DestinyActivityModeType::IronBannerZoneControl),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyActivityModeType", s)),
         }
     }
 }
@@ -277,9 +279,10 @@ impl Display for DestinyStatsGroupType {
 }
 
 impl FromStr for DestinyStatsGroupType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyStatsGroupType::None),
             "General" => Ok(DestinyStatsGroupType::General),
             "Weapons" => Ok(DestinyStatsGroupType::Weapons),
             "Medals" => Ok(DestinyStatsGroupType::Medals),
@@ -288,7 +291,7 @@ impl FromStr for DestinyStatsGroupType {
             "Activity" => Ok(DestinyStatsGroupType::Activity),
             "UniqueWeapon" => Ok(DestinyStatsGroupType::UniqueWeapon),
             "Internal" => Ok(DestinyStatsGroupType::Internal),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyStatsGroupType", s)),
         }
     }
 }
@@ -321,9 +324,10 @@ impl Display for DestinyStatsCategoryType {
 }
 
 impl FromStr for DestinyStatsCategoryType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyStatsCategoryType::None),
             "Kills" => Ok(DestinyStatsCategoryType::Kills),
             "Assists" => Ok(DestinyStatsCategoryType::Assists),
             "Deaths" => Ok(DestinyStatsCategoryType::Deaths),
@@ -339,7 +343,7 @@ impl FromStr for DestinyStatsCategoryType {
             "MedalSprees" => Ok(DestinyStatsCategoryType::MedalSprees),
             "MedalMultiKills" => Ok(DestinyStatsCategoryType::MedalMultiKills),
             "MedalAbilities" => Ok(DestinyStatsCategoryType::MedalAbilities),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyStatsCategoryType", s)),
         }
     }
 }
@@ -383,9 +387,10 @@ impl Display for UnitType {
 }
 
 impl FromStr for UnitType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(UnitType::None),
             "Count" => Ok(UnitType::Count),
             "PerGame" => Ok(UnitType::PerGame),
             "Seconds" => Ok(UnitType::Seconds),
@@ -399,7 +404,7 @@ impl FromStr for UnitType {
             "Standing" => Ok(UnitType::Standing),
             "Milliseconds" => Ok(UnitType::Milliseconds),
             "CompletionReason" => Ok(UnitType::CompletionReason),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to UnitType", s)),
         }
     }
 }
@@ -422,12 +427,13 @@ impl Display for DestinyStatsMergeMethod {
 }
 
 impl FromStr for DestinyStatsMergeMethod {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Add" => Ok(DestinyStatsMergeMethod::Add),
             "Min" => Ok(DestinyStatsMergeMethod::Min),
             "Max" => Ok(DestinyStatsMergeMethod::Max),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyStatsMergeMethod", s)),
         }
     }
 }
@@ -448,13 +454,14 @@ impl Display for PeriodType {
 }
 
 impl FromStr for PeriodType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(PeriodType::None),
             "Daily" => Ok(PeriodType::Daily),
             "AllTime" => Ok(PeriodType::AllTime),
             "Activity" => Ok(PeriodType::Activity),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to PeriodType", s)),
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 #[bitflags]
 #[repr(u32)]
@@ -27,8 +28,8 @@ impl Display for ForumPostCategoryEnums {
 }
 
 impl FromStr for ForumPostCategoryEnums {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "TextOnly" => Ok(ForumPostCategoryEnums::TextOnly),
             "Media" => Ok(ForumPostCategoryEnums::Media),
@@ -41,7 +42,7 @@ impl FromStr for ForumPostCategoryEnums {
             "BungieOfficial" => Ok(ForumPostCategoryEnums::BungieOfficial),
             "NinjaOfficial" => Ok(ForumPostCategoryEnums::NinjaOfficial),
             "Recruitment" => Ok(ForumPostCategoryEnums::Recruitment),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumPostCategoryEnums", s)),
         }
     }
 }
@@ -67,8 +68,8 @@ impl Display for ForumFlagsEnum {
 }
 
 impl FromStr for ForumFlagsEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "BungieStaffPost" => Ok(ForumFlagsEnum::BungieStaffPost),
             "ForumNinjaPost" => Ok(ForumFlagsEnum::ForumNinjaPost),
@@ -78,7 +79,7 @@ impl FromStr for ForumFlagsEnum {
             "QuestionAnsweredByBungie" => Ok(ForumFlagsEnum::QuestionAnsweredByBungie),
             "QuestionAnsweredByNinja" => Ok(ForumFlagsEnum::QuestionAnsweredByNinja),
             "CommunityContent" => Ok(ForumFlagsEnum::CommunityContent),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumFlagsEnum", s)),
         }
     }
 }

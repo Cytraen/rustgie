@@ -1,9 +1,10 @@
-﻿use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 /// Milestones are an in-game concept where they're attempting to tell you what you can do next in-game.
 /// If that sounds a lot like Advisors in Destiny 1, it is! So we threw out Advisors in the Destiny 2 API and tacked all of the data we would have put on Advisors onto Milestones instead.
@@ -125,12 +126,13 @@ impl Display for DestinyMilestoneDisplayPreference {
 }
 
 impl FromStr for DestinyMilestoneDisplayPreference {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "MilestoneDefinition" => Ok(DestinyMilestoneDisplayPreference::MilestoneDefinition),
             "CurrentQuestSteps" => Ok(DestinyMilestoneDisplayPreference::CurrentQuestSteps),
             "CurrentActivityChallenges" => Ok(DestinyMilestoneDisplayPreference::CurrentActivityChallenges),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyMilestoneDisplayPreference", s)),
         }
     }
 }
@@ -159,15 +161,16 @@ impl Display for DestinyMilestoneType {
 }
 
 impl FromStr for DestinyMilestoneType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(DestinyMilestoneType::Unknown),
             "Tutorial" => Ok(DestinyMilestoneType::Tutorial),
             "OneTime" => Ok(DestinyMilestoneType::OneTime),
             "Weekly" => Ok(DestinyMilestoneType::Weekly),
             "Daily" => Ok(DestinyMilestoneType::Daily),
             "Special" => Ok(DestinyMilestoneType::Special),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyMilestoneType", s)),
         }
     }
 }

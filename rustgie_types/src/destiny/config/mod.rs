@@ -1,5 +1,5 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 /// DestinyManifest is the external-facing contract for just the properties needed by those calling the Destiny Platform.
 #[derive(Deserialize, Serialize)]

@@ -24,14 +24,14 @@ pub mod tokens;
 pub mod trending;
 pub mod user;
 pub mod api_response_;
-pub mod rustgie_stuff_;
 
-use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 /// The types of membership the Accounts system supports. This is the external facing enum used in place of the internal-only Bungie.SharedDefinitions.MembershipType.
@@ -58,9 +58,10 @@ impl Display for BungieMembershipType {
 }
 
 impl FromStr for BungieMembershipType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(BungieMembershipType::None),
             "TigerXbox" => Ok(BungieMembershipType::TigerXbox),
             "TigerPsn" => Ok(BungieMembershipType::TigerPsn),
             "TigerSteam" => Ok(BungieMembershipType::TigerSteam),
@@ -70,7 +71,7 @@ impl FromStr for BungieMembershipType {
             "TigerDemon" => Ok(BungieMembershipType::TigerDemon),
             "BungieNext" => Ok(BungieMembershipType::BungieNext),
             "All" => Ok(BungieMembershipType::All),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to BungieMembershipType", s)),
         }
     }
 }
@@ -102,9 +103,10 @@ impl Display for BungieCredentialType {
 }
 
 impl FromStr for BungieCredentialType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(BungieCredentialType::None),
             "Xuid" => Ok(BungieCredentialType::Xuid),
             "Psnid" => Ok(BungieCredentialType::Psnid),
             "Wlid" => Ok(BungieCredentialType::Wlid),
@@ -118,7 +120,7 @@ impl FromStr for BungieCredentialType {
             "StadiaId" => Ok(BungieCredentialType::StadiaId),
             "TwitchId" => Ok(BungieCredentialType::TwitchId),
             "EgsId" => Ok(BungieCredentialType::EgsId),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to BungieCredentialType", s)),
         }
     }
 }
@@ -1686,13 +1688,14 @@ impl Display for GlobalAlertLevel {
 }
 
 impl FromStr for GlobalAlertLevel {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Unknown" => Ok(GlobalAlertLevel::Unknown),
             "Blue" => Ok(GlobalAlertLevel::Blue),
             "Yellow" => Ok(GlobalAlertLevel::Yellow),
             "Red" => Ok(GlobalAlertLevel::Red),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GlobalAlertLevel", s)),
         }
     }
 }
@@ -1711,11 +1714,12 @@ impl Display for GlobalAlertType {
 }
 
 impl FromStr for GlobalAlertType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "GlobalAlert" => Ok(GlobalAlertType::GlobalAlert),
             "StreamingAlert" => Ok(GlobalAlertType::StreamingAlert),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to GlobalAlertType", s)),
         }
     }
 }

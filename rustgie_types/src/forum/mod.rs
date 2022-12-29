@@ -1,9 +1,10 @@
-﻿use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+﻿use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[bitflags]
@@ -27,8 +28,8 @@ impl Display for ForumTopicsCategoryFiltersEnum {
 }
 
 impl FromStr for ForumTopicsCategoryFiltersEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Links" => Ok(ForumTopicsCategoryFiltersEnum::Links),
             "Questions" => Ok(ForumTopicsCategoryFiltersEnum::Questions),
@@ -38,7 +39,7 @@ impl FromStr for ForumTopicsCategoryFiltersEnum {
             "Announcement" => Ok(ForumTopicsCategoryFiltersEnum::Announcement),
             "BungieOfficial" => Ok(ForumTopicsCategoryFiltersEnum::BungieOfficial),
             "Polls" => Ok(ForumTopicsCategoryFiltersEnum::Polls),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumTopicsCategoryFiltersEnum", s)),
         }
     }
 }
@@ -60,14 +61,15 @@ impl Display for ForumTopicsQuickDateEnum {
 }
 
 impl FromStr for ForumTopicsQuickDateEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "All" => Ok(ForumTopicsQuickDateEnum::All),
             "LastYear" => Ok(ForumTopicsQuickDateEnum::LastYear),
             "LastMonth" => Ok(ForumTopicsQuickDateEnum::LastMonth),
             "LastWeek" => Ok(ForumTopicsQuickDateEnum::LastWeek),
             "LastDay" => Ok(ForumTopicsQuickDateEnum::LastDay),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumTopicsQuickDateEnum", s)),
         }
     }
 }
@@ -92,9 +94,10 @@ impl Display for ForumTopicsSortEnum {
 }
 
 impl FromStr for ForumTopicsSortEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(ForumTopicsSortEnum::Default),
             "LastReplied" => Ok(ForumTopicsSortEnum::LastReplied),
             "MostReplied" => Ok(ForumTopicsSortEnum::MostReplied),
             "Popularity" => Ok(ForumTopicsSortEnum::Popularity),
@@ -102,7 +105,7 @@ impl FromStr for ForumTopicsSortEnum {
             "Liked" => Ok(ForumTopicsSortEnum::Liked),
             "HighestRated" => Ok(ForumTopicsSortEnum::HighestRated),
             "MostUpvoted" => Ok(ForumTopicsSortEnum::MostUpvoted),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumTopicsSortEnum", s)),
         }
     }
 }
@@ -172,13 +175,14 @@ impl Display for ForumMediaType {
 }
 
 impl FromStr for ForumMediaType {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ForumMediaType::None),
             "Image" => Ok(ForumMediaType::Image),
             "Video" => Ok(ForumMediaType::Video),
             "Youtube" => Ok(ForumMediaType::Youtube),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumMediaType", s)),
         }
     }
 }
@@ -201,15 +205,16 @@ impl Display for ForumPostPopularity {
 }
 
 impl FromStr for ForumPostPopularity {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Empty" => Ok(ForumPostPopularity::Empty),
             "Default" => Ok(ForumPostPopularity::Default),
             "Discussed" => Ok(ForumPostPopularity::Discussed),
             "CoolStory" => Ok(ForumPostPopularity::CoolStory),
             "HeatingUp" => Ok(ForumPostPopularity::HeatingUp),
             "Hot" => Ok(ForumPostPopularity::Hot),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumPostPopularity", s)),
         }
     }
 }
@@ -345,12 +350,13 @@ impl Display for ForumRecruitmentIntensityLabel {
 }
 
 impl FromStr for ForumRecruitmentIntensityLabel {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ForumRecruitmentIntensityLabel::None),
             "Casual" => Ok(ForumRecruitmentIntensityLabel::Casual),
             "Professional" => Ok(ForumRecruitmentIntensityLabel::Professional),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumRecruitmentIntensityLabel", s)),
         }
     }
 }
@@ -370,12 +376,13 @@ impl Display for ForumRecruitmentToneLabel {
 }
 
 impl FromStr for ForumRecruitmentToneLabel {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(ForumRecruitmentToneLabel::None),
             "FamilyFriendly" => Ok(ForumRecruitmentToneLabel::FamilyFriendly),
             "Rowdy" => Ok(ForumRecruitmentToneLabel::Rowdy),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumRecruitmentToneLabel", s)),
         }
     }
 }
@@ -394,11 +401,12 @@ impl Display for ForumPostSortEnum {
 }
 
 impl FromStr for ForumPostSortEnum {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Default" => Ok(ForumPostSortEnum::Default),
             "OldestFirst" => Ok(ForumPostSortEnum::OldestFirst),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to ForumPostSortEnum", s)),
         }
     }
 }
@@ -418,12 +426,13 @@ impl Display for CommunityContentSortMode {
 }
 
 impl FromStr for CommunityContentSortMode {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "Trending" => Ok(CommunityContentSortMode::Trending),
             "Latest" => Ok(CommunityContentSortMode::Latest),
             "HighestRated" => Ok(CommunityContentSortMode::HighestRated),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to CommunityContentSortMode", s)),
         }
     }
 }

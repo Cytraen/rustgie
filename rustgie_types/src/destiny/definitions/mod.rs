@@ -22,13 +22,14 @@ pub mod sources;
 pub mod traits;
 pub mod vendors;
 
-use std::collections::HashMap;
-use std::fmt::{Display, Formatter};
-use std::str::FromStr;
+use anyhow::{anyhow, Result};
 use enumflags2::bitflags;
 use serde::{Deserialize, Serialize};
 use serde_repr::{Deserialize_repr, Serialize_repr};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
+use std::fmt::{Display, Formatter};
+use std::str::FromStr;
 
 /// Provides common properties for destiny definitions.
 #[derive(Deserialize, Serialize)]
@@ -2276,8 +2277,8 @@ impl Display for DestinyTalentNodeStepWeaponPerformances {
 }
 
 impl FromStr for DestinyTalentNodeStepWeaponPerformances {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "RateOfFire" => Ok(DestinyTalentNodeStepWeaponPerformances::RateOfFire),
             "Damage" => Ok(DestinyTalentNodeStepWeaponPerformances::Damage),
@@ -2292,7 +2293,7 @@ impl FromStr for DestinyTalentNodeStepWeaponPerformances {
             "TrackingAndDetonation" => Ok(DestinyTalentNodeStepWeaponPerformances::TrackingAndDetonation),
             "ShotgunSpread" => Ok(DestinyTalentNodeStepWeaponPerformances::ShotgunSpread),
             "ChargeTime" => Ok(DestinyTalentNodeStepWeaponPerformances::ChargeTime),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyTalentNodeStepWeaponPerformances", s)),
         }
     }
 }
@@ -2316,8 +2317,8 @@ impl Display for DestinyTalentNodeStepImpactEffects {
 }
 
 impl FromStr for DestinyTalentNodeStepImpactEffects {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "ArmorPiercing" => Ok(DestinyTalentNodeStepImpactEffects::ArmorPiercing),
             "Ricochet" => Ok(DestinyTalentNodeStepImpactEffects::Ricochet),
@@ -2325,7 +2326,7 @@ impl FromStr for DestinyTalentNodeStepImpactEffects {
             "CollateralDamage" => Ok(DestinyTalentNodeStepImpactEffects::CollateralDamage),
             "Disorient" => Ok(DestinyTalentNodeStepImpactEffects::Disorient),
             "HighlightTarget" => Ok(DestinyTalentNodeStepImpactEffects::HighlightTarget),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyTalentNodeStepImpactEffects", s)),
         }
     }
 }
@@ -2351,8 +2352,8 @@ impl Display for DestinyTalentNodeStepGuardianAttributes {
 }
 
 impl FromStr for DestinyTalentNodeStepGuardianAttributes {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Stats" => Ok(DestinyTalentNodeStepGuardianAttributes::Stats),
             "Shields" => Ok(DestinyTalentNodeStepGuardianAttributes::Shields),
@@ -2362,7 +2363,7 @@ impl FromStr for DestinyTalentNodeStepGuardianAttributes {
             "Radar" => Ok(DestinyTalentNodeStepGuardianAttributes::Radar),
             "Invisibility" => Ok(DestinyTalentNodeStepGuardianAttributes::Invisibility),
             "Reputations" => Ok(DestinyTalentNodeStepGuardianAttributes::Reputations),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyTalentNodeStepGuardianAttributes", s)),
         }
     }
 }
@@ -2386,8 +2387,8 @@ impl Display for DestinyTalentNodeStepLightAbilities {
 }
 
 impl FromStr for DestinyTalentNodeStepLightAbilities {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Grenades" => Ok(DestinyTalentNodeStepLightAbilities::Grenades),
             "Melee" => Ok(DestinyTalentNodeStepLightAbilities::Melee),
@@ -2395,7 +2396,7 @@ impl FromStr for DestinyTalentNodeStepLightAbilities {
             "Orbs" => Ok(DestinyTalentNodeStepLightAbilities::Orbs),
             "SuperEnergy" => Ok(DestinyTalentNodeStepLightAbilities::SuperEnergy),
             "SuperMods" => Ok(DestinyTalentNodeStepLightAbilities::SuperMods),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyTalentNodeStepLightAbilities", s)),
         }
     }
 }
@@ -2417,14 +2418,14 @@ impl Display for DestinyTalentNodeStepDamageTypes {
 }
 
 impl FromStr for DestinyTalentNodeStepDamageTypes {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
             "Kinetic" => Ok(DestinyTalentNodeStepDamageTypes::Kinetic),
             "Arc" => Ok(DestinyTalentNodeStepDamageTypes::Arc),
             "Solar" => Ok(DestinyTalentNodeStepDamageTypes::Solar),
             "Void" => Ok(DestinyTalentNodeStepDamageTypes::Void),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyTalentNodeStepDamageTypes", s)),
         }
     }
 }
@@ -3113,13 +3114,14 @@ impl Display for DestinyRewardSourceCategory {
 }
 
 impl FromStr for DestinyRewardSourceCategory {
-    type Err = crate::rustgie_stuff_::RustgieEnumFromStrError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    type Err = anyhow::Error;
+    fn from_str(s: &str) -> Result<Self> {
         match s {
+            "None" => Ok(DestinyRewardSourceCategory::None),
             "Activity" => Ok(DestinyRewardSourceCategory::Activity),
             "Vendor" => Ok(DestinyRewardSourceCategory::Vendor),
             "Aggregate" => Ok(DestinyRewardSourceCategory::Aggregate),
-            _ => Err(crate::rustgie_stuff_::RustgieEnumFromStrError),
+            _ => Err(anyhow!("Could not deserialize string '{}' to DestinyRewardSourceCategory", s)),
         }
     }
 }

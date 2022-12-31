@@ -13,15 +13,14 @@ categories = ["api-bindings"]
 [dependencies]
 anyhow = "1.0"
 rustgie_types = { path = "../rustgie_types", version = "0.3.0-beta" }
-reqwest = { version = "0.11", features = [
-    "json",
-    "gzip",
-    "deflate",
-    "brotli",
-    "cookies",
-] }
+reqwest = { version = "0.11", features = ["json"] }
 serde = "1.0"
 time = "0.3"
 
 [features]
+default = ["cookies", "gzip"]
+brotli = ["reqwest/brotli"]
+cookies = ["reqwest/cookies"]
+deflate = ["reqwest/deflate"]
+gzip = ["reqwest/gzip"]
 rustls = ["reqwest/rustls"]

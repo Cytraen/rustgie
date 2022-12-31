@@ -94,15 +94,33 @@ impl RustgieClient {
         client_secret: Option<String>,
     ) -> Result<Self> {
         Ok(Self {
-            client: reqwest::ClientBuilder::new()
-                .brotli(true)
-                .gzip(true)
-                .deflate(true)
-                .https_only(true)
-                .cookie_store(true)
-                .redirect(reqwest::redirect::Policy::none())
-                .default_headers(default_headers)
-                .build()?,
+            client: {
+                let mut builder = reqwest::ClientBuilder::new();
+
+                #[cfg(feature = "brotli")]
+                {
+                    builder = builder.brotli(true);
+                }
+                #[cfg(feature = "deflate")]
+                {
+                    builder = builder.deflate(true);
+                }
+                #[cfg(feature = "gzip")]
+                {
+                    builder = builder.gzip(true);
+                }
+                #[cfg(feature = "cookies")]
+                {
+                    builder = builder.cookie_store(true);
+                }
+
+                builder = builder
+                    .https_only(true)
+                    .redirect(reqwest::redirect::Policy::none())
+                    .default_headers(default_headers);
+
+                builder.build()?
+            },
             oauth_client_id: client_id,
             oauth_client_secret: client_secret,
         })

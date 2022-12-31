@@ -1,10 +1,9 @@
-﻿use std::collections::HashMap;
-use serde::{Deserialize, Serialize};
+﻿use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
+use std::collections::HashMap;
 
 #[derive(Deserialize, Serialize)]
-pub struct BungieApiResponse<T>
-{
+pub struct BungieApiResponse<T> {
     #[serde(rename = "Response")]
     pub response: Option<T>,
 
@@ -29,8 +28,7 @@ pub struct BungieApiResponse<T>
 
 #[serde_as]
 #[derive(Deserialize, Serialize)]
-pub struct BungieTokenResponse
-{
+pub struct BungieTokenResponse {
     #[serde(rename = "access_token")]
     pub access_token: Option<String>,
 

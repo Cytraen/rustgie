@@ -4,7 +4,7 @@ pub mod endpoints;
 
 pub use rustgie_types as types;
 
-use anyhow::{anyhow, Result, Context};
+use anyhow::{anyhow, Context, Result};
 use reqwest::Url;
 use rustgie_types::api_response_::BungieApiResponse;
 use std::collections::HashMap;
@@ -18,7 +18,6 @@ pub struct RustgieClientBuilder {
 }
 
 impl RustgieClientBuilder {
-    #[must_use]
     pub fn new() -> RustgieClientBuilder {
         RustgieClientBuilder {
             api_key: None,
@@ -51,17 +50,13 @@ impl RustgieClientBuilder {
         self
     }
 
-    #[must_use]
     pub fn build(self) -> Result<RustgieClient> {
         let mut header_map = reqwest::header::HeaderMap::new();
 
         match self.api_key {
             None => return Err(anyhow!("An API key is required.")),
             Some(key) => {
-                header_map.insert(
-                    "X-API-Key",
-                    reqwest::header::HeaderValue::try_from(key)?,
-                );
+                header_map.insert("X-API-Key", reqwest::header::HeaderValue::try_from(key)?);
             }
         }
 
@@ -75,16 +70,11 @@ impl RustgieClientBuilder {
             }
         }
 
-        RustgieClient::new(
-            header_map,
-            self.oauth_client_id,
-            self.oauth_client_secret,
-        )
+        RustgieClient::new(header_map, self.oauth_client_id, self.oauth_client_secret)
     }
 }
 
 impl Default for RustgieClientBuilder {
-    #[must_use]
     fn default() -> Self {
         Self::new()
     }
@@ -118,7 +108,6 @@ impl RustgieClient {
         })
     }
 
-    #[must_use]
     pub fn builder() -> RustgieClientBuilder {
         RustgieClientBuilder::new()
     }
@@ -176,7 +165,10 @@ impl RustgieClient {
         &self,
         request: reqwest::RequestBuilder,
     ) -> Result<T> {
-        let http_response = request.send().await.with_context(|| "There was an error connecting to the Bungie API")?;
+        let http_response = request
+            .send()
+            .await
+            .with_context(|| "There was an error connecting to the Bungie API")?;
 
         let headers = http_response.headers();
 
@@ -185,15 +177,19 @@ impl RustgieClient {
         }
 
         if !headers["Content-Type"]
-                .to_str().with_context(|| "Could not parse Content-Type header from Bungie API as string")?
-                .starts_with("application/json")
+            .to_str()
+            .with_context(|| "Could not parse Content-Type header from Bungie API as string")?
+            .starts_with("application/json")
         {
-            return Err(anyhow!("'Content-Type' of response was not 'application/json'"));
+            return Err(anyhow!(
+                "'Content-Type' of response was not 'application/json'"
+            ));
         }
 
-        let deserialized_response = http_response.json::<BungieApiResponse<T>>()
-        .await
-        .with_context(|| "There was an error deserializing the JSON response")?;
+        let deserialized_response = http_response
+            .json::<BungieApiResponse<T>>()
+            .await
+            .with_context(|| "There was an error deserializing the JSON response")?;
 
         match deserialized_response.error_code {
             rustgie_types::exceptions::PlatformErrorCodes::Success => {
@@ -236,15 +232,19 @@ impl RustgieClient {
         return Ok(Url::parse_with_params(
             &format!("https://www.bungie.net/{language_code}/OAuth/Authorize/"),
             query_params,
-        ).with_context(|| "Error parsing OAuth authorization URL")?.to_string());
-
+        )
+        .with_context(|| "Error parsing OAuth authorization URL")?
+        .to_string());
     }
 
     async fn process_oauth_response(
         &self,
         request: reqwest::RequestBuilder,
     ) -> Result<rustgie_types::api_response_::BungieTokenResponse> {
-        let http_response = request.send().await.with_context(|| "There was an error connecting to the Bungie API")?;
+        let http_response = request
+            .send()
+            .await
+            .with_context(|| "There was an error connecting to the Bungie API")?;
 
         let headers = http_response.headers();
 
@@ -253,14 +253,19 @@ impl RustgieClient {
         }
 
         if !headers["Content-Type"]
-                .to_str().with_context(|| "Could not parse Content-Type header from Bungie API as string")?
-                .starts_with("application/json")
+            .to_str()
+            .with_context(|| "Could not parse Content-Type header from Bungie API as string")?
+            .starts_with("application/json")
         {
-            return Err(anyhow!("'Content-Type' of response was not 'application/json'"));
+            return Err(anyhow!(
+                "'Content-Type' of response was not 'application/json'"
+            ));
         }
 
-        let deserialized_response = http_response.json::<rustgie_types::api_response_::BungieTokenResponse>()
-        .await.with_context(|| "There was an error deserializing the JSON response")?;
+        let deserialized_response = http_response
+            .json::<rustgie_types::api_response_::BungieTokenResponse>()
+            .await
+            .with_context(|| "There was an error deserializing the JSON response")?;
 
         match deserialized_response.access_token {
             None => Err(anyhow!("The Bungie API did not include an access token")),

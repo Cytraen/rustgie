@@ -2,7 +2,7 @@
 
 /// Represents a Seasonal Artifact and all data related to it for the requested Account.
 /// It can be combined with Character-scoped data for a full picture of what a character has available/has chosen, or just these settings can be used for overview information.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactProfileScoped {
     #[serde(rename = "artifactHash")]
     pub artifact_hash: u32,
@@ -20,7 +20,7 @@ pub struct DestinyArtifactProfileScoped {
     pub power_bonus: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactCharacterScoped {
     #[serde(rename = "artifactHash")]
     pub artifact_hash: u32,
@@ -35,7 +35,7 @@ pub struct DestinyArtifactCharacterScoped {
     pub tiers: Option<Vec<crate::destiny::artifacts::DestinyArtifactTier>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactTier {
     #[serde(rename = "tierHash")]
     pub tier_hash: u32,
@@ -50,7 +50,7 @@ pub struct DestinyArtifactTier {
     pub items: Option<Vec<crate::destiny::artifacts::DestinyArtifactTierItem>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactTierItem {
     #[serde(rename = "itemHash")]
     pub item_hash: u32,

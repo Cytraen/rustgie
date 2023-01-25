@@ -30,7 +30,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// Information about a current character's status with a Progression. A progression is a value that can increase with activity and has levels. Think Character Level and Reputation Levels. Combine this "live" data with the related DestinyProgressionDefinition for a full picture of the Progression.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyProgression {
     /// The hash identifier of the Progression in question. Use it to look up the DestinyProgressionDefinition in static data.
     #[serde(rename = "progressionHash")]
@@ -91,7 +91,7 @@ pub struct DestinyProgression {
 
 /// Represents a season and the number of resets you had in that season.
 /// We do not necessarily - even for progressions with resets - track it over all seasons. So be careful and check the season numbers being returned.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyProgressionResetEntry {
     #[serde(rename = "season")]
     pub season: i32,
@@ -202,7 +202,7 @@ impl FromStr for DestinyProgressionStepDisplayEffect {
 
 /// Used in a number of Destiny contracts to return data about an item stack and its quantity. Can optionally return an itemInstanceId if the item is instanced - in which case, the quantity returned will be 1. If it's not... uh, let me know okay? Thanks.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemQuantity {
     /// The hash identifier for the item in question. Use it to look up the item's DestinyInventoryItemDefinition.
     #[serde(rename = "itemHash")]
@@ -545,7 +545,7 @@ impl FromStr for DestinyAmmunitionType {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DyeReference {
     #[serde(rename = "channelHash")]
     pub channel_hash: u32,
@@ -2305,7 +2305,7 @@ impl FromStr for DestinyRace {
 
 /// Represents the "Live" data that we can obtain about a Character's status with a specific Activity. This will tell you whether the character can participate in the activity, as well as some other basic mutable information.
 /// Meant to be combined with static DestinyActivityDefinition data for a full picture of the Activity.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyActivity {
     /// The hash identifier of the Activity. Use this to look up the DestinyActivityDefinition of the activity.
     #[serde(rename = "activityHash")]
@@ -2401,7 +2401,7 @@ impl FromStr for DestinyActivityDifficultyTier {
 }
 
 /// Represents a stat on an item *or* Character (NOT a Historical Stat, but a physical attribute stat like Attack, Defense etc...)
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyStat {
     /// The hash identifier for the Stat. Use it to look up the DestinyStatDefinition for static data about the stat.
     #[serde(rename = "statHash")]
@@ -2459,7 +2459,7 @@ impl FromStr for EquipFailureReason {
 }
 
 /// I see you've come to find out more about Talent Nodes. I'm so sorry. Talent Nodes are the conceptual, visual nodes that appear on Talent Grids. Talent Grids, in Destiny 1, were found on almost every instanced item: they had Nodes that could be activated to change the properties of the item. In Destiny 2, Talent Grids only exist for Builds/Subclasses, and while the basic concept is the same (Nodes can be activated once you've gained sufficient Experience on the Item, and provide effects), there are some new concepts from Destiny 1. Examine DestinyTalentGridDefinition and its subordinates for more information. This is the "Live" information for the current status of a Talent Node on a specific item. Talent Nodes have many Steps, but only one can be active at any one time: and it is the Step that determines both the visual and the game state-changing properties that the Node provides. Examine this and DestinyTalentNodeStepDefinition carefully. *IMPORTANT NOTE* Talent Nodes are, unfortunately, Content Version DEPENDENT. Though they refer to hashes for Nodes and Steps, those hashes are not guaranteed to be immutable across content versions. This is a source of great exasperation for me, but as a result anyone using Talent Grid data must ensure that the content version of their static content matches that of the server responses before showing or making decisions based on talent grid data.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyTalentNode {
     /// The index of the Talent Node being referred to (an index into DestinyTalentGridDefinition.nodes[]). CONTENT VERSION DEPENDENT.
     #[serde(rename = "nodeIndex")]
@@ -2551,7 +2551,7 @@ impl FromStr for DestinyTalentNodeState {
 }
 
 /// This property has some history. A talent grid can provide stats on both the item it's related to and the character equipping the item. This returns data about those stat bonuses.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyTalentNodeStatBlock {
     /// The stat benefits conferred when this talent node is activated for the current Step that is active on the node.
     #[serde(rename = "currentStepStats")]
@@ -2638,7 +2638,7 @@ impl FromStr for VendorItemStatus {
 
 /// Indicates the status of an "Unlock Flag" on a Character or Profile.
 /// These are individual bits of state that can be either set or not set, and sometimes provide interesting human-readable information in their related DestinyUnlockDefinition.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyUnlockStatus {
     /// The hash identifier for the Unlock Flag. Use to lookup DestinyUnlockDefinition for static data. Not all unlocks have human readable data - in fact, most don't. But when they do, it can be very useful to show. Even if they don't have human readable data, you might be able to infer the meaning of an unlock flag with a bit of experimentation...
     #[serde(rename = "unlockHash")]
@@ -2734,7 +2734,7 @@ impl FromStr for DestinyVendorItemState {
 }
 
 /// The results of a bulk Equipping operation performed through the Destiny API.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyEquipItemResults {
     #[serde(rename = "equipResults")]
     pub equip_results: Option<Vec<crate::destiny::DestinyEquipItemResult>>,
@@ -2742,7 +2742,7 @@ pub struct DestinyEquipItemResults {
 
 /// The results of an Equipping operation performed through the Destiny API.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyEquipItemResult {
     /// The instance ID of the item in question (all items that can be equipped must, but definition, be Instanced and thus have an Instance ID that you can use to refer to them)
     #[serde_as(as = "DisplayFromStr")]

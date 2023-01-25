@@ -5,7 +5,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// The base class for any component-returning object that may need to indicate information about the state of the component being returned.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ComponentResponse {
     #[serde(rename = "privacy")]
     pub privacy: crate::components::ComponentPrivacySetting,

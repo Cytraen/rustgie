@@ -2,7 +2,7 @@
 use time::OffsetDateTime;
 
 /// This component returns references to all of the Vendors in the response, grouped by categorizations that Bungie has deemed to be interesting, in the order in which both the groups and the vendors within that group should be rendered.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorGroupComponent {
     /// The ordered list of groups being returned.
     #[serde(rename = "groups")]
@@ -11,7 +11,7 @@ pub struct DestinyVendorGroupComponent {
 
 /// Represents a specific group of vendors that can be rendered in the recommended order.
 /// How do we figure out this order? It's a long story, and will likely get more complicated over time.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorGroup {
     #[serde(rename = "vendorGroupHash")]
     pub vendor_group_hash: u32,
@@ -22,7 +22,7 @@ pub struct DestinyVendorGroup {
 }
 
 /// This component contains essential/summary information about the vendor.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorBaseComponent {
     /// The unique identifier for the vendor. Use it to look up their DestinyVendorDefinition.
     #[serde(rename = "vendorHash")]
@@ -43,7 +43,7 @@ pub struct DestinyVendorBaseComponent {
 
 /// The base class for Vendor Sale Item data. Has a bunch of character-agnostic state about the item being sold.
 /// Note that if you want instance, stats, etc... data for the item, you'll have to request additional components such as ItemInstances, ItemPerks etc... and acquire them from the DestinyVendorResponse's "items" property.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorSaleItemBaseComponent {
     /// The index into the DestinyVendorDefinition.itemList property. Note that this means Vendor data *is* Content Version dependent: make sure you have the latest content before you use Vendor data, or these indexes may mismatch.
     /// Most systems avoid this problem, but Vendors is one area where we are unable to reasonably avoid content dependency at the moment.
@@ -80,7 +80,7 @@ pub struct DestinyVendorSaleItemBaseComponent {
 }
 
 /// This component contains essential/summary information about the vendor from the perspective of a character-agnostic view.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicVendorComponent {
     /// The unique identifier for the vendor. Use it to look up their DestinyVendorDefinition.
     #[serde(rename = "vendorHash")]
@@ -101,7 +101,7 @@ pub struct DestinyPublicVendorComponent {
 
 /// Has character-agnostic information about an item being sold by a vendor.
 /// Note that if you want instance, stats, etc... data for the item, you'll have to request additional components such as ItemInstances, ItemPerks etc... and acquire them from the DestinyVendorResponse's "items" property. For most of these, however, you'll have to ask for it in context of a specific character.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicVendorSaleItemComponent {
     /// The index into the DestinyVendorDefinition.itemList property. Note that this means Vendor data *is* Content Version dependent: make sure you have the latest content before you use Vendor data, or these indexes may mismatch.
     /// Most systems avoid this problem, but Vendors is one area where we are unable to reasonably avoid content dependency at the moment.

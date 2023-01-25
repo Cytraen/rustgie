@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentTypeDescription {
     #[serde(rename = "cType")]
     pub c_type: Option<String>,
@@ -71,7 +71,7 @@ pub struct ContentTypeDescription {
     pub property_sections: Option<Vec<crate::content::models::ContentTypePropertySection>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentTypeProperty {
     #[serde(rename = "name")]
     pub name: Option<String>,
@@ -250,7 +250,7 @@ impl FromStr for ContentPropertyDataTypeEnum {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentTypeDefaultValue {
     #[serde(rename = "whenClause")]
     pub when_clause: Option<String>,
@@ -262,7 +262,7 @@ pub struct ContentTypeDefaultValue {
     pub default_value: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TagMetadataDefinition {
     #[serde(rename = "description")]
     pub description: Option<String>,
@@ -283,7 +283,7 @@ pub struct TagMetadataDefinition {
     pub is_required: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TagMetadataItem {
     #[serde(rename = "description")]
     pub description: Option<String>,
@@ -301,7 +301,7 @@ pub struct TagMetadataItem {
     pub name: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentPreview {
     #[serde(rename = "name")]
     pub name: Option<String>,
@@ -322,7 +322,7 @@ pub struct ContentPreview {
     pub use_set_id: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentTypePropertySection {
     #[serde(rename = "name")]
     pub name: Option<String>,

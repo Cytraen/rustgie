@@ -2,7 +2,7 @@
 
 /// Defines the tier type of an item. Mostly this provides human readable properties for types like Common, Rare, etc...
 /// It also provides some base data for infusion that could be useful.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemTierTypeDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -25,7 +25,7 @@ pub struct DestinyItemTierTypeDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemTierTypeInfusionBlock {
     /// The default portion of quality that will transfer from the infuser to the infusee item. (InfuserQuality - InfuseeQuality) * baseQualityTransferRatio = base quality transferred.
     #[serde(rename = "baseQualityTransferRatio")]
@@ -38,7 +38,7 @@ pub struct DestinyItemTierTypeInfusionBlock {
 
 /// A shortcut for the fact that some items have a "Preview Vendor" - See DestinyInventoryItemDefinition.preview.previewVendorHash - that is intended to be used to show what items you can get as a result of acquiring or using this item.
 /// A common example of this in Destiny 1 was Eververse "Boxes," which could have many possible items. This "Preview Vendor" is not a vendor you can actually see in the game, but it defines categories and sale items for all of the possible items you could get from the Box so that the game can show them to you. We summarize that info here so that you don't have to do that Vendor lookup and aggregation manually.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyDerivedItemCategoryDefinition {
     /// The localized string for the category title. This will be something describing the items you can get as a group, or your likelihood/the quantity you'll get.
     #[serde(rename = "categoryDescription")]
@@ -50,7 +50,7 @@ pub struct DestinyDerivedItemCategoryDefinition {
 }
 
 /// This is a reference to, and summary data for, a specific item that you can get as a result of Using or Acquiring some other Item (For example, this could be summary information for an Emote that you can get by opening an an Eververse Box) See DestinyDerivedItemCategoryDefinition for more information.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyDerivedItemDefinition {
     /// The hash for the DestinyInventoryItemDefinition of this derived item, if there is one. Sometimes we are given this information as a manual override, in which case there won't be an actual DestinyInventoryItemDefinition for what we display, but you can still show the strings from this object itself.
     #[serde(rename = "itemHash")]
@@ -79,7 +79,7 @@ pub struct DestinyDerivedItemDefinition {
 
 /// If an item is a Plug, its DestinyInventoryItemDefinition.plug property will be populated with an instance of one of these bad boys.
 /// This gives information about when it can be inserted, what the plug's category is (and thus whether it is compatible with a socket... see DestinySocketTypeDefinition for information about Plug Categories and socket compatibility), whether it is enabled and other Plug info.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemPlugDefinition {
     /// The rules around when this plug can be inserted into a socket, aside from the socket's individual restrictions.
     /// The live data DestinyItemPlugComponent.insertFailIndexes will be an index into this array, so you can pull out the failure strings appropriate for the user.
@@ -155,14 +155,14 @@ pub struct DestinyItemPlugDefinition {
 
 /// Dictates a rule around whether the plug is enabled or insertable.
 /// In practice, the live Destiny data will refer to these entries by index. You can then look up that index in the appropriate property (enabledRules or insertionRules) to get the localized string for the failure message if it failed.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPlugRuleDefinition {
     /// The localized string to show if this rule fails.
     #[serde(rename = "failureMessage")]
     pub failure_message: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyParentItemOverride {
     #[serde(rename = "additionalEquipRequirementsDisplayStrings")]
     pub additional_equip_requirements_display_strings: Option<Vec<String>>,
@@ -172,7 +172,7 @@ pub struct DestinyParentItemOverride {
 }
 
 /// Items can have Energy Capacity, and plugs can provide that capacity such as on a piece of Armor in Armor 2.0. This is how much "Energy" can be spent on activating plugs for this item.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyEnergyCapacityEntry {
     /// How much energy capacity this plug provides.
     #[serde(rename = "capacityValue")]
@@ -188,7 +188,7 @@ pub struct DestinyEnergyCapacityEntry {
 }
 
 /// Some plugs cost Energy, which is a stat on the item that can be increased by other plugs (that, at least in Armor 2.0, have a "masterworks-like" mechanic for upgrading). If a plug has costs, the details of that cost are defined here.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyEnergyCostEntry {
     /// The Energy cost for inserting this plug.
     #[serde(rename = "energyCost")]

@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use time::OffsetDateTime;
 
 /// Represents a runtime instance of a user's milestone status. Live Milestone data should be combined with DestinyMilestoneDefinition data to show the user a picture of what is available for them to do in the game, and their status in regards to said "things to do." Consider it a big, wonky to-do list, or Advisors 3.0 for those who remember the Destiny 1 API.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestone {
     /// The unique identifier for the Milestone. Use it to look up the DestinyMilestoneDefinition, so you can combine the other data in this contract with static definition data.
     #[serde(rename = "milestoneHash")]
@@ -53,7 +53,7 @@ pub struct DestinyMilestone {
 }
 
 /// If a Milestone has one or more Quests, this will contain the live information for the character's status with one of those quests.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneQuest {
     /// Quests are defined as Items in content. As such, this is the hash identifier of the DestinyInventoryItemDefinition that represents this quest. It will have pointers to all of the steps in the quest, and display information for the quest (title, description, icon etc) Individual steps will be referred to in the Quest item's DestinyInventoryItemDefinition.setData property, and themselves are Items with their own renderable data.
     #[serde(rename = "questItemHash")]
@@ -73,7 +73,7 @@ pub struct DestinyMilestoneQuest {
 }
 
 /// Sometimes, we know the specific activity that the Milestone wants you to play. This entity provides additional information about that Activity and all of its variants. (sometimes there's only one variant, but I think you get the point)
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneActivity {
     /// The hash of an arbitrarily chosen variant of this activity. We'll go ahead and call that the "canonical" activity, because if you're using this value you should only use it for properties that are common across the variants: things like the name of the activity, it's location, etc... Use this hash to look up the DestinyActivityDefinition of this activity for rendering data.
     #[serde(rename = "activityHash")]
@@ -97,7 +97,7 @@ pub struct DestinyMilestoneActivity {
 }
 
 /// Represents custom data that we know about an individual variant of an activity.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneActivityVariant {
     /// The hash for the specific variant of the activity related to this milestone. You can pull more detailed static info from the DestinyActivityDefinition, such as difficulty level.
     #[serde(rename = "activityHash")]
@@ -117,7 +117,7 @@ pub struct DestinyMilestoneActivityVariant {
 }
 
 /// Represents this player's personal completion status for the Activity under a Milestone, if the activity has trackable completion and progress information. (most activities won't, or the concept won't apply. For instance, it makes sense to talk about a tier of a raid as being Completed or having progress, but it doesn't make sense to talk about a Crucible Playlist in those terms.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneActivityCompletionStatus {
     /// If the activity has been "completed", that information will be returned here.
     #[serde(rename = "completed")]
@@ -129,7 +129,7 @@ pub struct DestinyMilestoneActivityCompletionStatus {
 }
 
 /// Represents whatever information we can return about an explicit phase in an activity. In the future, I hope we'll have more than just "guh, you done gone and did something," but for the forseeable future that's all we've got. I'm making it more than just a list of booleans out of that overly-optimistic hope.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneActivityPhase {
     /// Indicates if the phase has been completed.
     #[serde(rename = "complete")]
@@ -140,7 +140,7 @@ pub struct DestinyMilestoneActivityPhase {
     pub phase_hash: u32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneChallengeActivity {
     #[serde(rename = "activityHash")]
     pub activity_hash: u32,
@@ -170,7 +170,7 @@ pub struct DestinyMilestoneChallengeActivity {
 }
 
 /// If a Milestone has one or more Vendors that are relevant to it, this will contain information about that vendor that you can choose to show.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneVendor {
     /// The hash identifier of the Vendor related to this Milestone. You can show useful things from this, such as thier Faction icon or whatever you might care about.
     #[serde(rename = "vendorHash")]
@@ -182,7 +182,7 @@ pub struct DestinyMilestoneVendor {
 }
 
 /// Represents a category of "summary" rewards that can be earned for the Milestone regardless of specific quest rewards that can be earned.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneRewardCategory {
     /// Look up the relevant DestinyMilestoneDefinition, and then use rewardCategoryHash to look up the category info in DestinyMilestoneDefinition.rewards.
     #[serde(rename = "rewardCategoryHash")]
@@ -194,7 +194,7 @@ pub struct DestinyMilestoneRewardCategory {
 }
 
 /// The character-specific data for a milestone's reward entry. See DestinyMilestoneDefinition for more information about Reward Entries.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneRewardEntry {
     /// The identifier for the reward entry in question. It is important to look up the related DestinyMilestoneRewardEntryDefinition to get the static details about the reward, which you can do by looking up the milestone's DestinyMilestoneDefinition and examining the DestinyMilestoneDefinition.rewards[rewardCategoryHash].rewardEntries[rewardEntryHash] data.
     #[serde(rename = "rewardEntryHash")]
@@ -210,7 +210,7 @@ pub struct DestinyMilestoneRewardEntry {
 }
 
 /// Represents localized, extended content related to Milestones. This is intentionally returned by a separate endpoint and not with Character-level Milestone data because we do not put localized data into standard Destiny responses, both for brevity of response and for caching purposes. If you really need this data, hit the Milestone Content endpoint.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneContent {
     /// The "About this Milestone" text from the Firehose.
     #[serde(rename = "about")]
@@ -230,7 +230,7 @@ pub struct DestinyMilestoneContent {
 }
 
 /// Part of our dynamic, localized Milestone content is arbitrary categories of items. These are built in our content management system, and thus aren't the same as programmatically generated rewards.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMilestoneContentItemCategory {
     #[serde(rename = "title")]
     pub title: Option<String>,
@@ -240,7 +240,7 @@ pub struct DestinyMilestoneContentItemCategory {
 }
 
 /// Information about milestones, presented in a character state-agnostic manner. Combine this data with DestinyMilestoneDefinition to get a full picture of the milestone, which is basically a checklist of things to do in the game. Think of this as GetPublicAdvisors 3.0, for those who used the Destiny 1 API.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestone {
     /// The hash identifier for the milestone. Use it to look up the DestinyMilestoneDefinition for static data about the Milestone.
     #[serde(rename = "milestoneHash")]
@@ -279,7 +279,7 @@ pub struct DestinyPublicMilestone {
     pub order: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestoneQuest {
     /// Quests are defined as Items in content. As such, this is the hash identifier of the DestinyInventoryItemDefinition that represents this quest. It will have pointers to all of the steps in the quest, and display information for the quest (title, description, icon etc) Individual steps will be referred to in the Quest item's DestinyInventoryItemDefinition.setData property, and themselves are Items with their own renderable data.
     #[serde(rename = "questItemHash")]
@@ -295,7 +295,7 @@ pub struct DestinyPublicMilestoneQuest {
 }
 
 /// A milestone may have one or more conceptual Activities associated with it, and each of those conceptual activities could have a variety of variants, modes, tiers, what-have-you. Our attempts to determine what qualifies as a conceptual activity are, unfortunately, janky. So if you see missing modes or modes that don't seem appropriate to you, let us know and I'll buy you a beer if we ever meet up in person.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestoneActivity {
     /// The hash identifier of the activity that's been chosen to be considered the canonical "conceptual" activity definition. This may have many variants, defined herein.
     #[serde(rename = "activityHash")]
@@ -319,7 +319,7 @@ pub struct DestinyPublicMilestoneActivity {
 }
 
 /// Represents a variant of an activity that's relevant to a milestone.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestoneActivityVariant {
     /// The hash identifier of this activity variant. Examine the activity's definition in the Manifest database to determine what makes it a distinct variant. Usually it will be difficulty level or whether or not it is a guided game variant of the activity, but theoretically it could be distinguished in any arbitrary way.
     #[serde(rename = "activityHash")]
@@ -335,7 +335,7 @@ pub struct DestinyPublicMilestoneActivityVariant {
 }
 
 /// A Milestone can have many Challenges. Challenges are just extra Objectives that provide a fun way to mix-up play and provide extra rewards.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestoneChallenge {
     /// The objective for the Challenge, which should have human-readable data about what needs to be done to accomplish the objective. Use this hash to look up the DestinyObjectiveDefinition.
     #[serde(rename = "objectiveHash")]
@@ -346,7 +346,7 @@ pub struct DestinyPublicMilestoneChallenge {
     pub activity_hash: Option<u32>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestoneChallengeActivity {
     #[serde(rename = "activityHash")]
     pub activity_hash: u32,
@@ -374,7 +374,7 @@ pub struct DestinyPublicMilestoneChallengeActivity {
     pub boolean_activity_options: Option<HashMap<u32, bool>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicMilestoneVendor {
     /// The hash identifier of the Vendor related to this Milestone. You can show useful things from this, such as thier Faction icon or whatever you might care about.
     #[serde(rename = "vendorHash")]

@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMetricsComponent {
     #[serde(rename = "metrics")]
     pub metrics: Option<HashMap<u32, crate::destiny::components::metrics::DestinyMetricComponent>>,
@@ -10,7 +10,7 @@ pub struct DestinyMetricsComponent {
     pub metrics_root_node_hash: u32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyMetricComponent {
     #[serde(rename = "invisible")]
     pub invisible: bool,

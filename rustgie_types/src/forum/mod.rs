@@ -111,7 +111,7 @@ impl FromStr for ForumTopicsSortEnum {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PostResponse {
     #[serde(with = "time::serde::rfc3339")]
     #[serde(rename = "lastReplyTimestamp")]
@@ -219,7 +219,7 @@ impl FromStr for ForumPostPopularity {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PostSearchResponse {
     #[serde(rename = "relatedPosts")]
     pub related_posts: Option<Vec<crate::forum::PostResponse>>,
@@ -266,7 +266,7 @@ pub struct PostSearchResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PollResponse {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "topicId")]
@@ -279,7 +279,7 @@ pub struct PollResponse {
     pub total_votes: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PollResult {
     #[serde(rename = "answerText")]
     pub answer_text: Option<String>,
@@ -299,7 +299,7 @@ pub struct PollResult {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ForumRecruitmentDetail {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "topicId")]

@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct CoreSettingsConfiguration {
     #[serde(rename = "environment")]
     pub environment: Option<String>,
@@ -70,7 +70,7 @@ pub struct CoreSettingsConfiguration {
     pub fireteam_activities: Option<Vec<crate::common::models::CoreSetting>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct CoreSystem {
     #[serde(rename = "enabled")]
     pub enabled: bool,
@@ -79,7 +79,7 @@ pub struct CoreSystem {
     pub parameters: Option<HashMap<String, String>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct CoreSetting {
     #[serde(rename = "identifier")]
     pub identifier: Option<String>,
@@ -100,7 +100,7 @@ pub struct CoreSetting {
     pub child_settings: Option<Vec<crate::common::models::CoreSetting>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct Destiny2CoreSettings {
     #[serde(rename = "collectionRootNode")]
     pub collection_root_node: u32,

@@ -1,13 +1,13 @@
 ﻿use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPresentationNodesComponent {
     #[serde(rename = "nodes")]
     pub nodes: Option<HashMap<u32, crate::destiny::components::presentation::DestinyPresentationNodeComponent>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPresentationNodeComponent {
     #[serde(rename = "state")]
     pub state: enumflags2::BitFlags<crate::destiny::DestinyPresentationNodeState>,

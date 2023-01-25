@@ -2,7 +2,7 @@
 use time::OffsetDateTime;
 
 /// This component contains essential/summary information about the vendor.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorComponent {
     /// If True, you can purchase from the Vendor.
     #[serde(rename = "canPurchase")]
@@ -39,7 +39,7 @@ pub struct DestinyVendorComponent {
 
 /// A vendor can have many categories of items that they sell. This component will return the category information for available items, as well as the index into those items in the user's sale item list.
 /// Note that, since both the category and items are indexes, this data is Content Version dependent. Be sure to check that your content is up to date before using this data. This is an unfortunate, but permanent, limitation of Vendor data.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorCategoriesComponent {
     /// The list of categories for items that the vendor sells, in rendering order.
     /// These categories each point to a "display category" in the displayCategories property of the DestinyVendorDefinition, as opposed to the other categories.
@@ -48,7 +48,7 @@ pub struct DestinyVendorCategoriesComponent {
 }
 
 /// Information about the category and items currently sold in that category.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorCategory {
     /// An index into the DestinyVendorDefinition.displayCategories property, so you can grab the display data for this category.
     #[serde(rename = "displayCategoryIndex")]
@@ -61,7 +61,7 @@ pub struct DestinyVendorCategory {
 
 /// Request this component if you want the details about an item being sold in relation to the character making the request: whether the character can buy it, whether they can afford it, and other data related to purchasing the item.
 /// Note that if you want instance, stats, etc... data for the item, you'll have to request additional components such as ItemInstances, ItemPerks etc... and acquire them from the DestinyVendorResponse's "items" property.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorSaleItemComponent {
     /// A flag indicating whether the requesting character can buy the item, and if not the reasons why the character can't buy it.
     #[serde(rename = "saleStatus")]

@@ -5,14 +5,14 @@ use serde_with::{serde_as, DisplayFromStr};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyActionRequest {
     #[serde(rename = "membershipType")]
     pub membership_type: crate::BungieMembershipType,
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCharacterActionRequest {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "characterId")]
@@ -23,7 +23,7 @@ pub struct DestinyCharacterActionRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemActionRequest {
     /// The instance ID of the item for this action request.
     #[serde_as(as = "DisplayFromStr")]
@@ -39,7 +39,7 @@ pub struct DestinyItemActionRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPostmasterTransferRequest {
     #[serde(rename = "itemReferenceHash")]
     pub item_reference_hash: u32,
@@ -61,7 +61,7 @@ pub struct DestinyPostmasterTransferRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemSetActionRequest {
     #[serde(rename = "itemIds")]
     pub item_ids: Option<Vec<i64>>,
@@ -75,7 +75,7 @@ pub struct DestinyItemSetActionRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemStateRequest {
     #[serde(rename = "state")]
     pub state: bool,
@@ -94,7 +94,7 @@ pub struct DestinyItemStateRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyInsertPlugsActionRequest {
     /// Action token provided by the AwaGetActionToken API call.
     #[serde(rename = "actionToken")]
@@ -119,7 +119,7 @@ pub struct DestinyInsertPlugsActionRequest {
 
 /// Represents all of the data related to a single plug to be inserted.
 /// Note that, while you *can* point to a socket that represents infusion, you will receive an error if you attempt to do so. Come on guys, let's play nice.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyInsertPlugsRequestEntry {
     /// The index into the socket array, which identifies the specific socket being operated on. We also need to know the socketArrayType in order to uniquely identify the socket.
     /// Don't point to or try to insert a plug into an infusion socket. It won't work.
@@ -162,7 +162,7 @@ impl FromStr for DestinySocketArrayType {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyInsertPlugsFreeActionRequest {
     /// The plugs being inserted.
     #[serde(rename = "plug")]

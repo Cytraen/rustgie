@@ -5,7 +5,7 @@ use time::OffsetDateTime;
 
 /// I know what you seek. You seek linked accounts. Found them, you have.
 /// This contract returns a minimal amount of data about Destiny Accounts that are linked through your Bungie.Net account. We will not return accounts in this response whose
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyLinkedProfilesResponse {
     /// Any Destiny account for whom we could successfully pull characters will be returned here, as the Platform-level summary of user data. (no character data, no Destiny account data other than the Membership ID and Type so you can make further queries)
     #[serde(rename = "profiles")]
@@ -22,7 +22,7 @@ pub struct DestinyLinkedProfilesResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyProfileUserInfoCard {
     #[serde(with = "time::serde::rfc3339")]
     #[serde(rename = "dateLastPlayed")]
@@ -92,7 +92,7 @@ pub struct DestinyProfileUserInfoCard {
 
 /// If a Destiny Profile can't be returned, but we're pretty certain it's a valid Destiny account, this will contain as much info as we can get about the profile for your use.
 /// Assume that the most you'll get is the Error Code, the Membership Type and the Membership ID.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyErrorProfile {
     /// The error that we encountered. You should be able to look up localized text to show to the user for these failures.
     #[serde(rename = "errorCode")]
@@ -105,7 +105,7 @@ pub struct DestinyErrorProfile {
 
 /// The response for GetDestinyProfile, with components for character and item-level data.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyProfileResponse {
     /// Records the timestamp of when most components were last generated from the world server source. Unless the component type is specified in the documentation for secondaryComponentsMintedTimestamp, this value is sufficient to do data freshness.
     #[serde(with = "time::serde::rfc3339")]
@@ -270,7 +270,7 @@ pub struct DestinyProfileResponse {
 }
 
 /// The response contract for GetDestinyCharacter, with components that can be returned for character and item-level data.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCharacterResponse {
     /// The character-level non-equipped inventory items.
     /// COMPONENT TYPE: CharacterInventories
@@ -343,7 +343,7 @@ pub struct DestinyCharacterResponse {
 
 /// The response object for retrieving an individual instanced item. None of these components are relevant for an item that doesn't have an "itemInstanceId": for those, get your information from the DestinyInventoryDefinition.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemResponse {
     /// If the item is on a character, this will return the ID of the character that is holding the item.
     #[serde_as(as = "Option<DisplayFromStr>")]
@@ -404,7 +404,7 @@ pub struct DestinyItemResponse {
 }
 
 /// A response containing all of the components for all requested vendors.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorsResponse {
     /// For Vendors being returned, this will give you the information you need to group them and order them in the same way that the Bungie Companion app performs grouping. It will automatically be returned if you request the Vendors component.
     /// COMPONENT TYPE: Vendors
@@ -443,14 +443,14 @@ pub struct DestinyVendorsResponse {
     pub string_variables: Option<crate::SingleComponentResponseOfDestinyStringVariablesComponent>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PersonalDestinyVendorSaleItemSetComponent {
     #[serde(rename = "saleItems")]
     pub sale_items: Option<HashMap<i32, crate::destiny::entities::vendors::DestinyVendorSaleItemComponent>>,
 }
 
 /// A response containing all of the components for a vendor.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorResponse {
     /// The base properties of the vendor.
     /// COMPONENT TYPE: Vendors
@@ -486,7 +486,7 @@ pub struct DestinyVendorResponse {
 /// A response containing all valid components for the public Vendors endpoint.
 /// It is a decisively smaller subset of data compared to what we can get when we know the specific user making the request.
 /// If you want any of the other data - item details, whether or not you can buy it, etc... you'll have to call in the context of a character. I know, sad but true.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicVendorsResponse {
     /// For Vendors being returned, this will give you the information you need to group them and order them in the same way that the Bungie Companion app performs grouping. It will automatically be returned if you request the Vendors component.
     /// COMPONENT TYPE: Vendors
@@ -515,14 +515,14 @@ pub struct DestinyPublicVendorsResponse {
     pub string_variables: Option<crate::SingleComponentResponseOfDestinyStringVariablesComponent>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PublicDestinyVendorSaleItemSetComponent {
     #[serde(rename = "saleItems")]
     pub sale_items: Option<HashMap<i32, crate::destiny::components::vendors::DestinyPublicVendorSaleItemComponent>>,
 }
 
 /// Returns the detailed information about a Collectible Presentation Node and any Collectibles that are direct descendants.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCollectibleNodeDetailResponse {
     /// COMPONENT TYPE: Collectibles
     #[serde(rename = "collectibles")]
@@ -537,7 +537,7 @@ pub struct DestinyCollectibleNodeDetailResponse {
 }
 
 /// A response containing all of the components for all requested vendors.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct InventoryChangedResponse {
     /// Items that appeared in the inventory possibly as a result of an action.
     #[serde(rename = "addedInventoryItems")]
@@ -548,7 +548,7 @@ pub struct InventoryChangedResponse {
     pub removed_inventory_items: Option<Vec<crate::destiny::entities::items::DestinyItemComponent>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyItemChangeResponse {
     #[serde(rename = "item")]
     pub item: Option<crate::destiny::responses::DestinyItemResponse>,

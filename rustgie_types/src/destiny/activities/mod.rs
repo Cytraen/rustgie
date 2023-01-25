@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Represents the public-facing status of an activity: any data about what is currently active in the Activity, regardless of an individual character's progress in it.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPublicActivityStatus {
     /// Active Challenges for the activity, if any - represented as hashes for DestinyObjectiveDefinitions.
     #[serde(rename = "challengeObjectiveHashes")]

@@ -1,6 +1,6 @@
 ﻿use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyTraitDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -29,7 +29,7 @@ pub struct DestinyTraitDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyTraitCategoryDefinition {
     #[serde(rename = "traitCategoryId")]
     pub trait_category_id: Option<String>,

@@ -6,7 +6,7 @@ use std::collections::HashMap;
 use time::OffsetDateTime;
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentItemPublicContract {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "contentId")]
@@ -60,7 +60,7 @@ pub struct ContentItemPublicContract {
     pub comment_summary: Option<crate::content::CommentSummary>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ContentRepresentation {
     #[serde(rename = "name")]
     pub name: Option<String>,
@@ -73,7 +73,7 @@ pub struct ContentRepresentation {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct CommentSummary {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "topicId")]
@@ -83,7 +83,7 @@ pub struct CommentSummary {
     pub comment_count: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct NewsArticleRssResponse {
     #[serde(rename = "NewsArticles")]
     pub news_articles: Option<Vec<crate::content::NewsArticleRssItem>>,
@@ -101,7 +101,7 @@ pub struct NewsArticleRssResponse {
     pub category_filter: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct NewsArticleRssItem {
     #[serde(rename = "Title")]
     pub title: Option<String>,

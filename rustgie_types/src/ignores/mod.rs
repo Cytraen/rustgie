@@ -5,7 +5,7 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct IgnoreResponse {
     #[serde(rename = "isIgnored")]
     pub is_ignored: bool,

@@ -6,7 +6,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 use time::OffsetDateTime;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct AwaInitializeResponse {
     /// ID used to get the token. Present this ID to the user as it will identify this specific request on their device.
     #[serde(rename = "correlationId")]
@@ -18,7 +18,7 @@ pub struct AwaInitializeResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct AwaPermissionRequested {
     /// Type of advanced write action.
     #[serde(rename = "type")]
@@ -66,7 +66,7 @@ impl FromStr for AwaType {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct AwaUserResponse {
     /// Indication of the selection the user has made (Approving or rejecting the action)
     #[serde(rename = "selection")]
@@ -107,7 +107,7 @@ impl FromStr for AwaUserSelection {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct AwaAuthorizationResult {
     /// Indication of how the user responded to the request. If the value is "Approved" the actionToken will contain the token that can be presented when performing the advanced write action.
     #[serde(rename = "userSelection")]

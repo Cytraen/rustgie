@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Represents types of Energy that can be used for costs and payments related to Armor 2.0 mods.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyEnergyTypeDefinition {
     /// The description of the energy type, icon etc...
     #[serde(rename = "displayProperties")]

@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Modifiers - in Destiny 1, these were referred to as "Skulls" - are changes that can be applied to an Activity.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyActivityModifierDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,

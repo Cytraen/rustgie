@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Defines a 'power cap' (limit) for gear items, based on the rarity tier and season of release.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPowerCapDefinition {
     /// The raw value for a power cap.
     #[serde(rename = "powerCap")]

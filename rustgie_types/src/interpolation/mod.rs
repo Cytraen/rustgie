@@ -1,6 +1,6 @@
 ﻿use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct InterpolationPoint {
     #[serde(rename = "value")]
     pub value: i32,
@@ -9,7 +9,7 @@ pub struct InterpolationPoint {
     pub weight: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct InterpolationPointFloat {
     #[serde(rename = "value")]
     pub value: f32,

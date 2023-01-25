@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Many Destiny*Definition contracts - the "first order" entities of Destiny that have their own tables in the Manifest Database - also have displayable information. This is the base class for that display information.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyDisplayPropertiesDefinition {
     #[serde(rename = "description")]
     pub description: Option<String>,
@@ -26,13 +26,13 @@ pub struct DestinyDisplayPropertiesDefinition {
     pub has_icon: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyIconSequenceDefinition {
     #[serde(rename = "frames")]
     pub frames: Option<Vec<String>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPositionDefinition {
     #[serde(rename = "x")]
     pub x: i32,

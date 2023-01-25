@@ -123,7 +123,7 @@ impl FromStr for FireteamSlotSearch {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct FireteamSummary {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "fireteamId")]
@@ -192,7 +192,7 @@ pub struct FireteamSummary {
     pub title_before_moderation: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct FireteamResponse {
     #[serde(rename = "Summary")]
     pub summary: Option<crate::fireteam::FireteamSummary>,
@@ -205,7 +205,7 @@ pub struct FireteamResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct FireteamMember {
     #[serde(rename = "destinyUserInfo")]
     pub destiny_user_info: Option<crate::fireteam::FireteamUserInfoCard>,
@@ -233,7 +233,7 @@ pub struct FireteamMember {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct FireteamUserInfoCard {
     #[serde(rename = "FireteamDisplayName")]
     pub fireteam_display_name: Option<String>,

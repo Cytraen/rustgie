@@ -194,7 +194,7 @@ impl FromStr for DestinyActivityModeType {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsDefinition {
     /// Unique programmer friendly ID for this stat
     #[serde(rename = "statId")]

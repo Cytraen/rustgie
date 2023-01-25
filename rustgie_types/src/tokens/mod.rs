@@ -3,7 +3,7 @@ use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PartnerOfferClaimRequest {
     #[serde(rename = "PartnerOfferId")]
     pub partner_offer_id: Option<String>,
@@ -16,7 +16,7 @@ pub struct PartnerOfferClaimRequest {
     pub transaction_id: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PartnerOfferSkuHistoryResponse {
     #[serde(rename = "SkuIdentifier")]
     pub sku_identifier: Option<String>,
@@ -42,7 +42,7 @@ pub struct PartnerOfferSkuHistoryResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PartnerOfferHistoryResponse {
     #[serde(rename = "PartnerOfferKey")]
     pub partner_offer_key: Option<String>,
@@ -73,7 +73,7 @@ pub struct PartnerOfferHistoryResponse {
     pub apply_date: Option<OffsetDateTime>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PartnerRewardHistoryResponse {
     #[serde(rename = "PartnerOffers")]
     pub partner_offers: Option<Vec<crate::tokens::PartnerOfferSkuHistoryResponse>>,
@@ -82,7 +82,7 @@ pub struct PartnerRewardHistoryResponse {
     pub twitch_drops: Option<Vec<crate::tokens::TwitchDropHistoryResponse>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TwitchDropHistoryResponse {
     #[serde(rename = "Title")]
     pub title: Option<String>,
@@ -99,7 +99,7 @@ pub struct TwitchDropHistoryResponse {
     pub claim_state: Option<u8>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct BungieRewardDisplay {
     #[serde(rename = "UserRewardAvailabilityModel")]
     pub user_reward_availability_model: Option<crate::tokens::UserRewardAvailabilityModel>,
@@ -111,7 +111,7 @@ pub struct BungieRewardDisplay {
     pub reward_display_properties: Option<crate::tokens::RewardDisplayProperties>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct UserRewardAvailabilityModel {
     #[serde(rename = "AvailabilityModel")]
     pub availability_model: Option<crate::tokens::RewardAvailabilityModel>,
@@ -123,7 +123,7 @@ pub struct UserRewardAvailabilityModel {
     pub is_unlocked_for_user: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct RewardAvailabilityModel {
     #[serde(rename = "HasExistingCode")]
     pub has_existing_code: bool,
@@ -163,7 +163,7 @@ pub struct RewardAvailabilityModel {
     pub redemption_end_date: OffsetDateTime,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct CollectibleDefinitions {
     #[serde(rename = "CollectibleDefinition")]
     pub collectible_definition: Option<crate::destiny::definitions::collectibles::DestinyCollectibleDefinition>,
@@ -172,7 +172,7 @@ pub struct CollectibleDefinitions {
     pub destiny_inventory_item_definition: Option<crate::destiny::definitions::DestinyInventoryItemDefinition>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct RewardDisplayProperties {
     #[serde(rename = "Name")]
     pub name: Option<String>,

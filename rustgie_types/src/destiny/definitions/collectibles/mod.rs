@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Defines a
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCollectibleDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -59,7 +59,7 @@ pub struct DestinyCollectibleDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCollectibleAcquisitionBlock {
     #[serde(rename = "acquireMaterialRequirementHash")]
     pub acquire_material_requirement_hash: Option<u32>,
@@ -68,7 +68,7 @@ pub struct DestinyCollectibleAcquisitionBlock {
     pub acquire_timestamp_unlock_value_hash: Option<u32>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCollectibleStateBlock {
     #[serde(rename = "obscuredOverrideItemHash")]
     pub obscured_override_item_hash: Option<u32>,

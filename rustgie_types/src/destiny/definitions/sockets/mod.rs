@@ -2,7 +2,7 @@
 
 /// All Sockets have a "Type": a set of common properties that determine when the socket allows Plugs to be inserted, what Categories of Plugs can be inserted, and whether the socket is even visible at all given the current game/character/account state.
 /// See DestinyInventoryItemDefinition for more information about Socketed items and Plugs.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinySocketTypeDefinition {
     /// There are fields for this display data, but they appear to be unpopulated as of now. I am not sure where in the UI these would show if they even were populated, but I will continue to return this data in case it becomes useful.
     #[serde(rename = "displayProperties")]
@@ -59,7 +59,7 @@ pub struct DestinySocketTypeDefinition {
 }
 
 /// Data related to what happens while a plug is being inserted, mostly for UI purposes.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyInsertPlugActionDefinition {
     /// How long it takes for the Plugging of the item to be completed once it is initiated, if you care.
     #[serde(rename = "actionExecuteSeconds")]
@@ -72,7 +72,7 @@ pub struct DestinyInsertPlugActionDefinition {
 
 /// Defines a plug "Category" that is allowed to be plugged into a socket of this type.
 /// This should be compared against a given plug item's DestinyInventoryItemDefinition.plug.plugCategoryHash, which indicates the plug item's category.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPlugWhitelistEntryDefinition {
     /// The hash identifier of the Plug Category to compare against the plug item's plug.plugCategoryHash.
     /// Note that this does NOT relate to any Definition in itself, it is only used for comparison purposes.
@@ -92,7 +92,7 @@ pub struct DestinyPlugWhitelistEntryDefinition {
     pub reinitialization_possible_plug_hashes: Option<Vec<u32>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinySocketTypeScalarMaterialRequirementEntry {
     #[serde(rename = "currencyItemHash")]
     pub currency_item_hash: u32,
@@ -106,7 +106,7 @@ pub struct DestinySocketTypeScalarMaterialRequirementEntry {
 /// This has the display information for rendering the categories' header, and a hint for how the UI should handle showing this category.
 /// The shitty thing about this, however, is that the socket categories' UI style can be overridden by the item's UI style. For instance, the Socket Category used by Emote Sockets says it's "consumable," but that's a lie: they're all reusable, and overridden by the detail UI pages in ways that we can't easily account for in the API.
 /// As a result, I will try to compile these rules into the individual sockets on items, and provide the best hint possible there through the plugSources property. In the future, I may attempt to use this information in conjunction with the item to provide a more usable UI hint on the socket layer, but for now improving the consistency of plugSources is the best I have time to provide. (See https://github.com/Bungie-net/api/issues/522 for more info)
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinySocketCategoryDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -138,7 +138,7 @@ pub struct DestinySocketCategoryDefinition {
 /// See DestinyItemSocketEntryDefinition.plugSource and reusablePlugSetHash for the relationship between these reusable plug sets and the sockets that leverage them (for starters, Emotes).
 /// As of the release of Shadowkeep (Late 2019), these will begin to be sourced from game content directly - which means there will be many more of them, but it also means we may not get all data that we used to get for them.
 /// DisplayProperties, in particular, will no longer be guaranteed to contain valid information. We will make a best effort to guess what ought to be populated there where possible, but it will be invalid for many/most plug sets.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPlugSetDefinition {
     /// If you want to show these plugs in isolation, these are the display properties for them.
     #[serde(rename = "displayProperties")]

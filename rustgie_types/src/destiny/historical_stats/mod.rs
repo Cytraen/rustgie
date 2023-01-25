@@ -5,7 +5,7 @@ use serde_with::{serde_as, DisplayFromStr};
 use std::collections::HashMap;
 use time::OffsetDateTime;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPostGameCarnageReportData {
     /// Date and time for the activity.
     #[serde(with = "time::serde::rfc3339")]
@@ -35,7 +35,7 @@ pub struct DestinyPostGameCarnageReportData {
 
 /// Summary information about the activity that was played.
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsActivity {
     /// The unique hash identifier of the DestinyActivityDefinition that was played. If I had this to do over, it'd be named activityHash. Too late now.
     #[serde(rename = "referenceId")]
@@ -69,7 +69,7 @@ pub struct DestinyHistoricalStatsActivity {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPostGameCarnageReportEntry {
     /// Standing of the player
     #[serde(rename = "standing")]
@@ -98,7 +98,7 @@ pub struct DestinyPostGameCarnageReportEntry {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsValue {
     /// Unique ID for this stat
     #[serde(rename = "statId")]
@@ -123,7 +123,7 @@ pub struct DestinyHistoricalStatsValue {
     pub activity_id: Option<i64>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsValuePair {
     /// Raw value of the statistic
     #[serde(rename = "value")]
@@ -134,7 +134,7 @@ pub struct DestinyHistoricalStatsValuePair {
     pub display_value: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPlayer {
     /// Details about the player as they are known in game (platform display name, Destiny emblem)
     #[serde(rename = "destinyUserInfo")]
@@ -178,7 +178,7 @@ pub struct DestinyPlayer {
     pub emblem_hash: u32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPostGameCarnageReportExtendedData {
     /// List of weapons and their perspective values.
     #[serde(rename = "weapons")]
@@ -189,7 +189,7 @@ pub struct DestinyPostGameCarnageReportExtendedData {
     pub values: Option<HashMap<String, crate::destiny::historical_stats::DestinyHistoricalStatsValue>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalWeaponStats {
     /// The hash ID of the item definition that describes the weapon.
     #[serde(rename = "referenceId")]
@@ -200,7 +200,7 @@ pub struct DestinyHistoricalWeaponStats {
     pub values: Option<HashMap<String, crate::destiny::historical_stats::DestinyHistoricalStatsValue>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyPostGameCarnageReportTeamEntry {
     /// Integer ID for the team.
     #[serde(rename = "teamId")]
@@ -219,7 +219,7 @@ pub struct DestinyPostGameCarnageReportTeamEntry {
     pub team_name: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyLeaderboard {
     #[serde(rename = "statId")]
     pub stat_id: Option<String>,
@@ -229,7 +229,7 @@ pub struct DestinyLeaderboard {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyLeaderboardEntry {
     /// Where this player ranks on the leaderboard. A value of 1 is the top rank.
     #[serde(rename = "rank")]
@@ -250,7 +250,7 @@ pub struct DestinyLeaderboardEntry {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyLeaderboardResults {
     /// Indicate the membership ID of the account that is the focal point of the provided leaderboards.
     #[serde_as(as = "Option<DisplayFromStr>")]
@@ -265,7 +265,7 @@ pub struct DestinyLeaderboardResults {
     pub focus_character_id: Option<i64>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyClanAggregateStat {
     /// The id of the mode of stats (allPvp, allPvE, etc)
     #[serde(rename = "mode")]
@@ -280,7 +280,7 @@ pub struct DestinyClanAggregateStat {
     pub value: Option<crate::destiny::historical_stats::DestinyHistoricalStatsValue>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsByPeriod {
     #[serde(rename = "allTime")]
     pub all_time: Option<HashMap<String, crate::destiny::historical_stats::DestinyHistoricalStatsValue>>,
@@ -301,7 +301,7 @@ pub struct DestinyHistoricalStatsByPeriod {
     pub monthly: Option<Vec<crate::destiny::historical_stats::DestinyHistoricalStatsPeriodGroup>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsPeriodGroup {
     /// Period for the group. If the stat periodType is day, then this will have a specific day. If the type is monthly, then this value will be the first day of the applicable month. This value is not set when the periodType is 'all time'.
     #[serde(with = "time::serde::rfc3339")]
@@ -317,10 +317,10 @@ pub struct DestinyHistoricalStatsPeriodGroup {
     pub values: Option<HashMap<String, crate::destiny::historical_stats::DestinyHistoricalStatsValue>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsResults {}
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsAccountResult {
     #[serde(rename = "mergedDeletedCharacters")]
     pub merged_deleted_characters: Option<crate::destiny::historical_stats::DestinyHistoricalStatsWithMerged>,
@@ -332,7 +332,7 @@ pub struct DestinyHistoricalStatsAccountResult {
     pub characters: Option<Vec<crate::destiny::historical_stats::DestinyHistoricalStatsPerCharacter>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsWithMerged {
     #[serde(rename = "results")]
     pub results: Option<HashMap<String, crate::destiny::historical_stats::DestinyHistoricalStatsByPeriod>>,
@@ -342,7 +342,7 @@ pub struct DestinyHistoricalStatsWithMerged {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalStatsPerCharacter {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "characterId")]
@@ -358,28 +358,28 @@ pub struct DestinyHistoricalStatsPerCharacter {
     pub merged: Option<crate::destiny::historical_stats::DestinyHistoricalStatsByPeriod>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyActivityHistoryResults {
     /// List of activities, the most recent activity first.
     #[serde(rename = "activities")]
     pub activities: Option<Vec<crate::destiny::historical_stats::DestinyHistoricalStatsPeriodGroup>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyHistoricalWeaponStatsData {
     /// List of weapons and their perspective values.
     #[serde(rename = "weapons")]
     pub weapons: Option<Vec<crate::destiny::historical_stats::DestinyHistoricalWeaponStats>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyAggregateActivityResults {
     /// List of all activities the player has participated in.
     #[serde(rename = "activities")]
     pub activities: Option<Vec<crate::destiny::historical_stats::DestinyAggregateActivityStats>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyAggregateActivityStats {
     /// Hash ID that can be looked up in the DestinyActivityTable.
     #[serde(rename = "activityHash")]

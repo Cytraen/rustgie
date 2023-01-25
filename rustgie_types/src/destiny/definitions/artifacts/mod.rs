@@ -2,7 +2,7 @@
 
 /// Represents known info about a Destiny Artifact.
 /// We cannot guarantee that artifact definitions will be immutable between seasons - in fact, we've been told that they will be replaced between seasons. But this definition is built both to minimize the amount of lookups for related data that have to occur, and is built in hope that, if this plan changes, we will be able to accommodate it more easily.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactDefinition {
     /// Any basic display info we know about the Artifact. Currently sourced from a related inventory item, but the source of this data is subject to change.
     #[serde(rename = "displayProperties")]
@@ -30,7 +30,7 @@ pub struct DestinyArtifactDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactTierDefinition {
     /// An identifier, unique within the Artifact, for this specific tier.
     #[serde(rename = "tierHash")]
@@ -53,7 +53,7 @@ pub struct DestinyArtifactTierDefinition {
     pub minimum_unlock_points_used_requirement: i32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyArtifactTierItemDefinition {
     /// The identifier of the Plug Item unlocked by activating this item in the Artifact.
     #[serde(rename = "itemHash")]

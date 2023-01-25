@@ -6,13 +6,13 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 use time::OffsetDateTime;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingCategories {
     #[serde(rename = "categories")]
     pub categories: Option<Vec<crate::trending::TrendingCategory>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingCategory {
     #[serde(rename = "categoryName")]
     pub category_name: Option<String>,
@@ -25,7 +25,7 @@ pub struct TrendingCategory {
 }
 
 /// The list entry view for trending items. Returns just enough to show the item on the trending page.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntry {
     /// The weighted score of this trending item.
     #[serde(rename = "weight")]
@@ -134,7 +134,7 @@ impl FromStr for TrendingEntryType {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingDetail {
     #[serde(rename = "identifier")]
     pub identifier: Option<String>,
@@ -161,25 +161,25 @@ pub struct TrendingDetail {
     pub creation: Option<crate::trending::TrendingEntryCommunityCreation>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntryNews {
     #[serde(rename = "article")]
     pub article: Option<crate::content::ContentItemPublicContract>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntrySupportArticle {
     #[serde(rename = "article")]
     pub article: Option<crate::content::ContentItemPublicContract>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntryDestinyItem {
     #[serde(rename = "itemHash")]
     pub item_hash: u32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntryDestinyActivity {
     #[serde(rename = "activityHash")]
     pub activity_hash: u32,
@@ -188,7 +188,7 @@ pub struct TrendingEntryDestinyActivity {
     pub status: Option<crate::destiny::activities::DestinyPublicActivityStatus>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntryDestinyRitual {
     #[serde(rename = "image")]
     pub image: Option<String>,
@@ -222,7 +222,7 @@ pub struct TrendingEntryDestinyRitual {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct TrendingEntryCommunityCreation {
     #[serde(rename = "media")]
     pub media: Option<String>,

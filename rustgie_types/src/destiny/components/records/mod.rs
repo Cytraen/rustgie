@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyRecordsComponent {
     #[serde(rename = "records")]
     pub records: Option<HashMap<u32, crate::destiny::components::records::DestinyRecordComponent>>,
@@ -15,7 +15,7 @@ pub struct DestinyRecordsComponent {
     pub record_seals_root_node_hash: u32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyRecordComponent {
     #[serde(rename = "state")]
     pub state: enumflags2::BitFlags<crate::destiny::DestinyRecordState>,
@@ -38,7 +38,7 @@ pub struct DestinyRecordComponent {
     pub reward_visibilty: Option<Vec<bool>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyProfileRecordsComponent {
     /// Your 'active' Triumphs score, maintained for backwards compatibility.
     #[serde(rename = "score")]
@@ -72,7 +72,7 @@ pub struct DestinyProfileRecordsComponent {
     pub record_seals_root_node_hash: u32,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyCharacterRecordsComponent {
     #[serde(rename = "featuredRecordHashes")]
     pub featured_record_hashes: Option<Vec<u32>>,

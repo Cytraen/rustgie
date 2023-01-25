@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// Represents a color whose RGBA values are all represented as values between 0 and 255.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyColor {
     #[serde(rename = "red")]
     pub red: u8,

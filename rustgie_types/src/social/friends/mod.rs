@@ -6,14 +6,14 @@ use serde_with::{serde_as, DisplayFromStr};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct BungieFriendListResponse {
     #[serde(rename = "friends")]
     pub friends: Option<Vec<crate::social::friends::BungieFriend>>,
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct BungieFriend {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "lastSeenAsMembershipId")]
@@ -118,7 +118,7 @@ impl FromStr for FriendRelationshipState {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct BungieFriendRequestListResponse {
     #[serde(rename = "incomingRequests")]
     pub incoming_requests: Option<Vec<crate::social::friends::BungieFriend>>,
@@ -157,7 +157,7 @@ impl FromStr for PlatformFriendType {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PlatformFriendResponse {
     #[serde(rename = "itemsPerPage")]
     pub items_per_page: i32,
@@ -173,7 +173,7 @@ pub struct PlatformFriendResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct PlatformFriend {
     #[serde(rename = "platformDisplayName")]
     pub platform_display_name: Option<String>,

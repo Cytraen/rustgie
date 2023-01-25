@@ -73,7 +73,7 @@ impl FromStr for ApplicationScopes {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ApiUsage {
     /// Counts for on API calls made for the time range.
     #[serde(rename = "apiCalls")]
@@ -84,7 +84,7 @@ pub struct ApiUsage {
     pub throttled_requests: Option<Vec<crate::applications::Series>>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct Series {
     /// Collection of samples with time and value.
     #[serde(rename = "datapoints")]
@@ -95,7 +95,7 @@ pub struct Series {
     pub target: Option<String>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct Datapoint {
     /// Timestamp for the related count.
     #[serde(with = "time::serde::rfc3339")]
@@ -108,7 +108,7 @@ pub struct Datapoint {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct Application {
     /// Unique ID assigned to the application
     #[serde(rename = "applicationId")]
@@ -198,7 +198,7 @@ impl FromStr for ApplicationStatus {
     }
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct ApplicationDeveloper {
     #[serde(rename = "role")]
     pub role: crate::applications::DeveloperRole,

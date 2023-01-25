@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// These definitions represent vendors' locations and relevant display information at different times in the game.
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, PartialEq)]
 pub struct DestinyVendorLocationDefinition {
     /// The hash identifier for a Destination at which this vendor may be located. Each destination where a Vendor may exist will only ever have a single entry.
     #[serde(rename = "destinationHash")]

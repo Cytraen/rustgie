@@ -6,14 +6,14 @@ use serde_with::{serde_as, DisplayFromStr};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct BungieFriendListResponse {
     #[serde(rename = "friends")]
     pub friends: Option<Vec<crate::social::friends::BungieFriend>>,
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct BungieFriend {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "lastSeenAsMembershipId")]
@@ -42,7 +42,7 @@ pub struct BungieFriend {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum PresenceStatus {
     OfflineOrUnknown = 0,
     Online = 1,
@@ -67,7 +67,7 @@ impl FromStr for PresenceStatus {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum PresenceOnlineStateFlags {
     Destiny1 = 1,
     Destiny2 = 2,
@@ -91,7 +91,7 @@ impl FromStr for PresenceOnlineStateFlags {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FriendRelationshipState {
     Unknown = 0,
     Friend = 1,
@@ -118,7 +118,7 @@ impl FromStr for FriendRelationshipState {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct BungieFriendRequestListResponse {
     #[serde(rename = "incomingRequests")]
     pub incoming_requests: Option<Vec<crate::social::friends::BungieFriend>>,
@@ -128,7 +128,7 @@ pub struct BungieFriendRequestListResponse {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum PlatformFriendType {
     Unknown = 0,
     Xbox = 1,
@@ -157,7 +157,7 @@ impl FromStr for PlatformFriendType {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PlatformFriendResponse {
     #[serde(rename = "itemsPerPage")]
     pub items_per_page: i32,
@@ -173,7 +173,7 @@ pub struct PlatformFriendResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PlatformFriend {
     #[serde(rename = "platformDisplayName")]
     pub platform_display_name: Option<String>,

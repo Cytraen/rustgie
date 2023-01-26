@@ -3,7 +3,7 @@ use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
 /// Defines a canonical "Season" of Destiny: a range of a few months where the game highlights certain challenges, provides new loot, has new Clan-related rewards and celebrates various seasonal events.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinySeasonDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -58,7 +58,7 @@ pub struct DestinySeasonDefinition {
 }
 
 /// Defines the promotional text, images, and links to preview this season.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinySeasonPreviewDefinition {
     /// A localized description of the season.
     #[serde(rename = "description")]
@@ -78,7 +78,7 @@ pub struct DestinySeasonPreviewDefinition {
 }
 
 /// Defines the thumbnail icon, high-res image, and video link for promotional images
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinySeasonPreviewImageDefinition {
     /// A thumbnail icon path to preview seasonal content, probably 480x270.
     #[serde(rename = "thumbnailImage")]
@@ -89,7 +89,7 @@ pub struct DestinySeasonPreviewImageDefinition {
     pub high_res_image: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinySeasonPassDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -119,7 +119,7 @@ pub struct DestinySeasonPassDefinition {
 
 /// Defines the properties of an 'Event Card' in Destiny 2, to coincide with a seasonal event for additional challenges, premium rewards, a new seal, and a special title. For example: Solstice of Heroes 2022.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEventCardDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -166,7 +166,7 @@ pub struct DestinyEventCardDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEventCardImages {
     #[serde(rename = "unownedCardSleeveImagePath")]
     pub unowned_card_sleeve_image_path: Option<String>,

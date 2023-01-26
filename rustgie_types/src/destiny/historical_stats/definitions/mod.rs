@@ -6,7 +6,7 @@ use std::str::FromStr;
 
 /// For historical reasons, this list will have both D1 and D2-relevant Activity Modes in it. Please don't take this to mean that some D1-only feature is coming back!
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyActivityModeType {
     None = 0,
     Story = 2,
@@ -194,7 +194,7 @@ impl FromStr for DestinyActivityModeType {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyHistoricalStatsDefinition {
     /// Unique programmer friendly ID for this stat
     #[serde(rename = "statId")]
@@ -255,7 +255,7 @@ pub struct DestinyHistoricalStatsDefinition {
 
 /// If the enum value is > 100, it is a "special" group that cannot be queried for directly (special cases apply to when they are returned, and are not relevant in general cases)
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyStatsGroupType {
     None = 0,
     General = 1,
@@ -297,7 +297,7 @@ impl FromStr for DestinyStatsGroupType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyStatsCategoryType {
     None = 0,
     Kills = 1,
@@ -349,7 +349,7 @@ impl FromStr for DestinyStatsCategoryType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum UnitType {
     None = 0,
     /// Indicates the statistic is a simple count of something.
@@ -410,7 +410,7 @@ impl FromStr for UnitType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyStatsMergeMethod {
     /// When collapsing multiple instances of the stat together, add the values.
     Add = 0,
@@ -439,7 +439,7 @@ impl FromStr for DestinyStatsMergeMethod {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum PeriodType {
     None = 0,
     Daily = 1,

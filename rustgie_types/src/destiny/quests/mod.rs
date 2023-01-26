@@ -2,7 +2,7 @@
 use serde_with::{serde_as, DisplayFromStr};
 
 /// Returns data about a character's status with a given Objective. Combine with DestinyObjectiveDefinition static data for display purposes.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyObjectiveProgress {
     /// The unique identifier of the Objective being referred to. Use to look up the DestinyObjectiveDefinition in static data.
     #[serde(rename = "objectiveHash")]
@@ -37,7 +37,7 @@ pub struct DestinyObjectiveProgress {
 
 /// Data regarding the progress of a Quest for a specific character. Quests are composed of multiple steps, each with potentially multiple objectives: this QuestStatus will return Objective data for the *currently active* step in this quest.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyQuestStatus {
     /// The hash identifier for the Quest Item. (Note: Quests are defined as Items, and thus you would use this to look up the quest's DestinyInventoryItemDefinition). For information on all steps in the quest, you can then examine its DestinyInventoryItemDefinition.setData property for Quest Steps (which are *also* items). You can use the Item Definition to display human readable data about the overall quest.
     #[serde(rename = "questHash")]

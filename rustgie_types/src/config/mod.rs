@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserTheme {
     #[serde(rename = "userThemeId")]
     pub user_theme_id: i32,
@@ -14,7 +14,7 @@ pub struct UserTheme {
     pub user_theme_description: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupTheme {
     #[serde(rename = "name")]
     pub name: Option<String>,

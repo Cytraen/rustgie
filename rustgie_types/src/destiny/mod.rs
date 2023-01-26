@@ -30,7 +30,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// Information about a current character's status with a Progression. A progression is a value that can increase with activity and has levels. Think Character Level and Reputation Levels. Combine this "live" data with the related DestinyProgressionDefinition for a full picture of the Progression.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgression {
     /// The hash identifier of the Progression in question. Use it to look up the DestinyProgressionDefinition in static data.
     #[serde(rename = "progressionHash")]
@@ -91,7 +91,7 @@ pub struct DestinyProgression {
 
 /// Represents a season and the number of resets you had in that season.
 /// We do not necessarily - even for progressions with resets - track it over all seasons. So be careful and check the season numbers being returned.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionResetEntry {
     #[serde(rename = "season")]
     pub season: i32,
@@ -103,7 +103,7 @@ pub struct DestinyProgressionResetEntry {
 /// Represents the different states a progression reward item can be in.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyProgressionRewardItemState {
     /// If this is set, the reward should be hidden.
     Invisible = 1,
@@ -136,7 +136,7 @@ impl FromStr for DestinyProgressionRewardItemState {
 
 /// There are many Progressions in Destiny (think Character Level, or Reputation). These are the various "Scopes" of Progressions, which affect many things: * Where/if they are stored * How they are calculated * Where they can be used in other game logic
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyProgressionScope {
     Account = 0,
     Character = 1,
@@ -175,7 +175,7 @@ impl FromStr for DestinyProgressionScope {
 
 /// If progression is earned, this determines whether the progression shows visual effects on the character or its item - or neither.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyProgressionStepDisplayEffect {
     None = 0,
     Character = 1,
@@ -202,7 +202,7 @@ impl FromStr for DestinyProgressionStepDisplayEffect {
 
 /// Used in a number of Destiny contracts to return data about an item stack and its quantity. Can optionally return an itemInstanceId if the item is instanced - in which case, the quantity returned will be 1. If it's not... uh, let me know okay? Thanks.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemQuantity {
     /// The hash identifier for the item in question. Use it to look up the item's DestinyInventoryItemDefinition.
     #[serde(rename = "itemHash")]
@@ -225,7 +225,7 @@ pub struct DestinyItemQuantity {
 
 /// Indicates the type of actions that can be performed
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum SocketTypeActionType {
     InsertPlug = 0,
     InfuseItem = 1,
@@ -251,7 +251,7 @@ impl FromStr for SocketTypeActionType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinySocketVisibility {
     Visible = 0,
     Hidden = 1,
@@ -280,7 +280,7 @@ impl FromStr for DestinySocketVisibility {
 
 /// Represents the possible and known UI styles used by the game for rendering Socket Categories.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinySocketCategoryStyle {
     Unknown = 0,
     Reusable = 1,
@@ -318,7 +318,7 @@ impl FromStr for DestinySocketCategoryStyle {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum TierType {
     Unknown = 0,
     Currency = 1,
@@ -352,7 +352,7 @@ impl FromStr for TierType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum BucketScope {
     Character = 0,
     Account = 1,
@@ -376,7 +376,7 @@ impl FromStr for BucketScope {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum BucketCategory {
     Invisible = 0,
     Item = 1,
@@ -406,7 +406,7 @@ impl FromStr for BucketCategory {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ItemLocation {
     Unknown = 0,
     Inventory = 1,
@@ -438,7 +438,7 @@ impl FromStr for ItemLocation {
 /// When a Stat (DestinyStatDefinition) is aggregated, this is the rules used for determining the level and formula used for aggregation.
 /// * CharacterAverage = apply a weighted average using the related DestinyStatGroupDefinition on the DestinyInventoryItemDefinition across the character's equipped items. See both of those definitions for details. * Character = don't aggregate: the stat should be located and used directly on the character. * Item = don't aggregate: the stat should be located and used directly on the item.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyStatAggregationType {
     CharacterAverage = 0,
     Character = 1,
@@ -465,7 +465,7 @@ impl FromStr for DestinyStatAggregationType {
 
 /// At last, stats have categories. Use this for whatever purpose you might wish.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyStatCategory {
     Gameplay = 0,
     Weapon = 1,
@@ -494,7 +494,7 @@ impl FromStr for DestinyStatCategory {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum EquippingItemBlockAttributes {
     EquipOnAcquire = 1,
 }
@@ -516,7 +516,7 @@ impl FromStr for EquippingItemBlockAttributes {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyAmmunitionType {
     None = 0,
     Primary = 1,
@@ -545,7 +545,7 @@ impl FromStr for DestinyAmmunitionType {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DyeReference {
     #[serde(rename = "channelHash")]
     pub channel_hash: u32,
@@ -555,7 +555,7 @@ pub struct DyeReference {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyClass {
     Titan = 0,
     Hunter = 1,
@@ -583,7 +583,7 @@ impl FromStr for DestinyClass {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyGender {
     Male = 0,
     Female = 1,
@@ -610,7 +610,7 @@ impl FromStr for DestinyGender {
 
 /// Describes the type of progression that a vendor has.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyVendorProgressionType {
     /// The original rank progression from token redemption.
     Default = 0,
@@ -640,7 +640,7 @@ impl FromStr for DestinyVendorProgressionType {
 
 /// Display categories can have custom sort orders. These are the possible options.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum VendorDisplayCategorySortOrder {
     Default = 0,
     SortByTier = 1,
@@ -665,7 +665,7 @@ impl FromStr for VendorDisplayCategorySortOrder {
 
 /// When a Vendor Interaction provides rewards, they'll either let you choose one or let you have all of them. This determines which it will be.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyVendorInteractionRewardSelection {
     None = 0,
     One = 1,
@@ -692,7 +692,7 @@ impl FromStr for DestinyVendorInteractionRewardSelection {
 
 /// This determines the type of reply that a Vendor will have during an Interaction.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyVendorReplyType {
     Accept = 0,
     Decline = 1,
@@ -719,7 +719,7 @@ impl FromStr for DestinyVendorReplyType {
 
 /// An enumeration of the known UI interactions for Vendors.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum VendorInteractionType {
     Unknown = 0,
     /// An empty interaction. If this ends up in content, it is probably a game bug.
@@ -772,7 +772,7 @@ impl FromStr for VendorInteractionType {
 
 /// Determines how items are sorted in an inventory bucket.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyItemSortType {
     ItemId = 0,
     Timestamp = 1,
@@ -799,7 +799,7 @@ impl FromStr for DestinyItemSortType {
 
 /// The action that happens when the user attempts to refund an item.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyVendorItemRefundPolicy {
     NotRefundable = 0,
     DeletesItem = 1,
@@ -833,7 +833,7 @@ impl FromStr for DestinyVendorItemRefundPolicy {
 /// Item = The gating includes item-specific checks. For BNet, this generally implies that we'll show this data only on a character level or deeper.
 /// AssumedWorstCase = The unlocks and checks being used for this calculation are of an unknown type and are used for unknown purposes. For instance, if some great person decided that an unlock value should be globally scoped, but then the game changes it using character-specific data in a way that BNet doesn't know about. Because of the open-ended potential for this to occur, many unlock checks for "globally" scoped unlock data may be assumed as the worst case unless it has been specifically whitelisted as otherwise. That sucks, but them's the breaks.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyGatingScope {
     None = 0,
     Global = 1,
@@ -868,7 +868,7 @@ impl FromStr for DestinyGatingScope {
 
 /// The various known UI styles in which an item can be highlighted. It'll be up to you to determine what you want to show based on this highlighting, BNet doesn't have any assets that correspond to these states. And yeah, RiseOfIron and Comet have their own special highlight states. Don't ask me, I can't imagine they're still used.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ActivityGraphNodeHighlightType {
     None = 0,
     Normal = 1,
@@ -899,7 +899,7 @@ impl FromStr for ActivityGraphNodeHighlightType {
 
 /// If you're showing an unlock value in the UI, this is the format in which it should be shown. You'll have to build your own algorithms on the client side to determine how best to render these options.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyUnlockValueUIStyle {
     /// Generally, Automatic means "Just show the number"
     Automatic = 0,
@@ -965,7 +965,7 @@ impl FromStr for DestinyUnlockValueUIStyle {
 
 /// Some Objectives provide perks, generally as part of providing some kind of interesting modifier for a Challenge or Quest. This indicates when the Perk is granted.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyObjectiveGrantStyle {
     WhenIncomplete = 0,
     WhenComplete = 1,
@@ -991,7 +991,7 @@ impl FromStr for DestinyObjectiveGrantStyle {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DamageType {
     None = 0,
     Kinetic = 1,
@@ -1026,7 +1026,7 @@ impl FromStr for DamageType {
 
 /// If the objective has a known UI label, this enumeration will represent it.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyObjectiveUiStyle {
     None = 0,
     Highlighted = 1,
@@ -1060,7 +1060,7 @@ impl FromStr for DestinyObjectiveUiStyle {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyActivityNavPointType {
     Inactive = 0,
     PrimaryObjective = 1,
@@ -1115,7 +1115,7 @@ impl FromStr for DestinyActivityNavPointType {
 
 /// Activity Modes are grouped into a few possible broad categories.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyActivityModeCategory {
     /// Activities that are neither PVP nor PVE, such as social activities.
     None = 0,
@@ -1150,7 +1150,7 @@ impl FromStr for DestinyActivityModeCategory {
 /// These sub-types are provided for historical compatibility with Destiny 1, but an ideal alternative is to use DestinyItemCategoryDefinitions and the DestinyItemDefinition.itemCategories property instead. Item Categories allow for arbitrary hierarchies of specificity, and for items to belong to multiple categories across multiple hierarchies simultaneously. For this enum, we pick a single type as a "best guess" fit.
 /// NOTE: This is not all of the item types available, and some of these are holdovers from Destiny 1 that may or may not still exist.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyItemSubType {
     None = 0,
     /// DEPRECATED. Items can be both "Crucible" and something else interesting.
@@ -1237,7 +1237,7 @@ impl FromStr for DestinyItemSubType {
 
 /// Represents a potential state of an Activity Graph node.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyGraphNodeState {
     Hidden = 0,
     Visible = 1,
@@ -1267,7 +1267,7 @@ impl FromStr for DestinyGraphNodeState {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyPresentationNodeType {
     Default = 0,
     Category = 1,
@@ -1300,7 +1300,7 @@ impl FromStr for DestinyPresentationNodeType {
 
 /// There's a lot of places where we need to know scope on more than just a profile or character level. For everything else, there's this more generic sense of scope.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyScope {
     Profile = 0,
     Character = 1,
@@ -1325,7 +1325,7 @@ impl FromStr for DestinyScope {
 
 /// A hint for how the presentation node should be displayed when shown in a list. How you use this is your UI is up to you.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyPresentationDisplayStyle {
     /// Display the item as a category, through which sub-items are filtered.
     Category = 0,
@@ -1356,7 +1356,7 @@ impl FromStr for DestinyPresentationDisplayStyle {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyRecordValueStyle {
     Integer = 0,
     Percentage = 1,
@@ -1386,7 +1386,7 @@ impl FromStr for DestinyRecordValueStyle {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyRecordToastStyle {
     None = 0,
     Record = 1,
@@ -1425,7 +1425,7 @@ impl FromStr for DestinyRecordToastStyle {
 
 /// A hint for what screen should be shown when this presentation node is clicked into. How you use this is your UI is up to you.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyPresentationScreenStyle {
     /// Use the "default" view for the presentation nodes.
     Default = 0,
@@ -1456,7 +1456,7 @@ impl FromStr for DestinyPresentationScreenStyle {
 /// If the plug has a specific custom style, this enumeration will represent that style/those styles.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum PlugUiStyles {
     Masterwork = 1,
 }
@@ -1483,7 +1483,7 @@ impl FromStr for PlugUiStyles {
 /// - AvailableIfSocketContainsMatchingPlugCategory means that the plug is only available if the socket DOES match the plug category.
 /// For category matching, use the plug's "plugCategoryIdentifier" property, comparing it to
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum PlugAvailabilityMode {
     Normal = 0,
     UnavailableIfSocketContainsMatchingPlugCategory = 1,
@@ -1510,7 +1510,7 @@ impl FromStr for PlugAvailabilityMode {
 
 /// Represents the socket energy types for Armor 2.0, Ghosts 2.0, and Stasis subclasses.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyEnergyType {
     Any = 0,
     Arc = 1,
@@ -1548,7 +1548,7 @@ impl FromStr for DestinyEnergyType {
 /// For instance, a socket could have plugs that are sourced from its own definition, as well as plugs that are sourced from Character-scoped AND profile-scoped Plug Sets. Only by combining plug data for every indicated source will you be able to know all of the plugs available for a socket.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum SocketPlugSources {
     /// Use plugs found in the player's inventory, based on the socket type rules (see DestinySocketTypeDefinition for more info)
     /// Note that a socket - like Shaders - can have *both* reusable plugs and inventory items inserted theoretically.
@@ -1583,7 +1583,7 @@ impl FromStr for SocketPlugSources {
 
 /// Indicates how a perk should be shown, or if it should be, in the game UI. Maybe useful for those of you trying to filter out internal-use-only perks (or for those of you trying to figure out what they do!)
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ItemPerkVisibility {
     Visible = 0,
     Disabled = 1,
@@ -1611,7 +1611,7 @@ impl FromStr for ItemPerkVisibility {
 /// As you run into items that need to be classified for Milestone purposes in ways that we cannot infer via direct data, add a new classification here and use a string constant to represent it in the local item config file.
 /// NOTE: This is not all of the item types available, and some of these are holdovers from Destiny 1 that may or may not still exist.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum SpecialItemType {
     None = 0,
     SpecialCurrency = 1,
@@ -1653,7 +1653,7 @@ impl FromStr for SpecialItemType {
 /// NOTE: This is not all of the item types available, and some of these are holdovers from Destiny 1 that may or may not still exist.
 /// I keep updating these because they're so damn convenient. I guess I shouldn't fight it.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyItemType {
     None = 0,
     Currency = 1,
@@ -1730,7 +1730,7 @@ impl FromStr for DestinyItemType {
 
 /// A plug can optionally have a "Breaker Type": a special ability that can affect units in unique ways. Activating this plug can grant one of these types.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyBreakerType {
     None = 0,
     ShieldPiercing = 1,
@@ -1759,7 +1759,7 @@ impl FromStr for DestinyBreakerType {
 
 /// Represents the different kinds of acquisition behavior for progression reward items.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyProgressionRewardItemAcquisitionBehavior {
     Instant = 0,
     PlayerClaimRequired = 1,
@@ -1783,7 +1783,7 @@ impl FromStr for DestinyProgressionRewardItemAcquisitionBehavior {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ItemBindStatus {
     NotBound = 0,
     BoundToCharacter = 1,
@@ -1813,7 +1813,7 @@ impl FromStr for ItemBindStatus {
 /// Whether you can transfer an item, and why not if you can't.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum TransferStatuses {
     /// You can't transfer the item because it is equipped on a character.
     ItemIsEquipped = 1,
@@ -1844,7 +1844,7 @@ impl FromStr for TransferStatuses {
 /// A flags enumeration/bitmask where each bit represents a different possible state that the item can be in that may effect how the item is displayed to the user and what actions can be performed against it.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ItemState {
     /// If this bit is set, the item has been "locked" by the user and cannot be deleted. You may want to represent this visually with a "lock" icon.
     Locked = 1,
@@ -1881,7 +1881,7 @@ impl FromStr for ItemState {
 /// A flags enumeration/bitmask indicating the versions of the game that a given user has purchased.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyGameVersions {
     Destiny2 = 1,
     DLC1 = 2,
@@ -1923,7 +1923,7 @@ impl FromStr for DestinyGameVersions {
 /// Represents the possible components that can be returned from Destiny "Get" calls such as GetProfile, GetCharacter, GetVendor etc...
 /// When making one of these requests, you will pass one or more of these components as a comma separated list in the "?components=" querystring parameter. For instance, if you want baseline Profile data, Character Data, and character progressions, you would pass "?components=Profiles,Characters,CharacterProgressions" You may use either the numerical or string values.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyComponentType {
     None = 0,
     /// Profiles is the most basic component, only relevant when calling GetProfile. This returns basic information about the profile, which is almost nothing: a list of characterIds, some information about the last time you logged in, and that most sobering statistic: how long you've played.
@@ -2056,7 +2056,7 @@ impl FromStr for DestinyComponentType {
 /// I know this doesn't look like a Flags Enumeration/bitmask right now, but I assure you it is. This is the possible states that a Presentation Node can be in, and it is almost certain that its potential states will increase in the future. So don't treat it like a straight up enumeration.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyPresentationNodeState {
     /// If this is set, the game recommends that you not show this node. But you know your life, do what you've got to do.
     Invisible = 1,
@@ -2084,7 +2084,7 @@ impl FromStr for DestinyPresentationNodeState {
 /// A Flags enumeration/bitmask where each bit represents a possible state that a Record/Triumph can be in.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyRecordState {
     /// If this is set, the completed record has been redeemed.
     RecordRedeemed = 1,
@@ -2128,7 +2128,7 @@ impl FromStr for DestinyRecordState {
 /// (All joking aside, please note the caveat I mention around the Invisible flag: there are cases where it is in the best interest of your users to honor these flags even if you're a "show all the data" person. Collector-oriented compulsion is a very unfortunate and real thing, and I would hate to instill that compulsion in others through showing them items that they cannot earn. Please consider this when you are making your own apps/sites.)
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyCollectibleState {
     /// If this flag is set, you have not yet obtained this collectible.
     NotAcquired = 1,
@@ -2172,7 +2172,7 @@ impl FromStr for DestinyCollectibleState {
 /// A flags enumeration that represents a Fireteam Member's status.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyPartyMemberStates {
     /// This one's pretty obvious - they're on your Fireteam.
     FireteamMember = 1,
@@ -2206,7 +2206,7 @@ impl FromStr for DestinyPartyMemberStates {
 
 /// A player can choose to restrict requests to join their Fireteam to specific states. These are the possible states a user can choose.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyGamePrivacySetting {
     Open = 0,
     ClanAndFriendsOnly = 1,
@@ -2238,7 +2238,7 @@ impl FromStr for DestinyGamePrivacySetting {
 /// A Flags enumeration representing the reasons why a person can't join this user's fireteam.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyJoinClosedReasons {
     /// The user is currently in matchmaking.
     InMatchmaking = 1,
@@ -2276,7 +2276,7 @@ impl FromStr for DestinyJoinClosedReasons {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyRace {
     Human = 0,
     Awoken = 1,
@@ -2305,7 +2305,7 @@ impl FromStr for DestinyRace {
 
 /// Represents the "Live" data that we can obtain about a Character's status with a specific Activity. This will tell you whether the character can participate in the activity, as well as some other basic mutable information.
 /// Meant to be combined with static DestinyActivityDefinition data for a full picture of the Activity.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivity {
     /// The hash identifier of the Activity. Use this to look up the DestinyActivityDefinition of the activity.
     #[serde(rename = "activityHash")]
@@ -2365,7 +2365,7 @@ pub struct DestinyActivity {
 
 /// An enumeration representing the potential difficulty levels of an activity. Their names are... more qualitative than quantitative.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyActivityDifficultyTier {
     Trivial = 0,
     Easy = 1,
@@ -2401,7 +2401,7 @@ impl FromStr for DestinyActivityDifficultyTier {
 }
 
 /// Represents a stat on an item *or* Character (NOT a Historical Stat, but a physical attribute stat like Attack, Defense etc...)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyStat {
     /// The hash identifier for the Stat. Use it to look up the DestinyStatDefinition for static data about the stat.
     #[serde(rename = "statHash")]
@@ -2415,7 +2415,7 @@ pub struct DestinyStat {
 /// The reasons why an item cannot be equipped, if any. Many flags can be set, or "None" if
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum EquipFailureReason {
     /// This is not the kind of item that can be equipped. Did you try equipping Glimmer or something?
     ItemUnequippable = 1,
@@ -2459,7 +2459,7 @@ impl FromStr for EquipFailureReason {
 }
 
 /// I see you've come to find out more about Talent Nodes. I'm so sorry. Talent Nodes are the conceptual, visual nodes that appear on Talent Grids. Talent Grids, in Destiny 1, were found on almost every instanced item: they had Nodes that could be activated to change the properties of the item. In Destiny 2, Talent Grids only exist for Builds/Subclasses, and while the basic concept is the same (Nodes can be activated once you've gained sufficient Experience on the Item, and provide effects), there are some new concepts from Destiny 1. Examine DestinyTalentGridDefinition and its subordinates for more information. This is the "Live" information for the current status of a Talent Node on a specific item. Talent Nodes have many Steps, but only one can be active at any one time: and it is the Step that determines both the visual and the game state-changing properties that the Node provides. Examine this and DestinyTalentNodeStepDefinition carefully. *IMPORTANT NOTE* Talent Nodes are, unfortunately, Content Version DEPENDENT. Though they refer to hashes for Nodes and Steps, those hashes are not guaranteed to be immutable across content versions. This is a source of great exasperation for me, but as a result anyone using Talent Grid data must ensure that the content version of their static content matches that of the server responses before showing or making decisions based on talent grid data.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentNode {
     /// The index of the Talent Node being referred to (an index into DestinyTalentGridDefinition.nodes[]). CONTENT VERSION DEPENDENT.
     #[serde(rename = "nodeIndex")]
@@ -2503,7 +2503,7 @@ pub struct DestinyTalentNode {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeState {
     Invalid = 0,
     CanUpgrade = 1,
@@ -2551,7 +2551,7 @@ impl FromStr for DestinyTalentNodeState {
 }
 
 /// This property has some history. A talent grid can provide stats on both the item it's related to and the character equipping the item. This returns data about those stat bonuses.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentNodeStatBlock {
     /// The stat benefits conferred when this talent node is activated for the current Step that is active on the node.
     #[serde(rename = "currentStepStats")]
@@ -2564,7 +2564,7 @@ pub struct DestinyTalentNodeStatBlock {
 
 /// Indicates the type of filter to apply to Vendor results.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyVendorFilter {
     None = 0,
     ApiPurchasable = 1,
@@ -2589,7 +2589,7 @@ impl FromStr for DestinyVendorFilter {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum VendorItemStatus {
     NoInventorySpace = 1,
     NoFunds = 2,
@@ -2638,7 +2638,7 @@ impl FromStr for VendorItemStatus {
 
 /// Indicates the status of an "Unlock Flag" on a Character or Profile.
 /// These are individual bits of state that can be either set or not set, and sometimes provide interesting human-readable information in their related DestinyUnlockDefinition.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyUnlockStatus {
     /// The hash identifier for the Unlock Flag. Use to lookup DestinyUnlockDefinition for static data. Not all unlocks have human readable data - in fact, most don't. But when they do, it can be very useful to show. Even if they don't have human readable data, you might be able to infer the meaning of an unlock flag with a bit of experimentation...
     #[serde(rename = "unlockHash")]
@@ -2652,7 +2652,7 @@ pub struct DestinyUnlockStatus {
 /// The possible states of Destiny Profile Records. IMPORTANT: Any given item can theoretically have many of these states simultaneously: as a result, this was altered to be a flags enumeration/bitmask for v3.2.0.
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyVendorItemState {
     /// Deprecated forever (probably). There was a time when Records were going to be implemented through Vendors, and this field was relevant. Now they're implemented through Presentation Nodes, and this field doesn't matter anymore.
     Incomplete = 1,
@@ -2734,7 +2734,7 @@ impl FromStr for DestinyVendorItemState {
 }
 
 /// The results of a bulk Equipping operation performed through the Destiny API.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEquipItemResults {
     #[serde(rename = "equipResults")]
     pub equip_results: Option<Vec<crate::destiny::DestinyEquipItemResult>>,
@@ -2742,7 +2742,7 @@ pub struct DestinyEquipItemResults {
 
 /// The results of an Equipping operation performed through the Destiny API.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEquipItemResult {
     /// The instance ID of the item in question (all items that can be equipped must, but definition, be Instanced and thus have an Instance ID that you can use to refer to them)
     #[serde_as(as = "DisplayFromStr")]

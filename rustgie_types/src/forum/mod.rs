@@ -9,7 +9,7 @@ use time::OffsetDateTime;
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumTopicsCategoryFiltersEnum {
     Links = 1,
     Questions = 2,
@@ -45,7 +45,7 @@ impl FromStr for ForumTopicsCategoryFiltersEnum {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumTopicsQuickDateEnum {
     All = 0,
     LastYear = 1,
@@ -75,7 +75,7 @@ impl FromStr for ForumTopicsQuickDateEnum {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumTopicsSortEnum {
     Default = 0,
     LastReplied = 1,
@@ -111,7 +111,7 @@ impl FromStr for ForumTopicsSortEnum {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PostResponse {
     #[serde(with = "time::serde::rfc3339")]
     #[serde(rename = "lastReplyTimestamp")]
@@ -160,7 +160,7 @@ pub struct PostResponse {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumMediaType {
     None = 0,
     Image = 1,
@@ -188,7 +188,7 @@ impl FromStr for ForumMediaType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumPostPopularity {
     Empty = 0,
     Default = 1,
@@ -219,7 +219,7 @@ impl FromStr for ForumPostPopularity {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PostSearchResponse {
     #[serde(rename = "relatedPosts")]
     pub related_posts: Option<Vec<crate::forum::PostResponse>>,
@@ -266,7 +266,7 @@ pub struct PostSearchResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PollResponse {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "topicId")]
@@ -279,7 +279,7 @@ pub struct PollResponse {
     pub total_votes: i32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PollResult {
     #[serde(rename = "answerText")]
     pub answer_text: Option<String>,
@@ -299,7 +299,7 @@ pub struct PollResult {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ForumRecruitmentDetail {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "topicId")]
@@ -336,7 +336,7 @@ pub struct ForumRecruitmentDetail {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumRecruitmentIntensityLabel {
     None = 0,
     Casual = 1,
@@ -362,7 +362,7 @@ impl FromStr for ForumRecruitmentIntensityLabel {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumRecruitmentToneLabel {
     None = 0,
     FamilyFriendly = 1,
@@ -388,7 +388,7 @@ impl FromStr for ForumRecruitmentToneLabel {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumPostSortEnum {
     Default = 0,
     OldestFirst = 1,
@@ -412,7 +412,7 @@ impl FromStr for ForumPostSortEnum {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum CommunityContentSortMode {
     Trending = 0,
     Latest = 1,

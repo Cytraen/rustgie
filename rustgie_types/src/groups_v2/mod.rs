@@ -9,7 +9,7 @@ use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupUserInfoCard {
     /// This will be the display name the clan server last saw the user as. If the account is an active cross save override, this will be the display name to use. Otherwise, this will match the displayName property.
     #[serde(rename = "LastSeenDisplayName")]
@@ -63,7 +63,7 @@ pub struct GroupUserInfoCard {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupResponse {
     #[serde(rename = "detail")]
     pub detail: Option<crate::groups_v2::GroupV2>,
@@ -99,7 +99,7 @@ pub struct GroupResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupV2 {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "groupId")]
@@ -194,7 +194,7 @@ pub struct GroupV2 {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupType {
     General = 0,
     Clan = 1,
@@ -218,7 +218,7 @@ impl FromStr for GroupType {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ChatSecuritySetting {
     Group = 0,
     Admins = 1,
@@ -242,7 +242,7 @@ impl FromStr for ChatSecuritySetting {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupHomepage {
     Wall = 0,
     Forum = 1,
@@ -268,7 +268,7 @@ impl FromStr for GroupHomepage {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum MembershipOption {
     Reviewed = 0,
     Open = 1,
@@ -294,7 +294,7 @@ impl FromStr for MembershipOption {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupPostPublicity {
     Public = 0,
     Alliance = 1,
@@ -319,7 +319,7 @@ impl FromStr for GroupPostPublicity {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupFeatures {
     #[serde(rename = "maximumMembers")]
     pub maximum_members: i32,
@@ -370,7 +370,7 @@ pub struct GroupFeatures {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Capabilities {
     Leaderboards = 1,
     Callsign = 2,
@@ -405,7 +405,7 @@ impl FromStr for Capabilities {
 
 /// Used for setting the guided game permission level override (admins and founders can always host guided games).
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum HostGuidedGamesPermissionLevel {
     None = 0,
     Beginner = 1,
@@ -432,7 +432,7 @@ impl FromStr for HostGuidedGamesPermissionLevel {
 
 /// The member levels used by all V2 Groups API. Individual group types use their own mappings in their native storage (general uses BnetDbGroupMemberType and D2 clans use ClanMemberLevel), but they are all translated to this in the runtime api. These runtime values should NEVER be stored anywhere, so the values can be changed as necessary.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum RuntimeGroupMemberType {
     None = 0,
     Beginner = 1,
@@ -464,7 +464,7 @@ impl FromStr for RuntimeGroupMemberType {
 }
 
 /// This contract contains clan-specific group information. It does not include any investment data.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupV2ClanInfo {
     #[serde(rename = "clanCallsign")]
     pub clan_callsign: Option<String>,
@@ -473,7 +473,7 @@ pub struct GroupV2ClanInfo {
     pub clan_banner_data: Option<crate::groups_v2::ClanBanner>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ClanBanner {
     #[serde(rename = "decalId")]
     pub decal_id: u32,
@@ -498,7 +498,7 @@ pub struct ClanBanner {
 }
 
 /// The same as GroupV2ClanInfo, but includes any investment data.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupV2ClanInfoAndInvestment {
     #[serde(rename = "d2ClanProgressions")]
     pub d2_clan_progressions: Option<HashMap<u32, crate::destiny::DestinyProgression>>,
@@ -511,7 +511,7 @@ pub struct GroupV2ClanInfoAndInvestment {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupUserBase {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "groupId")]
@@ -529,7 +529,7 @@ pub struct GroupUserBase {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupMember {
     #[serde(rename = "memberType")]
     pub member_type: crate::groups_v2::RuntimeGroupMemberType,
@@ -557,7 +557,7 @@ pub struct GroupMember {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupAllianceStatus {
     Unallied = 0,
     Parent = 1,
@@ -583,7 +583,7 @@ impl FromStr for GroupAllianceStatus {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupPotentialMember {
     #[serde(rename = "potentialStatus")]
     pub potential_status: crate::groups_v2::GroupPotentialMemberStatus,
@@ -604,7 +604,7 @@ pub struct GroupPotentialMember {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupPotentialMemberStatus {
     None = 0,
     Applicant = 1,
@@ -630,7 +630,7 @@ impl FromStr for GroupPotentialMemberStatus {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupDateRange {
     All = 0,
     PastDay = 1,
@@ -661,7 +661,7 @@ impl FromStr for GroupDateRange {
 
 /// A small infocard of group information, usually used for when a list of groups are returned
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupV2Card {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "groupId")]
@@ -705,7 +705,7 @@ pub struct GroupV2Card {
     pub theme: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupSearchResponse {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupV2Card>>,
@@ -735,7 +735,7 @@ pub struct GroupSearchResponse {
 /// If you are querying for a Clan, you MUST NOT pass any of the following properties (they must be null or undefined in your request, not just empty string/default values):
 /// - groupMemberCountFilter - localeFilter - tagText
 /// If you pass these, you will get a useless InvalidParameters error.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupQuery {
     #[serde(rename = "name")]
     pub name: Option<String>,
@@ -769,7 +769,7 @@ pub struct GroupQuery {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupSortBy {
     Name = 0,
     Date = 1,
@@ -797,7 +797,7 @@ impl FromStr for GroupSortBy {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupMemberCountFilter {
     All = 0,
     OneToTen = 1,
@@ -824,7 +824,7 @@ impl FromStr for GroupMemberCountFilter {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupNameSearchRequest {
     #[serde(rename = "groupName")]
     pub group_name: Option<String>,
@@ -834,7 +834,7 @@ pub struct GroupNameSearchRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupOptionalConversation {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "groupId")]
@@ -854,7 +854,7 @@ pub struct GroupOptionalConversation {
     pub chat_security: crate::groups_v2::ChatSecuritySetting,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupEditAction {
     #[serde(rename = "name")]
     pub name: Option<String>,
@@ -905,7 +905,7 @@ pub struct GroupEditAction {
     pub default_publicity: Option<i32>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupOptionsEditAction {
     /// Minimum Member Level allowed to invite new members to group
     /// Always Allowed: Founder, Acting Founder
@@ -941,7 +941,7 @@ pub struct GroupOptionsEditAction {
     pub join_level: Option<i32>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupOptionalConversationAddRequest {
     #[serde(rename = "chatName")]
     pub chat_name: Option<String>,
@@ -950,7 +950,7 @@ pub struct GroupOptionalConversationAddRequest {
     pub chat_security: crate::groups_v2::ChatSecuritySetting,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupOptionalConversationEditRequest {
     #[serde(rename = "chatEnabled")]
     pub chat_enabled: Option<bool>,
@@ -962,7 +962,7 @@ pub struct GroupOptionalConversationEditRequest {
     pub chat_security: Option<i32>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupMemberLeaveResult {
     #[serde(rename = "group")]
     pub group: Option<crate::groups_v2::GroupV2>,
@@ -971,7 +971,7 @@ pub struct GroupMemberLeaveResult {
     pub group_deleted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupBanRequest {
     #[serde(rename = "comment")]
     pub comment: Option<String>,
@@ -981,7 +981,7 @@ pub struct GroupBanRequest {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupBan {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "groupId")]
@@ -1012,7 +1012,7 @@ pub struct GroupBan {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupMemberApplication {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "groupId")]
@@ -1049,7 +1049,7 @@ pub struct GroupMemberApplication {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupApplicationResolveState {
     Unresolved = 0,
     Accepted = 1,
@@ -1076,13 +1076,13 @@ impl FromStr for GroupApplicationResolveState {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupApplicationRequest {
     #[serde(rename = "message")]
     pub message: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupApplicationListRequest {
     #[serde(rename = "memberships")]
     pub memberships: Option<Vec<crate::user::UserMembership>>,
@@ -1092,7 +1092,7 @@ pub struct GroupApplicationListRequest {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GroupsForMemberFilter {
     All = 0,
     Founded = 1,
@@ -1117,13 +1117,13 @@ impl FromStr for GroupsForMemberFilter {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupMembershipBase {
     #[serde(rename = "group")]
     pub group: Option<crate::groups_v2::GroupV2>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupMembership {
     #[serde(rename = "member")]
     pub member: Option<crate::groups_v2::GroupMember>,
@@ -1132,7 +1132,7 @@ pub struct GroupMembership {
     pub group: Option<crate::groups_v2::GroupV2>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupMembershipSearchResponse {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupMembership>>,
@@ -1158,7 +1158,7 @@ pub struct GroupMembershipSearchResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GetGroupsForMemberResponse {
     /// A convenience property that indicates if every membership this user has that is a part of this group are part of an account that is considered inactive - for example, overridden accounts in Cross Save.
     /// The key is the Group ID for the group being checked, and the value is true if the users' memberships for that group are all inactive.
@@ -1189,7 +1189,7 @@ pub struct GetGroupsForMemberResponse {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupPotentialMembership {
     #[serde(rename = "member")]
     pub member: Option<crate::groups_v2::GroupPotentialMember>,
@@ -1198,7 +1198,7 @@ pub struct GroupPotentialMembership {
     pub group: Option<crate::groups_v2::GroupV2>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupPotentialMembershipSearchResponse {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupPotentialMembership>>,
@@ -1223,7 +1223,7 @@ pub struct GroupPotentialMembershipSearchResponse {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GroupApplicationResponse {
     #[serde(rename = "resolution")]
     pub resolution: crate::groups_v2::GroupApplicationResolveState,

@@ -2,7 +2,7 @@
 use serde_with::{serde_as, DisplayFromStr};
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EntityActionResult {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "entityId")]

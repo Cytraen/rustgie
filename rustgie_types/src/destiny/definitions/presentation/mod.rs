@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 
 /// This is the base class for all presentation system children. Presentation Nodes, Records, Collectibles, and Metrics.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeBaseDefinition {
     #[serde(rename = "presentationNodeType")]
     pub presentation_node_type: crate::destiny::DestinyPresentationNodeType,
@@ -30,7 +30,7 @@ pub struct DestinyPresentationNodeBaseDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyScoredPresentationNodeBaseDefinition {
     #[serde(rename = "maxCategoryRecordScore")]
     pub max_category_record_score: i32,
@@ -67,7 +67,7 @@ pub struct DestinyScoredPresentationNodeBaseDefinition {
 /// - Collectibles - Records (Or, as the public will call them, "Triumphs." Don't ask me why we're overloading the term "Triumph", it still hurts me to think about it) - Metrics (aka Stat Trackers) - Other Presentation Nodes, allowing a tree of Presentation Nodes to be created
 /// Part of me wants to break these into conceptual definitions per entity being collected, but the possibility of these different types being mixed in the same UI and the possibility that it could actually be more useful to return the "bare metal" presentation node concept has resulted in me deciding against that for the time being.
 /// We'll see if I come to regret this as well.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -146,7 +146,7 @@ pub struct DestinyPresentationNodeDefinition {
 }
 
 /// As/if presentation nodes begin to host more entities as children, these lists will be added to. One list property exists per type of entity that can be treated as a child of this presentation node, and each holds the identifier of the entity and any associated information needed to display the UI for that entity (if anything)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeChildrenBlock {
     #[serde(rename = "presentationNodes")]
     pub presentation_nodes: Option<Vec<crate::destiny::definitions::presentation::DestinyPresentationNodeChildEntry>>,
@@ -164,14 +164,14 @@ pub struct DestinyPresentationNodeChildrenBlock {
     pub craftables: Option<Vec<crate::destiny::definitions::presentation::DestinyPresentationNodeCraftableChildEntry>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeChildEntryBase {
     /// Use this value to sort the presentation node children in ascending order.
     #[serde(rename = "nodeDisplayPriority")]
     pub node_display_priority: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeChildEntry {
     #[serde(rename = "presentationNodeHash")]
     pub presentation_node_hash: u32,
@@ -181,7 +181,7 @@ pub struct DestinyPresentationNodeChildEntry {
     pub node_display_priority: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeCollectibleChildEntry {
     #[serde(rename = "collectibleHash")]
     pub collectible_hash: u32,
@@ -192,14 +192,14 @@ pub struct DestinyPresentationNodeCollectibleChildEntry {
 }
 
 /// Presentation nodes can be restricted by various requirements. This defines the rules of those requirements, and the message(s) to be shown if these requirements aren't met.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeRequirementsBlock {
     /// If this node is not accessible due to Entitlements (for instance, you don't own the required game expansion), this is the message to show.
     #[serde(rename = "entitlementUnavailableMessage")]
     pub entitlement_unavailable_message: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationChildBlock {
     #[serde(rename = "presentationNodeType")]
     pub presentation_node_type: crate::destiny::DestinyPresentationNodeType,
@@ -211,7 +211,7 @@ pub struct DestinyPresentationChildBlock {
     pub display_style: crate::destiny::DestinyPresentationDisplayStyle,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeRecordChildEntry {
     #[serde(rename = "recordHash")]
     pub record_hash: u32,
@@ -221,7 +221,7 @@ pub struct DestinyPresentationNodeRecordChildEntry {
     pub node_display_priority: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeMetricChildEntry {
     #[serde(rename = "metricHash")]
     pub metric_hash: u32,
@@ -231,7 +231,7 @@ pub struct DestinyPresentationNodeMetricChildEntry {
     pub node_display_priority: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPresentationNodeCraftableChildEntry {
     #[serde(rename = "craftableItemHash")]
     pub craftable_item_hash: u32,

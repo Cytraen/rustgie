@@ -36,7 +36,7 @@ use time::OffsetDateTime;
 
 /// The types of membership the Accounts system supports. This is the external facing enum used in place of the internal-only Bungie.SharedDefinitions.MembershipType.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum BungieMembershipType {
     None = 0,
     TigerXbox = 1,
@@ -78,7 +78,7 @@ impl FromStr for BungieMembershipType {
 
 /// The types of credentials the Accounts system supports. This is the external facing enum used in place of the internal-only Bungie.SharedDefinitions.CredentialType.
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum BungieCredentialType {
     None = 0,
     Xuid = 1,
@@ -125,7 +125,7 @@ impl FromStr for BungieCredentialType {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfContentItemPublicContract {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::content::ContentItemPublicContract>>,
@@ -150,7 +150,7 @@ pub struct SearchResultOfContentItemPublicContract {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfPostResponse {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::forum::PostResponse>>,
@@ -175,7 +175,7 @@ pub struct SearchResultOfPostResponse {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfGroupV2Card {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupV2Card>>,
@@ -200,7 +200,7 @@ pub struct SearchResultOfGroupV2Card {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfGroupMember {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupMember>>,
@@ -225,7 +225,7 @@ pub struct SearchResultOfGroupMember {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfGroupBan {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupBan>>,
@@ -250,7 +250,7 @@ pub struct SearchResultOfGroupBan {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfGroupMemberApplication {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupMemberApplication>>,
@@ -275,7 +275,7 @@ pub struct SearchResultOfGroupMemberApplication {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfGroupMembership {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupMembership>>,
@@ -300,7 +300,7 @@ pub struct SearchResultOfGroupMembership {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfGroupPotentialMembership {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::groups_v2::GroupPotentialMembership>>,
@@ -325,7 +325,7 @@ pub struct SearchResultOfGroupPotentialMembership {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyVendorReceiptsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::profiles::DestinyVendorReceiptsComponent>,
@@ -338,7 +338,7 @@ pub struct SingleComponentResponseOfDestinyVendorReceiptsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyInventoryComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::inventory::DestinyInventoryComponent>,
@@ -351,7 +351,7 @@ pub struct SingleComponentResponseOfDestinyInventoryComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyProfileComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::profiles::DestinyProfileComponent>,
@@ -364,7 +364,7 @@ pub struct SingleComponentResponseOfDestinyProfileComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyPlatformSilverComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::inventory::DestinyPlatformSilverComponent>,
@@ -377,7 +377,7 @@ pub struct SingleComponentResponseOfDestinyPlatformSilverComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyKiosksComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::kiosks::DestinyKiosksComponent>,
@@ -390,7 +390,7 @@ pub struct SingleComponentResponseOfDestinyKiosksComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyPlugSetsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::plug_sets::DestinyPlugSetsComponent>,
@@ -403,7 +403,7 @@ pub struct SingleComponentResponseOfDestinyPlugSetsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyProfileProgressionComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::profiles::DestinyProfileProgressionComponent>,
@@ -416,7 +416,7 @@ pub struct SingleComponentResponseOfDestinyProfileProgressionComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyPresentationNodesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::presentation::DestinyPresentationNodesComponent>,
@@ -429,7 +429,7 @@ pub struct SingleComponentResponseOfDestinyPresentationNodesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyProfileRecordsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::records::DestinyProfileRecordsComponent>,
@@ -442,7 +442,7 @@ pub struct SingleComponentResponseOfDestinyProfileRecordsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyProfileCollectiblesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::collectibles::DestinyProfileCollectiblesComponent>,
@@ -455,7 +455,7 @@ pub struct SingleComponentResponseOfDestinyProfileCollectiblesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyProfileTransitoryComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::profiles::DestinyProfileTransitoryComponent>,
@@ -468,7 +468,7 @@ pub struct SingleComponentResponseOfDestinyProfileTransitoryComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyMetricsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::metrics::DestinyMetricsComponent>,
@@ -481,7 +481,7 @@ pub struct SingleComponentResponseOfDestinyMetricsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyStringVariablesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::string_variables::DestinyStringVariablesComponent>,
@@ -495,7 +495,7 @@ pub struct SingleComponentResponseOfDestinyStringVariablesComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -510,7 +510,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyInventoryComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -525,7 +525,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyInventoryComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterProgressionComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -540,7 +540,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterProgressionCompo
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRenderComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -555,7 +555,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRenderComponent 
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterActivitiesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -570,7 +570,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterActivitiesCompon
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyKiosksComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -585,7 +585,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyKiosksComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyPlugSetsComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -599,7 +599,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyPlugSetsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyBaseItemComponentSetOfuint32 {
     #[serde(rename = "objectives")]
     pub objectives: Option<crate::DictionaryComponentResponseOfuint32AndDestinyItemObjectivesComponent>,
@@ -608,7 +608,7 @@ pub struct DestinyBaseItemComponentSetOfuint32 {
     pub perks: Option<crate::DictionaryComponentResponseOfuint32AndDestinyItemPerksComponent>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemObjectivesComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemObjectivesComponent>>,
@@ -621,7 +621,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemObjectivesComponent 
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemPerksComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemPerksComponent>>,
@@ -635,7 +635,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemPerksComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyPresentationNodesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -650,7 +650,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyPresentationNodesComponen
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRecordsComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -665,7 +665,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCharacterRecordsComponent
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCollectiblesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -680,7 +680,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCollectiblesComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyStringVariablesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -695,7 +695,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyStringVariablesComponent 
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCraftablesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -709,7 +709,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCraftablesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyBaseItemComponentSetOfint64 {
     #[serde(rename = "objectives")]
     pub objectives: Option<crate::DictionaryComponentResponseOfint64AndDestinyItemObjectivesComponent>,
@@ -719,7 +719,7 @@ pub struct DestinyBaseItemComponentSetOfint64 {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemObjectivesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -734,7 +734,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemObjectivesComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemPerksComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -748,7 +748,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemPerksComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemComponentSetOfint64 {
     #[serde(rename = "instances")]
     pub instances: Option<crate::DictionaryComponentResponseOfint64AndDestinyItemInstanceComponent>,
@@ -782,7 +782,7 @@ pub struct DestinyItemComponentSetOfint64 {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemInstanceComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -797,7 +797,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemInstanceComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemRenderComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -812,7 +812,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemRenderComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemStatsComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -827,7 +827,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemStatsComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemSocketsComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -842,7 +842,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemSocketsComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemReusablePlugsComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -857,7 +857,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemReusablePlugsComponen
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemPlugObjectivesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -872,7 +872,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemPlugObjectivesCompone
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyItemTalentGridComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -886,7 +886,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyItemTalentGridComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemPlugComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::components::items::DestinyItemPlugComponent>>,
@@ -900,7 +900,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemPlugComponent {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCurrenciesComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
@@ -914,7 +914,7 @@ pub struct DictionaryComponentResponseOfint64AndDestinyCurrenciesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCharacterComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::characters::DestinyCharacterComponent>,
@@ -927,7 +927,7 @@ pub struct SingleComponentResponseOfDestinyCharacterComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCharacterProgressionComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::characters::DestinyCharacterProgressionComponent>,
@@ -940,7 +940,7 @@ pub struct SingleComponentResponseOfDestinyCharacterProgressionComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCharacterRenderComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::characters::DestinyCharacterRenderComponent>,
@@ -953,7 +953,7 @@ pub struct SingleComponentResponseOfDestinyCharacterRenderComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCharacterActivitiesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::characters::DestinyCharacterActivitiesComponent>,
@@ -966,7 +966,7 @@ pub struct SingleComponentResponseOfDestinyCharacterActivitiesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCharacterRecordsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::records::DestinyCharacterRecordsComponent>,
@@ -979,7 +979,7 @@ pub struct SingleComponentResponseOfDestinyCharacterRecordsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCollectiblesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::collectibles::DestinyCollectiblesComponent>,
@@ -992,7 +992,7 @@ pub struct SingleComponentResponseOfDestinyCollectiblesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyCurrenciesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::inventory::DestinyCurrenciesComponent>,
@@ -1005,7 +1005,7 @@ pub struct SingleComponentResponseOfDestinyCurrenciesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemComponent>,
@@ -1018,7 +1018,7 @@ pub struct SingleComponentResponseOfDestinyItemComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemInstanceComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemInstanceComponent>,
@@ -1031,7 +1031,7 @@ pub struct SingleComponentResponseOfDestinyItemInstanceComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemObjectivesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemObjectivesComponent>,
@@ -1044,7 +1044,7 @@ pub struct SingleComponentResponseOfDestinyItemObjectivesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemPerksComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemPerksComponent>,
@@ -1057,7 +1057,7 @@ pub struct SingleComponentResponseOfDestinyItemPerksComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemRenderComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemRenderComponent>,
@@ -1070,7 +1070,7 @@ pub struct SingleComponentResponseOfDestinyItemRenderComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemStatsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemStatsComponent>,
@@ -1083,7 +1083,7 @@ pub struct SingleComponentResponseOfDestinyItemStatsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemTalentGridComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemTalentGridComponent>,
@@ -1096,7 +1096,7 @@ pub struct SingleComponentResponseOfDestinyItemTalentGridComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemSocketsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::items::DestinyItemSocketsComponent>,
@@ -1109,7 +1109,7 @@ pub struct SingleComponentResponseOfDestinyItemSocketsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemReusablePlugsComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::items::DestinyItemReusablePlugsComponent>,
@@ -1122,7 +1122,7 @@ pub struct SingleComponentResponseOfDestinyItemReusablePlugsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyItemPlugObjectivesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::items::DestinyItemPlugObjectivesComponent>,
@@ -1135,7 +1135,7 @@ pub struct SingleComponentResponseOfDestinyItemPlugObjectivesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyVendorGroupComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::components::vendors::DestinyVendorGroupComponent>,
@@ -1148,7 +1148,7 @@ pub struct SingleComponentResponseOfDestinyVendorGroupComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyVendorComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::vendors::DestinyVendorComponent>>,
@@ -1161,7 +1161,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyVendorComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyVendorCategoriesComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::vendors::DestinyVendorCategoriesComponent>>,
@@ -1174,13 +1174,13 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyVendorCategoriesComponen
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorSaleItemSetComponentOfDestinyVendorSaleItemComponent {
     #[serde(rename = "saleItems")]
     pub sale_items: Option<HashMap<i32, crate::destiny::entities::vendors::DestinyVendorSaleItemComponent>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndPersonalDestinyVendorSaleItemSetComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::responses::PersonalDestinyVendorSaleItemSetComponent>>,
@@ -1193,7 +1193,7 @@ pub struct DictionaryComponentResponseOfuint32AndPersonalDestinyVendorSaleItemSe
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyBaseItemComponentSetOfint32 {
     #[serde(rename = "objectives")]
     pub objectives: Option<crate::DictionaryComponentResponseOfint32AndDestinyItemObjectivesComponent>,
@@ -1202,7 +1202,7 @@ pub struct DestinyBaseItemComponentSetOfint32 {
     pub perks: Option<crate::DictionaryComponentResponseOfint32AndDestinyItemPerksComponent>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemObjectivesComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemObjectivesComponent>>,
@@ -1215,7 +1215,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemObjectivesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemPerksComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemPerksComponent>>,
@@ -1228,7 +1228,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemPerksComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemComponentSetOfint32 {
     #[serde(rename = "instances")]
     pub instances: Option<crate::DictionaryComponentResponseOfint32AndDestinyItemInstanceComponent>,
@@ -1261,7 +1261,7 @@ pub struct DestinyItemComponentSetOfint32 {
     pub perks: Option<crate::DictionaryComponentResponseOfint32AndDestinyItemPerksComponent>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemInstanceComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemInstanceComponent>>,
@@ -1274,7 +1274,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemInstanceComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemRenderComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemRenderComponent>>,
@@ -1287,7 +1287,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemRenderComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemStatsComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemStatsComponent>>,
@@ -1300,7 +1300,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemStatsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemSocketsComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemSocketsComponent>>,
@@ -1313,7 +1313,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemSocketsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemReusablePlugsComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::components::items::DestinyItemReusablePlugsComponent>>,
@@ -1326,7 +1326,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemReusablePlugsComponen
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemPlugObjectivesComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::components::items::DestinyItemPlugObjectivesComponent>>,
@@ -1339,7 +1339,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemPlugObjectivesCompone
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyItemTalentGridComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::items::DestinyItemTalentGridComponent>>,
@@ -1352,7 +1352,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyItemTalentGridComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyVendorComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::vendors::DestinyVendorComponent>,
@@ -1365,7 +1365,7 @@ pub struct SingleComponentResponseOfDestinyVendorComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SingleComponentResponseOfDestinyVendorCategoriesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::vendors::DestinyVendorCategoriesComponent>,
@@ -1378,7 +1378,7 @@ pub struct SingleComponentResponseOfDestinyVendorCategoriesComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint32AndDestinyVendorSaleItemComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<i32, crate::destiny::entities::vendors::DestinyVendorSaleItemComponent>>,
@@ -1391,7 +1391,7 @@ pub struct DictionaryComponentResponseOfint32AndDestinyVendorSaleItemComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyPublicVendorComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::components::vendors::DestinyPublicVendorComponent>>,
@@ -1404,13 +1404,13 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyPublicVendorComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorSaleItemSetComponentOfDestinyPublicVendorSaleItemComponent {
     #[serde(rename = "saleItems")]
     pub sale_items: Option<HashMap<i32, crate::destiny::components::vendors::DestinyPublicVendorSaleItemComponent>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndPublicDestinyVendorSaleItemSetComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::responses::PublicDestinyVendorSaleItemSetComponent>>,
@@ -1423,7 +1423,7 @@ pub struct DictionaryComponentResponseOfuint32AndPublicDestinyVendorSaleItemSetC
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemComponentSetOfuint32 {
     #[serde(rename = "instances")]
     pub instances: Option<crate::DictionaryComponentResponseOfuint32AndDestinyItemInstanceComponent>,
@@ -1456,7 +1456,7 @@ pub struct DestinyItemComponentSetOfuint32 {
     pub perks: Option<crate::DictionaryComponentResponseOfuint32AndDestinyItemPerksComponent>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemInstanceComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemInstanceComponent>>,
@@ -1469,7 +1469,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemInstanceComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemRenderComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemRenderComponent>>,
@@ -1482,7 +1482,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemRenderComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemStatsComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemStatsComponent>>,
@@ -1495,7 +1495,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemStatsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemSocketsComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemSocketsComponent>>,
@@ -1508,7 +1508,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemSocketsComponent {
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemReusablePlugsComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::components::items::DestinyItemReusablePlugsComponent>>,
@@ -1521,7 +1521,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemReusablePlugsCompone
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemPlugObjectivesComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::components::items::DestinyItemPlugObjectivesComponent>>,
@@ -1534,7 +1534,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemPlugObjectivesCompon
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfuint32AndDestinyItemTalentGridComponent {
     #[serde(rename = "data")]
     pub data: Option<HashMap<u32, crate::destiny::entities::items::DestinyItemTalentGridComponent>>,
@@ -1547,7 +1547,7 @@ pub struct DictionaryComponentResponseOfuint32AndDestinyItemTalentGridComponent 
     pub disabled: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfDestinyEntitySearchResultItem {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::destiny::definitions::DestinyEntitySearchResultItem>>,
@@ -1572,7 +1572,7 @@ pub struct SearchResultOfDestinyEntitySearchResultItem {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfTrendingEntry {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::trending::TrendingEntry>>,
@@ -1597,7 +1597,7 @@ pub struct SearchResultOfTrendingEntry {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfFireteamSummary {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::fireteam::FireteamSummary>>,
@@ -1622,7 +1622,7 @@ pub struct SearchResultOfFireteamSummary {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResultOfFireteamResponse {
     #[serde(rename = "results")]
     pub results: Option<Vec<crate::fireteam::FireteamResponse>>,
@@ -1647,7 +1647,7 @@ pub struct SearchResultOfFireteamResponse {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GlobalAlert {
     #[serde(rename = "AlertKey")]
     pub alert_key: Option<String>,
@@ -1673,7 +1673,7 @@ pub struct GlobalAlert {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GlobalAlertLevel {
     Unknown = 0,
     Blue = 1,
@@ -1701,7 +1701,7 @@ impl FromStr for GlobalAlertLevel {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum GlobalAlertType {
     GlobalAlert = 0,
     StreamingAlert = 1,
@@ -1724,7 +1724,7 @@ impl FromStr for GlobalAlertType {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct StreamInfo {
     #[serde(rename = "ChannelName")]
     pub channel_name: Option<String>,

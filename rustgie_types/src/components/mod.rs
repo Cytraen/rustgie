@@ -5,7 +5,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// The base class for any component-returning object that may need to indicate information about the state of the component being returned.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ComponentResponse {
     #[serde(rename = "privacy")]
     pub privacy: crate::components::ComponentPrivacySetting,
@@ -17,7 +17,7 @@ pub struct ComponentResponse {
 
 /// A set of flags for reason(s) why the component populated in the way that it did. Inspect the individual flags for the reasons.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ComponentPrivacySetting {
     None = 0,
     Public = 1,

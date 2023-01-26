@@ -1,6 +1,6 @@
 ﻿use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SearchResult {
     #[serde(rename = "totalResults")]
     pub total_results: i32,
@@ -22,7 +22,7 @@ pub struct SearchResult {
     pub use_total_results: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct PagedQuery {
     #[serde(rename = "itemsPerPage")]
     pub items_per_page: i32,

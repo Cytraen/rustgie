@@ -7,7 +7,7 @@ use std::str::FromStr;
 use time::OffsetDateTime;
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FireteamDateRange {
     All = 0,
     Now = 1,
@@ -37,7 +37,7 @@ impl FromStr for FireteamDateRange {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FireteamPlatform {
     Any = 0,
     Playstation4 = 1,
@@ -71,7 +71,7 @@ impl FromStr for FireteamPlatform {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FireteamPublicSearchOption {
     PublicAndPrivate = 0,
     PublicOnly = 1,
@@ -97,7 +97,7 @@ impl FromStr for FireteamPublicSearchOption {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FireteamSlotSearch {
     NoSlotRestriction = 0,
     HasOpenPlayerSlots = 1,
@@ -123,7 +123,7 @@ impl FromStr for FireteamSlotSearch {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct FireteamSummary {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "fireteamId")]
@@ -192,7 +192,7 @@ pub struct FireteamSummary {
     pub title_before_moderation: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct FireteamResponse {
     #[serde(rename = "Summary")]
     pub summary: Option<crate::fireteam::FireteamSummary>,
@@ -205,7 +205,7 @@ pub struct FireteamResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct FireteamMember {
     #[serde(rename = "destinyUserInfo")]
     pub destiny_user_info: Option<crate::fireteam::FireteamUserInfoCard>,
@@ -233,7 +233,7 @@ pub struct FireteamMember {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct FireteamUserInfoCard {
     #[serde(rename = "FireteamDisplayName")]
     pub fireteam_display_name: Option<String>,
@@ -285,7 +285,7 @@ pub struct FireteamUserInfoCard {
 }
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum FireteamPlatformInviteResult {
     None = 0,
     Success = 1,

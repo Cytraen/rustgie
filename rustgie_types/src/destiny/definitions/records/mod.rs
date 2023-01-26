@@ -2,7 +2,7 @@
 use serde_with::{serde_as, DisplayFromStr};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -82,7 +82,7 @@ pub struct DestinyRecordDefinition {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordTitleBlock {
     #[serde(rename = "hasTitle")]
     pub has_title: bool,
@@ -99,7 +99,7 @@ pub struct DestinyRecordTitleBlock {
     pub gilding_tracking_record_hash: Option<u32>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordCompletionBlock {
     /// The number of objectives that must be completed before the objective is considered "complete"
     #[serde(rename = "partialCompletionObjectiveCountThreshold")]
@@ -115,7 +115,7 @@ pub struct DestinyRecordCompletionBlock {
     pub toast_style: crate::destiny::DestinyRecordToastStyle,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct SchemaRecordStateBlock {
     #[serde(rename = "featuredPriority")]
     pub featured_priority: i32,
@@ -125,7 +125,7 @@ pub struct SchemaRecordStateBlock {
 }
 
 /// If this record has an expiration after which it cannot be earned, this is some information about that expiration.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordExpirationBlock {
     #[serde(rename = "hasExpiration")]
     pub has_expiration: bool,
@@ -137,7 +137,7 @@ pub struct DestinyRecordExpirationBlock {
     pub icon: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordIntervalBlock {
     #[serde(rename = "intervalObjectives")]
     pub interval_objectives: Option<Vec<crate::destiny::definitions::records::DestinyRecordIntervalObjective>>,
@@ -149,7 +149,7 @@ pub struct DestinyRecordIntervalBlock {
     pub original_objective_array_insertion_index: i32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordIntervalObjective {
     #[serde(rename = "intervalObjectiveHash")]
     pub interval_objective_hash: u32,
@@ -158,7 +158,7 @@ pub struct DestinyRecordIntervalObjective {
     pub interval_score_value: i32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRecordIntervalRewards {
     #[serde(rename = "intervalRewardItems")]
     pub interval_reward_items: Option<Vec<crate::destiny::DestinyItemQuantity>>,

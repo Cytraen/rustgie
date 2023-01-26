@@ -32,7 +32,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 /// Provides common properties for destiny definitions.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyDefinition {
     /// The unique identifier for this entity. Guaranteed to be unique for the type of entity, but not globally.
     /// When entities refer to each other in Destiny content, it is this hash that they are referring to.
@@ -53,7 +53,7 @@ pub struct DestinyDefinition {
 /// Progression is used by a variety of systems, and the definition of a Progression will generally only be useful if combining with live data (such as a character's DestinyCharacterProgressionComponent.progressions property, which holds that character's live Progression states).
 /// Fundamentally, a Progression measures your "Level" by evaluating the thresholds in its Steps (one step per level, except for the last step which can be repeated indefinitely for "Levels" that have no ceiling) against the total earned "progression points"/experience. (for simplicity purposes, we will henceforth refer to earned progression points as experience, though it need not be a mechanic that in any way resembles Experience in a traditional sense).
 /// Earned experience is calculated in a variety of ways, determined by the Progression's scope. These go from looking up a stored value to performing exceedingly obtuse calculations. This is why we provide live data in DestinyCharacterProgressionComponent.progressions, so you don't have to worry about those.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::DestinyProgressionDisplayPropertiesDefinition>,
@@ -111,7 +111,7 @@ pub struct DestinyProgressionDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionDisplayPropertiesDefinition {
     /// When progressions show your "experience" gained, that bar has units (i.e. "Experience", "Bad Dudes Snuffed Out", whatever). This is the localized string for that unit of measurement.
     #[serde(rename = "displayUnitsName")]
@@ -141,7 +141,7 @@ pub struct DestinyProgressionDisplayPropertiesDefinition {
 }
 
 /// This defines a single Step in a progression (which roughly equates to a level. See DestinyProgressionDefinition for caveats).
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionStepDefinition {
     /// Very rarely, Progressions will have localized text describing the Level of the progression. This will be that localized text, if it exists. Otherwise, the standard appears to be to simply show the level numerically.
     #[serde(rename = "stepName")]
@@ -166,7 +166,7 @@ pub struct DestinyProgressionStepDefinition {
 
 /// So much of what you see in Destiny is actually an Item used in a new and creative way. This is the definition for Items in Destiny, which started off as just entities that could exist in your Inventory but ended up being the backing data for so much more: quests, reward previews, slots, and subclasses.
 /// In practice, you will want to associate this data with "live" item data from a Bungie.Net Platform call: these definitions describe the item in generic, non-instanced terms: but an actual instance of an item can vary widely from these generic definitions.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyInventoryItemDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -439,7 +439,7 @@ pub struct DestinyInventoryItemDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemTooltipNotification {
     #[serde(rename = "displayString")]
     pub display_string: Option<String>,
@@ -449,7 +449,7 @@ pub struct DestinyItemTooltipNotification {
 }
 
 /// If an item can have an action performed on it (like "Dismantle"), it will be defined here if you care.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemActionBlockDefinition {
     /// Localized text for the verb of the action being performed.
     #[serde(rename = "verbName")]
@@ -509,7 +509,7 @@ pub struct DestinyItemActionBlockDefinition {
 }
 
 /// The definition of an item and quantity required in a character's inventory in order to perform an action.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemActionRequiredItemDefinition {
     /// The minimum quantity of the item you have to have.
     #[serde(rename = "count")]
@@ -526,7 +526,7 @@ pub struct DestinyItemActionRequiredItemDefinition {
 
 /// Inventory Items can reward progression when actions are performed on them. A common example of this in Destiny 1 was Bounties, which would reward Experience on your Character and the like when you completed the bounty.
 /// Note that this maps to a DestinyProgressionMappingDefinition, and *not* a DestinyProgressionDefinition directly. This is apparently so that multiple progressions can be granted progression points/experience at the same time.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionRewardDefinition {
     /// The hash identifier of the DestinyProgressionMappingDefinition that contains the progressions for which experience should be applied.
     #[serde(rename = "progressionMappingHash")]
@@ -543,7 +543,7 @@ pub struct DestinyProgressionRewardDefinition {
 
 /// Aggregations of multiple progressions.
 /// These are used to apply rewards to multiple progressions at once. They can sometimes have human readable data as well, but only extremely sporadically.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionMappingDefinition {
     /// Infrequently defined in practice. Defer to the individual progressions' display properties.
     #[serde(rename = "displayProperties")]
@@ -568,7 +568,7 @@ pub struct DestinyProgressionMappingDefinition {
 }
 
 /// If an item can have an action performed on it (like "Dismantle"), it will be defined here if you care.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemCraftingBlockDefinition {
     /// A reference to the item definition that is created when crafting with this 'recipe' item.
     #[serde(rename = "outputItemHash")]
@@ -590,7 +590,7 @@ pub struct DestinyItemCraftingBlockDefinition {
     pub bonus_plugs: Option<Vec<crate::destiny::definitions::DestinyItemCraftingBlockBonusPlugDefinition>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemCraftingBlockBonusPlugDefinition {
     #[serde(rename = "socketTypeHash")]
     pub socket_type_hash: u32,
@@ -601,7 +601,7 @@ pub struct DestinyItemCraftingBlockBonusPlugDefinition {
 
 /// Represent a set of material requirements: Items that either need to be owned or need to be consumed in order to perform an action.
 /// A variety of other entities refer to these as gatekeepers and payments for actions that can be performed in game.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyMaterialRequirementSetDefinition {
     /// The list of all materials that are required.
     #[serde(rename = "materials")]
@@ -622,7 +622,7 @@ pub struct DestinyMaterialRequirementSetDefinition {
 }
 
 /// Many actions relating to items require you to expend materials: - Activating a talent node - Inserting a plug into a socket The items will refer to material requirements by a materialRequirementsHash in these cases, and this is the definition for those requirements in terms of the item required, how much of it is required and other interesting info. This is one of the rare/strange times where a single contract class is used both in definitions *and* in live data response contracts. I'm not sure yet whether I regret that.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyMaterialRequirement {
     /// The hash identifier of the material required. Use it to look up the material's DestinyInventoryItemDefinition.
     #[serde(rename = "itemHash")]
@@ -646,7 +646,7 @@ pub struct DestinyMaterialRequirement {
 }
 
 /// If the item can exist in an inventory - the overwhelming majority of them can and do - then this is the basic properties regarding the item's relationship with the inventory.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemInventoryBlockDefinition {
     /// If this string is populated, you can't have more than one stack with this label in a given inventory. Note that this is different from the equipping block's unique label, which is used for equipping uniqueness.
     #[serde(rename = "stackUniqueLabel")]
@@ -703,7 +703,7 @@ pub struct DestinyItemInventoryBlockDefinition {
 /// An Inventory (be it Character or Profile level) is comprised of many Buckets. An example of a bucket is "Primary Weapons", where all of the primary weapons on a character are gathered together into a single visual element in the UI: a subset of the inventory that has a limited number of slots, and in this case also has an associated Equipment Slot for equipping an item in the bucket.
 /// Item definitions declare what their "default" bucket is (DestinyInventoryItemDefinition.inventory.bucketTypeHash), and Item instances will tell you which bucket they are currently residing in (DestinyItemComponent.bucketHash). You can use this information along with the DestinyInventoryBucketDefinition to show these items grouped by bucket.
 /// You cannot transfer an item to a bucket that is not its Default without going through a Vendor's "accepted items" (DestinyVendorDefinition.acceptedItems). This is how transfer functionality like the Vault is implemented, as a feature of a Vendor. See the vendor's acceptedItems property for more details.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyInventoryBucketDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -758,7 +758,7 @@ pub struct DestinyInventoryBucketDefinition {
 }
 
 /// Primarily for Quests, this is the definition of properties related to the item if it is a quest and its various quest steps.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSetBlockDefinition {
     /// A collection of hashes of set items, for items such as Quest Metadata items that possess this data.
     #[serde(rename = "itemList")]
@@ -790,7 +790,7 @@ pub struct DestinyItemSetBlockDefinition {
 }
 
 /// Defines a particular entry in an ItemSet (AKA a particular Quest Step in a Quest)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSetBlockEntryDefinition {
     /// Used for tracking which step a user reached. These values will be populated in the user's internal state, which we expose externally as a more usable DestinyQuestStatus object. If this item has been obtained, this value will be set in trackingUnlockValueHash.
     #[serde(rename = "trackingValue")]
@@ -804,7 +804,7 @@ pub struct DestinyItemSetBlockEntryDefinition {
 /// Information about the item's calculated stats, with as much data as we can find for the stats without having an actual instance of the item.
 /// Note that this means the entire concept of providing these stats is fundamentally insufficient: we cannot predict with 100% accuracy the conditions under which an item can spawn, so we use various heuristics to attempt to simulate the conditions as accurately as possible. Actual stats for items in-game can and will vary, but these should at least be useful base points for comparison and display.
 /// It is also worth noting that some stats, like Magazine size, have further calculations performed on them by scripts in-game and on the game servers that BNet does not have access to. We cannot know how those stats are further transformed, and thus some stats will be inaccurate even on instances of items in BNet vs. how they appear in-game. This is a known limitation of our item statistics, without any planned fix.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemStatBlockDefinition {
     /// If true, the game won't show the "primary" stat on this item when you inspect it.
     /// NOTE: This is being manually mapped, because I happen to want it in a block that isn't going to directly create this derivative block.
@@ -833,7 +833,7 @@ pub struct DestinyItemStatBlockDefinition {
 
 /// Defines a specific stat value on an item, and the minimum/maximum range that we could compute for the item based on our heuristics for how the item might be generated.
 /// Not guaranteed to match real-world instances of the item, but should hopefully at least be close. If it's not close, let us know on the Bungie API forums.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyInventoryItemStatDefinition {
     /// The hash for the DestinyStatDefinition representing this stat.
     #[serde(rename = "statHash")]
@@ -871,7 +871,7 @@ pub struct DestinyInventoryItemStatDefinition {
 /// 2) "Investment" stat (the stat's value after DestinyStatDefinition's interpolation tables and aggregation logic is applied to the "Sandbox" stat value)
 /// 3) "Display" stat (the stat's base UI-visible value after DestinyStatGroupDefinition's interpolation tables are applied to the Investment Stat value. For most stats, this is what is displayed.)
 /// 4) Underlying in-game stat (the stat's actual value according to the game, after the game runs dynamic scripts based on the game and character's state. This is the final transformation that BNet does not have access to. For most stats, this is not actually displayed to the user, with the exception of Magazine Size which is then piped back to the UI for display in-game, but not to BNet.)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyStatDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -906,7 +906,7 @@ pub struct DestinyStatDefinition {
 /// When an inventory item (DestinyInventoryItemDefinition) has Stats (such as Attack Power), the item will refer to a Stat Group. This definition enumerates the properties used to transform the item's "Investment" stats into "Display" stats.
 /// See DestinyStatDefinition's documentation for information about the transformation of Stats, and the meaning of an Investment vs. a Display stat.
 /// If you don't want to do these calculations on your own, fear not: pulling live data from the BNet endpoints will return display stat values pre-computed and ready for you to use. I highly recommend this approach, saves a lot of time and also accounts for certain stat modifiers that can't easily be accounted for without live data (such as stat modifiers on Talent Grids and Socket Plugs)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyStatGroupDefinition {
     /// The maximum possible value that any stat in this group can be transformed into.
     /// This is used by stats that *don't* have scaledStats entries below, but that still need to be displayed as a progress bar, in which case this is used as the upper bound for said progress bar. (the lower bound is always 0)
@@ -943,7 +943,7 @@ pub struct DestinyStatGroupDefinition {
 
 /// Describes the way that an Item Stat (see DestinyStatDefinition) is transformed using the DestinyStatGroupDefinition related to that item. See both of the aforementioned definitions for more information about the stages of stat transformation.
 /// This represents the transformation of a stat into a "Display" stat (the closest value that BNet can get to the in-game display value of the stat)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyStatDisplayDefinition {
     /// The hash identifier for the stat being transformed into a Display stat.
     /// Use it to look up the DestinyStatDefinition, or key into a DestinyInventoryItemDefinition's stats property.
@@ -968,7 +968,7 @@ pub struct DestinyStatDisplayDefinition {
 /// This defines a specific overridden stat. You could theoretically check these before rendering your stat UI, and for each stat that has an override show these displayProperties instead of those on the DestinyStatDefinition.
 /// Or you could be like us, and skip that for now because the game has yet to actually use this feature. But know that it's here, waiting for a resilliant young designer to take up the mantle and make us all look foolish by showing the wrong name for stats.
 /// Note that, if this gets used, the override will apply only to items using the overriding Stat Group. Other items will still show the default stat's name/description.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyStatOverrideDefinition {
     /// The hash identifier of the stat whose display properties are being overridden.
     #[serde(rename = "statHash")]
@@ -980,7 +980,7 @@ pub struct DestinyStatOverrideDefinition {
 }
 
 /// Items that can be equipped define this block. It contains information we need to understand how and when the item can be equipped.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEquippingBlockDefinition {
     /// If the item is part of a gearset, this is a reference to that gearset item.
     #[serde(rename = "gearsetItemHash")]
@@ -1016,7 +1016,7 @@ pub struct DestinyEquippingBlockDefinition {
 /// Characters can not only have Inventory buckets (containers of items that are generally matched by their type or functionality), they can also have Equipment Slots.
 /// The Equipment Slot is an indicator that the related bucket can have instanced items equipped on the character. For instance, the Primary Weapon bucket has an Equipment Slot that determines whether you can equip primary weapons, and holds the association between its slot and the inventory bucket from which it can have items equipped.
 /// An Equipment Slot must have a related Inventory Bucket, but not all inventory buckets must have Equipment Slots.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEquipmentSlotDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -1051,14 +1051,14 @@ pub struct DestinyEquipmentSlotDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyArtDyeReference {
     #[serde(rename = "artDyeChannelHash")]
     pub art_dye_channel_hash: u32,
 }
 
 /// This Block defines the rendering data associated with the item, if any.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemTranslationBlockDefinition {
     #[serde(rename = "weaponPatternIdentifier")]
     pub weapon_pattern_identifier: Option<String>,
@@ -1082,7 +1082,7 @@ pub struct DestinyItemTranslationBlockDefinition {
     pub has_geometry: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyGearArtArrangementReference {
     #[serde(rename = "classHash")]
     pub class_hash: u32,
@@ -1093,7 +1093,7 @@ pub struct DestinyGearArtArrangementReference {
 
 /// Defines a Character Class in Destiny 2. These are types of characters you can play, like Titan, Warlock, and Hunter.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyClassDefinition {
     /// In Destiny 1, we added a convenience Enumeration for referring to classes. We've kept it, though mostly for posterity. This is the enum value for this definition's class.
     #[serde(rename = "classType")]
@@ -1129,7 +1129,7 @@ pub struct DestinyClassDefinition {
 }
 
 /// Gender is a social construct, and as such we have definitions for Genders. Right now there happens to only be two, but we'll see what the future holds.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyGenderDefinition {
     /// This is a quick reference enumeration for all of the currently defined Genders. We use the enumeration for quicker lookups in related data, like DestinyClassDefinition.genderedClassNames.
     #[serde(rename = "genderType")]
@@ -1161,7 +1161,7 @@ pub struct DestinyGenderDefinition {
 /// It is pretty much guaranteed that they'll be used for even more features in the future. They have come to be seen more as generic categorized containers for items than "vendors" in a traditional sense, for better or worse.
 /// Where possible and time allows, we'll attempt to split those out into their own more digestible derived "Definitions": but often time does not allow that, as you can see from the above ways that vendors are used which we never split off from Vendor Definitions externally.
 /// Since Vendors are so many things to so many parts of the game, the definition is understandably complex. You will want to combine this data with live Vendor information from the API when it is available.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::DestinyVendorDisplayPropertiesDefinition>,
@@ -1312,7 +1312,7 @@ pub struct DestinyVendorDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorDisplayPropertiesDefinition {
     /// I regret calling this a "large icon". It's more like a medium-sized image with a picture of the vendor's mug on it, trying their best to look cool. Not what one would call an icon.
     #[serde(rename = "largeIcon")]
@@ -1365,7 +1365,7 @@ pub struct DestinyVendorDisplayPropertiesDefinition {
 }
 
 /// The localized properties of the requirementsDisplay, allowing information about the requirement or item being featured to be seen.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorRequirementDisplayEntryDefinition {
     #[serde(rename = "icon")]
     pub icon: Option<String>,
@@ -1381,7 +1381,7 @@ pub struct DestinyVendorRequirementDisplayEntryDefinition {
 }
 
 /// If a vendor can ever end up performing actions, these are the properties that will be related to those actions. I'm not going to bother documenting this yet, as it is unused and unclear if it will ever be used... but in case it is ever populated and someone finds it useful, it is defined here.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorActionDefinition {
     #[serde(rename = "description")]
     pub description: Option<String>,
@@ -1412,7 +1412,7 @@ pub struct DestinyVendorActionDefinition {
 }
 
 /// This is the definition for a single Vendor Category, into which Sale Items are grouped.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorCategoryEntryDefinition {
     /// The index of the category in the original category definitions for the vendor.
     #[serde(rename = "categoryIndex")]
@@ -1478,7 +1478,7 @@ pub struct DestinyVendorCategoryEntryDefinition {
 }
 
 /// The details of an overlay prompt to show to a user. They are all fairly self-explanatory localized strings that can be shown.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorCategoryOverlayDefinition {
     #[serde(rename = "choiceDescription")]
     pub choice_description: Option<String>,
@@ -1498,7 +1498,7 @@ pub struct DestinyVendorCategoryOverlayDefinition {
 }
 
 /// Display Categories are different from "categories" in that these are specifically for visual grouping and display of categories in Vendor UI. The "categories" structure is for validation of the contained items, and can be categorized entirely separately from "Display Categories", there need be and often will be no meaningful relationship between the two.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyDisplayCategoryDefinition {
     #[serde(rename = "index")]
     pub index: i32,
@@ -1536,7 +1536,7 @@ pub struct DestinyDisplayCategoryDefinition {
 }
 
 /// A Vendor Interaction is a dialog shown by the vendor other than sale items or transfer screens. The vendor is showing you something, and asking you to reply to it by choosing an option or reward.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorInteractionDefinition {
     /// The position of this interaction in its parent array. Note that this is NOT content agnostic, and should not be used as such.
     #[serde(rename = "interactionIndex")]
@@ -1593,7 +1593,7 @@ pub struct DestinyVendorInteractionDefinition {
 
 /// When the interaction is replied to, Reward sites will fire and items potentially selected based on whether the given unlock expression is TRUE.
 /// You can potentially choose one from multiple replies when replying to an interaction: this is how you get either/or rewards from vendors.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorInteractionReplyDefinition {
     /// The rewards granted upon responding to the vendor.
     #[serde(rename = "itemRewardsSelection")]
@@ -1609,14 +1609,14 @@ pub struct DestinyVendorInteractionReplyDefinition {
 }
 
 /// Compare this sackType to the sack identifier in the DestinyInventoryItemDefinition.vendorSackType property of items. If they match, show this sack with this interaction.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorInteractionSackEntryDefinition {
     #[serde(rename = "sackType")]
     pub sack_type: u32,
 }
 
 /// The definition for an "inventory flyout": a UI screen where we show you part of an otherwise hidden vendor inventory: like the Vault inventory buckets.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorInventoryFlyoutDefinition {
     /// If the flyout is locked, this is the reason why.
     #[serde(rename = "lockedDescription")]
@@ -1644,7 +1644,7 @@ pub struct DestinyVendorInventoryFlyoutDefinition {
 }
 
 /// Information about a single inventory bucket in a vendor flyout UI and how it is shown.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorInventoryFlyoutBucketDefinition {
     /// If true, the inventory bucket should be able to be collapsed visually.
     #[serde(rename = "collapsible")]
@@ -1660,7 +1660,7 @@ pub struct DestinyVendorInventoryFlyoutBucketDefinition {
 }
 
 /// This represents an item being sold by the vendor.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorItemDefinition {
     /// The index into the DestinyVendorDefinition.saleList. This is what we use to refer to items being sold throughout live and definition data.
     #[serde(rename = "vendorItemIndex")]
@@ -1773,7 +1773,7 @@ pub struct DestinyVendorItemDefinition {
 
 /// In addition to item quantity information for vendor prices, this also has any optional information that may exist about how the item's quantity can be modified. (unfortunately not information that is able to be read outside of the BNet servers, but it's there)
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorItemQuantity {
     /// The hash identifier for the item in question. Use it to look up the item's DestinyInventoryItemDefinition.
     #[serde(rename = "itemHash")]
@@ -1795,14 +1795,14 @@ pub struct DestinyVendorItemQuantity {
 }
 
 /// An overly complicated wrapper for the item level at which the item should spawn.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemCreationEntryLevelDefinition {
     #[serde(rename = "level")]
     pub level: i32,
 }
 
 /// Not terribly useful, some basic cooldown interaction info.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorSaleItemActionBlockDefinition {
     #[serde(rename = "executeSeconds")]
     pub execute_seconds: f32,
@@ -1812,7 +1812,7 @@ pub struct DestinyVendorSaleItemActionBlockDefinition {
 }
 
 /// The information for how the vendor purchase should override a given socket with custom plug data.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorItemSocketOverride {
     /// If this is populated, the socket will be overridden with a specific plug.
     /// If this isn't populated, it's being overridden by something more complicated that is only known by the Game Server and God, which means we can't tell you in advance what it'll be.
@@ -1829,7 +1829,7 @@ pub struct DestinyVendorItemSocketOverride {
 }
 
 /// When a vendor provides services, this is the localized name of those services.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorServiceDefinition {
     /// The localized name of a service provided.
     #[serde(rename = "name")]
@@ -1839,7 +1839,7 @@ pub struct DestinyVendorServiceDefinition {
 /// If you ever wondered how the Vault works, here it is.
 /// The Vault is merely a set of inventory buckets that exist on your Profile/Account level. When you transfer items in the Vault, the game is using the Vault Vendor's DestinyVendorAcceptedItemDefinitions to see where the appropriate destination bucket is for the source bucket from whence your item is moving. If it finds such an entry, it transfers the item to the other bucket.
 /// The mechanics for Postmaster works similarly, which is also a vendor. All driven by Accepted Items.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorAcceptedItemDefinition {
     /// The "source" bucket for a transfer. When a user wants to transfer an item, the appropriate DestinyVendorDefinition's acceptedItems property is evaluated, looking for an entry where acceptedInventoryBucketHash matches the bucket that the item being transferred is currently located. If it exists, the item will be transferred into whatever bucket is defined by destinationInventoryBucketHash.
     #[serde(rename = "acceptedInventoryBucketHash")]
@@ -1852,7 +1852,7 @@ pub struct DestinyVendorAcceptedItemDefinition {
 
 /// On to one of the more confusing subjects of the API. What is a Destination, and what is the relationship between it, Activities, Locations, and Places?
 /// A "Destination" is a specific region/city/area of a larger "Place". For instance, a Place might be Earth where a Destination might be Bellevue, Washington. (Please, pick a more interesting destination if you come to visit Earth).
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyDestinationDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -1896,7 +1896,7 @@ pub struct DestinyDestinationDefinition {
 
 /// Destinations and Activities may have default Activity Graphs that should be shown when you bring up the Director and are playing in either.
 /// This contract defines the graph referred to and the gating for when it is relevant.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityGraphListEntryDefinition {
     /// The hash identifier of the DestinyActivityGraphDefinition that should be shown when opening the director.
     #[serde(rename = "activityGraphHash")]
@@ -1909,7 +1909,7 @@ pub struct DestinyActivityGraphListEntryDefinition {
 /// However, in PvP activities, the Activity alone only tells you the map being played, or the Playlist that the user chose to enter. You'll need to know the Activity Mode they're playing to know that they're playing Mode X on Map Y.
 /// Activity Definitions tell a great deal of information about what *could* be relevant to a user: what rewards they can earn, what challenges could be performed, what modifiers could be applied. To figure out which of these properties is actually live, you'll need to combine the definition with "Live" data from one of the Destiny endpoints.
 /// Activities also have Activity Types, but unfortunately in Destiny 2 these are even less reliable of a source of information than they were in Destiny 1. I will be looking into ways to provide more reliable sources for type information as time goes on, but for now we're going to have to deal with the limitations. See DestinyActivityTypeDefinition for more information.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityDefinition {
     /// The title, subtitle, and icon for the activity. We do a little post-processing on this to try and account for Activities where the designers have left this data too minimal to determine what activity is actually being played.
     #[serde(rename = "displayProperties")]
@@ -2038,7 +2038,7 @@ pub struct DestinyActivityDefinition {
 }
 
 /// Activities can refer to one or more sets of tooltip-friendly reward data. These are the definitions for those tooltip friendly rewards.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityRewardDefinition {
     /// The header for the reward set, if any.
     #[serde(rename = "rewardText")]
@@ -2052,7 +2052,7 @@ pub struct DestinyActivityRewardDefinition {
 
 /// A reference to an Activity Modifier from another entity, such as an Activity (for now, just Activities).
 /// This defines some
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityModifierReferenceDefinition {
     /// The hash identifier for the DestinyActivityModifierDefinition referenced by this activity.
     #[serde(rename = "activityModifierHash")]
@@ -2060,7 +2060,7 @@ pub struct DestinyActivityModifierReferenceDefinition {
 }
 
 /// Represents a reference to a Challenge, which for now is just an Objective.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityChallengeDefinition {
     /// The hash for the Objective that matches this challenge. Use it to look up the DestinyObjectiveDefinition.
     #[serde(rename = "objectiveHash")]
@@ -2079,7 +2079,7 @@ pub struct DestinyActivityChallengeDefinition {
 /// - Milestones (which refer to Objectives that are defined on both Quest Steps and Activities)
 /// - Anything else that the designers decide to do later.
 /// Objectives have progress, a notion of having been Completed, human readable data describing the task to be accomplished, and a lot of optional tack-on data that can enhance the information provided about the task.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyObjectiveDefinition {
     /// Ideally, this should tell you what your task is. I'm not going to lie to you though. Sometimes this doesn't have useful information at all. Which sucks, but there's nothing either of us can do about it.
     #[serde(rename = "displayProperties")]
@@ -2172,7 +2172,7 @@ pub struct DestinyObjectiveDefinition {
 
 /// Defines the conditions under which an intrinsic perk is applied while participating in an Objective.
 /// These perks will generally not be benefit-granting perks, but rather a perk that modifies gameplay in some interesting way.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyObjectivePerkEntryDefinition {
     /// The hash identifier of the DestinySandboxPerkDefinition that will be applied to the character.
     #[serde(rename = "perkHash")]
@@ -2189,7 +2189,7 @@ pub struct DestinyObjectivePerkEntryDefinition {
 /// - Perks are applied for unique alterations of state in Objectives
 /// Anyways, I'm sure you can see why perks are so interesting.
 /// What Perks often don't have is human readable information, so we attempt to reverse engineer that by pulling that data from places that uniquely refer to these perks: namely, Talent Nodes and Plugs. That only gives us a subset of perks that are human readable, but those perks are the ones people generally care about anyways. The others are left as a mystery, their true purpose mostly unknown and undocumented.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinySandboxPerkDefinition {
     /// These display properties are by no means guaranteed to be populated. Usually when it is, it's only because we back-filled them with the displayProperties of some Talent Node or Plug item that happened to be uniquely providing that perk.
     #[serde(rename = "displayProperties")]
@@ -2233,7 +2233,7 @@ pub struct DestinySandboxPerkDefinition {
 }
 
 /// These properties are an attempt to categorize talent node steps by certain common properties. See the related enumerations for the type of properties being categorized.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentNodeStepGroups {
     #[serde(rename = "weaponPerformance")]
     pub weapon_performance: enumflags2::BitFlags<crate::destiny::definitions::DestinyTalentNodeStepWeaponPerformances>,
@@ -2253,7 +2253,7 @@ pub struct DestinyTalentNodeStepGroups {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepWeaponPerformances {
     RateOfFire = 1,
     Damage = 2,
@@ -2300,7 +2300,7 @@ impl FromStr for DestinyTalentNodeStepWeaponPerformances {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepImpactEffects {
     ArmorPiercing = 1,
     Ricochet = 2,
@@ -2333,7 +2333,7 @@ impl FromStr for DestinyTalentNodeStepImpactEffects {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepGuardianAttributes {
     Stats = 1,
     Shields = 2,
@@ -2370,7 +2370,7 @@ impl FromStr for DestinyTalentNodeStepGuardianAttributes {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepLightAbilities {
     Grenades = 1,
     Melee = 2,
@@ -2403,7 +2403,7 @@ impl FromStr for DestinyTalentNodeStepLightAbilities {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyTalentNodeStepDamageTypes {
     Kinetic = 1,
     Arc = 2,
@@ -2431,7 +2431,7 @@ impl FromStr for DestinyTalentNodeStepDamageTypes {
 }
 
 /// All damage types that are possible in the game are defined here, along with localized info and icons as needed.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyDamageTypeDefinition {
     /// The description of the damage type, icon etc...
     #[serde(rename = "displayProperties")]
@@ -2464,7 +2464,7 @@ pub struct DestinyDamageTypeDefinition {
 }
 
 /// Defines the conditions under which stat modifications will be applied to a Character while participating in an objective.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyObjectiveStatEntryDefinition {
     /// The stat being modified, and the value used.
     #[serde(rename = "stat")]
@@ -2477,7 +2477,7 @@ pub struct DestinyObjectiveStatEntryDefinition {
 
 /// Represents a "raw" investment stat, before calculated stats are calculated and before any DestinyStatGroupDefinition is applied to transform the stat into something closer to what you see in-game.
 /// Because these won't match what you see in-game, consider carefully whether you really want to use these stats. I have left them in case someone can do something useful or interesting with the pre-processed statistics.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemInvestmentStatDefinition {
     /// The hash identifier for the DestinyStatDefinition defining this stat.
     #[serde(rename = "statTypeHash")]
@@ -2494,7 +2494,7 @@ pub struct DestinyItemInvestmentStatDefinition {
 
 /// A "Location" is a sort of shortcut for referring to a specific combination of Activity, Destination, Place, and even Bubble or NavPoint within a space.
 /// Most of this data isn't intrinsically useful to us, but Objectives refer to locations, and through that we can at least infer the Activity, Destination, and Place being referred to by the Objective.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyLocationDefinition {
     /// If the location has a Vendor on it, this is the hash identifier for that Vendor. Look them up with DestinyVendorDefinition.
     #[serde(rename = "vendorHash")]
@@ -2519,7 +2519,7 @@ pub struct DestinyLocationDefinition {
 }
 
 /// A specific "spot" referred to by a location. Only one of these can be active at a time for a given Location.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyLocationReleaseDefinition {
     /// Sadly, these don't appear to be populated anymore (ever?)
     #[serde(rename = "displayProperties")]
@@ -2576,7 +2576,7 @@ pub struct DestinyLocationReleaseDefinition {
 }
 
 /// Represents a status string that could be conditionally displayed about an activity. Note that externally, you can only see the strings themselves. Internally we combine this information with server state to determine which strings should be shown.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityUnlockStringDefinition {
     /// The string to be displayed if the conditions are met.
     #[serde(rename = "displayString")]
@@ -2584,7 +2584,7 @@ pub struct DestinyActivityUnlockStringDefinition {
 }
 
 /// If the activity is a playlist, this is the definition for a specific entry in the playlist: a single possible combination of Activity and Activity Mode that can be chosen.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityPlaylistItemDefinition {
     /// The hash identifier of the Activity that can be played. Use it to look up the DestinyActivityDefinition.
     #[serde(rename = "activityHash")]
@@ -2609,7 +2609,7 @@ pub struct DestinyActivityPlaylistItemDefinition {
 
 /// This definition represents an "Activity Mode" as it exists in the Historical Stats endpoints. An individual Activity Mode represents a collection of activities that are played in a certain way. For example, Nightfall Strikes are part of a "Nightfall" activity mode, and any activities played as the PVP mode "Clash" are part of the "Clash activity mode.
 /// Activity modes are nested under each other in a hierarchy, so that if you ask for - for example - "AllPvP", you will get any PVP activities that the user has played, regardless of what specific PVP mode was being played.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityModeDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -2670,7 +2670,7 @@ pub struct DestinyActivityModeDefinition {
 }
 
 /// Information about matchmaking and party size for the activity.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityMatchmakingBlockDefinition {
     /// If TRUE, the activity is matchmade. Otherwise, it requires explicit forming of a party.
     #[serde(rename = "isMatchmade")]
@@ -2694,7 +2694,7 @@ pub struct DestinyActivityMatchmakingBlockDefinition {
 }
 
 /// Guided Game information for this activity.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityGuidedBlockDefinition {
     /// The maximum amount of people that can be in the waiting lobby.
     #[serde(rename = "guidedMaxLobbySize")]
@@ -2709,14 +2709,14 @@ pub struct DestinyActivityGuidedBlockDefinition {
     pub guided_disband_count: i32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityLoadoutRequirementSet {
     /// The set of requirements that will be applied on the activity if this requirement set is active.
     #[serde(rename = "requirements")]
     pub requirements: Option<Vec<crate::destiny::definitions::DestinyActivityLoadoutRequirement>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityLoadoutRequirement {
     #[serde(rename = "equipmentSlotHash")]
     pub equipment_slot_hash: u32,
@@ -2730,7 +2730,7 @@ pub struct DestinyActivityLoadoutRequirement {
 
 /// A point of entry into an activity, gated by an unlock flag and with some more-or-less useless (for our purposes) phase information. I'm including it in case we end up being able to bolt more useful information onto it in the future.
 /// UPDATE: Turns out this information isn't actually useless, and is in fact actually useful for people. Who would have thought? We still don't have localized info for it, but at least this will help people when they're looking at phase indexes in stats data, or when they want to know what phases have been completed on a weekly achievement.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityInsertionPointDefinition {
     /// A unique hash value representing the phase. This can be useful for, for example, comparing how different instances of Raids have phases in different orders!
     #[serde(rename = "phaseHash")]
@@ -2739,7 +2739,7 @@ pub struct DestinyActivityInsertionPointDefinition {
 
 /// Okay, so Activities (DestinyActivityDefinition) take place in Destinations (DestinyDestinationDefinition). Destinations are part of larger locations known as Places (you're reading its documentation right now).
 /// Places are more on the planetary scale, like "Earth" and "Your Mom."
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPlaceDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -2763,7 +2763,7 @@ pub struct DestinyPlaceDefinition {
 /// These are most commonly used in the game for the subtitle under Activities, but BNet uses them extensively to identify and group activities by their common properties.
 /// Unfortunately, there has been a movement away from providing the richer data in Destiny 2 that we used to get in Destiny 1 for Activity Types. For instance, Nightfalls are grouped under the same Activity Type as regular Strikes.
 /// For this reason, BNet will eventually migrate toward Activity Modes as a better indicator of activity category. But for the time being, it is still referred to in many places across our codebase.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyActivityTypeDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -2784,7 +2784,7 @@ pub struct DestinyActivityTypeDefinition {
 
 /// Where the sausage gets made. Unlock Expressions are the foundation of the game's gating mechanics and investment-related restrictions. They can test Unlock Flags and Unlock Values for certain states, using a sufficient amount of logical operators such that unlock expressions are effectively Turing complete.
 /// Use UnlockExpressionParser to evaluate expressions using an IUnlockContext parsed from Babel.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyUnlockExpressionDefinition {
     /// A shortcut for determining the most restrictive gating that this expression performs. See the DestinyGatingScope enum's documentation for more details.
     #[serde(rename = "scope")]
@@ -2793,14 +2793,14 @@ pub struct DestinyUnlockExpressionDefinition {
 
 /// Human readable data about the bubble. Combine with DestinyBubbleDefinition - see DestinyDestinationDefinition.bubbleSettings for more information.
 /// DEPRECATED - Just use bubbles.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyDestinationBubbleSettingDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
 }
 
 /// Basic identifying data about the bubble. Combine with DestinyDestinationBubbleSettingDefinition - see DestinyDestinationDefinition.bubbleSettings for more information.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyBubbleDefinition {
     /// The identifier for the bubble: only guaranteed to be unique within the Destination.
     #[serde(rename = "hash")]
@@ -2811,7 +2811,7 @@ pub struct DestinyBubbleDefinition {
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorGroupReference {
     /// The DestinyVendorGroupDefinition to which this Vendor can belong.
     #[serde(rename = "vendorGroupHash")]
@@ -2821,7 +2821,7 @@ pub struct DestinyVendorGroupReference {
 /// BNet attempts to group vendors into similar collections. These groups aren't technically game canonical, but they are helpful for filtering vendors or showing them organized into a clean view on a webpage or app.
 /// These definitions represent the groups we've built. Unlike in Destiny 1, a Vendors' group may change dynamically as the game state changes: thus, you will want to check DestinyVendorComponent responses to find a vendor's currently active Group (if you care).
 /// Using this will let you group your vendors in your UI in a similar manner to how we will do grouping in the Companion.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorGroupDefinition {
     /// The recommended order in which to render the groups, Ascending order.
     #[serde(rename = "order")]
@@ -2847,7 +2847,7 @@ pub struct DestinyVendorGroupDefinition {
 
 /// These definitions represent Factions in the game. Factions have ended up unilaterally being related to Vendors that represent them, but that need not necessarily be the case.
 /// A Faction is really just an entity that has a related progression for which a character can gain experience. In Destiny 1, Dead Orbit was an example of a Faction: there happens to be a Vendor that represents Dead Orbit (and indeed, DestinyVendorDefinition.factionHash defines to this relationship), but Dead Orbit could theoretically exist without the Vendor that provides rewards.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyFactionDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -2888,7 +2888,7 @@ pub struct DestinyFactionDefinition {
 
 /// These definitions represent faction vendors at different points in the game.
 /// A single faction may contain multiple vendors, or the same vendor available at two different locations.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyFactionVendorDefinition {
     /// The faction vendor hash.
     #[serde(rename = "vendorHash")]
@@ -2903,7 +2903,7 @@ pub struct DestinyFactionVendorDefinition {
     pub background_image_path: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinySandboxPatternDefinition {
     #[serde(rename = "patternHash")]
     pub pattern_hash: u32,
@@ -2940,7 +2940,7 @@ pub struct DestinySandboxPatternDefinition {
     pub redacted: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyArrangementRegionFilterDefinition {
     #[serde(rename = "artArrangementRegionHash")]
     pub art_arrangement_region_hash: u32,
@@ -2957,7 +2957,7 @@ pub struct DestinyArrangementRegionFilterDefinition {
 
 /// Items like Sacks or Boxes can have items that it shows in-game when you view details that represent the items you can obtain if you use or acquire the item.
 /// This defines those categories, and gives some insights into that data's source.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemPreviewBlockDefinition {
     /// A string that the game UI uses as a hint for which detail screen to show for the item. You, too, can leverage this for your own custom screen detail views. Note, however, that these are arbitrarily defined by designers: there's no guarantees of a fixed, known number of these - so fall back to something reasonable if you don't recognize it.
     #[serde(rename = "screenStyle")]
@@ -2982,7 +2982,7 @@ pub struct DestinyItemPreviewBlockDefinition {
 
 /// An item's "Quality" determines its calculated stats. The Level at which the item spawns is combined with its "qualityLevel" along with some additional calculations to determine the value of those stats.
 /// In Destiny 2, most items don't have default item levels and quality, making this property less useful: these apparently are almost always determined by the complex mechanisms of the Reward system rather than statically. They are still provided here in case they are still useful for people. This also contains some information about Infusion.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemQualityBlockDefinition {
     /// The "base" defined level of an item. This is a list because, in theory, each Expansion could define its own base level for an item.
     /// In practice, not only was that never done in Destiny 1, but now this isn't even populated at all. When it's not populated, the level at which it spawns has to be inferred by Reward information, of which BNet receives an imperfect view and will only be reliable on instanced data as a result.
@@ -3026,7 +3026,7 @@ pub struct DestinyItemQualityBlockDefinition {
 }
 
 /// The version definition currently just holds a reference to the power cap.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemVersionDefinition {
     /// A reference to the power cap for this item version.
     #[serde(rename = "powerCapHash")]
@@ -3036,7 +3036,7 @@ pub struct DestinyItemVersionDefinition {
 /// This defines an item's "Value". Unfortunately, this appears to be used in different ways depending on the way that the item itself is used.
 /// For items being sold at a Vendor, this is the default "sale price" of the item. These days, the vendor itself almost always sets the price, but it still possible for the price to fall back to this value. For quests, it is a preview of rewards you can gain by completing the quest. For dummy items, if the itemValue refers to an Emblem, it is the emblem that should be shown as the reward. (jeez louise)
 /// It will likely be used in a number of other ways in the future, it appears to be a bucket where they put arbitrary items and quantities into the item.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemValueBlockDefinition {
     /// References to the items that make up this item's "value", and the quantity.
     #[serde(rename = "itemValue")]
@@ -3048,7 +3048,7 @@ pub struct DestinyItemValueBlockDefinition {
 }
 
 /// Data about an item's "sources": ways that the item can be obtained.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSourceBlockDefinition {
     /// The list of hash identifiers for Reward Sources that hint where the item can be found (DestinyRewardSourceDefinition).
     #[serde(rename = "sourceHashes")]
@@ -3070,7 +3070,7 @@ pub struct DestinyItemSourceBlockDefinition {
 /// Represents a heuristically-determined "item source" according to Bungie.net. These item sources are non-canonical: we apply a combination of special configuration and often-fragile heuristics to attempt to discern whether an item should be part of a given "source," but we have known cases of false positives and negatives due to our imperfect heuristics.
 /// Still, they provide a decent approximation for people trying to figure out how an item can be obtained. DestinyInventoryItemDefinition refers to sources in the sourceDatas.sourceHashes property for all sources we determined the item could spawn from.
 /// An example in Destiny 1 of a Source would be "Nightfall". If an item has the "Nightfall" source associated with it, it's extremely likely that you can earn that item while playing Nightfall, either during play or as an after-completion reward.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRewardSourceDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -3095,7 +3095,7 @@ pub struct DestinyRewardSourceDefinition {
 
 /// BNet's custom categorization of reward sources. We took a look at the existing ways that items could be spawned, and tried to make high-level categorizations of them. This needs to be re-evaluated for Destiny 2.
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DestinyRewardSourceCategory {
     /// The source doesn't fit well into any of the other types.
     None = 0,
@@ -3129,7 +3129,7 @@ impl FromStr for DestinyRewardSourceCategory {
 /// Represents that a vendor could sell this item, and provides a quick link to that vendor and sale item.
 /// Note that we do not and cannot make a guarantee that the vendor will ever *actually* sell this item, only that the Vendor has a definition that indicates it *could* be sold.
 /// Note also that a vendor may sell the same item in multiple "ways", which means there may be multiple vendorItemIndexes for a single Vendor hash.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemVendorSourceReference {
     /// The identifier for the vendor that may sell this item.
     #[serde(rename = "vendorHash")]
@@ -3142,7 +3142,7 @@ pub struct DestinyItemVendorSourceReference {
 
 /// An item can have objectives on it. In practice, these are the exclusive purview of "Quest Step" items: DestinyInventoryItemDefinitions that represent a specific step in a Quest.
 /// Quest steps have 1:M objectives that we end up processing and returning in live data as DestinyQuestStatus data, and other useful information.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemObjectiveBlockDefinition {
     /// The hashes to Objectives (DestinyObjectiveDefinition) that are part of this Quest Step, in the order that they should be rendered.
     #[serde(rename = "objectiveHashes")]
@@ -3185,7 +3185,7 @@ pub struct DestinyItemObjectiveBlockDefinition {
     pub display_as_stat_tracker: bool,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyObjectiveDisplayProperties {
     /// The activity associated with this objective in the context of this item, if any.
     #[serde(rename = "activityHash")]
@@ -3197,7 +3197,7 @@ pub struct DestinyObjectiveDisplayProperties {
 }
 
 /// The metrics available for display and selection on an item.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemMetricBlockDefinition {
     /// Hash identifiers for any DestinyPresentationNodeDefinition entry that can be used to list available metrics. Any metric listed directly below these nodes, or in any of these nodes' children will be made available for selection.
     #[serde(rename = "availableMetricCategoryNodeHashes")]
@@ -3205,7 +3205,7 @@ pub struct DestinyItemMetricBlockDefinition {
 }
 
 /// An Unlock Value is an internal integer value, stored on the server and used in a variety of ways, most frequently for the gating/requirement checks that the game performs across all of its main features. They can also be used as the storage data for mapped Progressions, Objectives, and other features that require storage of variable numeric values.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyUnlockValueDefinition {
     /// The unique identifier for this entity. Guaranteed to be unique for the type of entity, but not globally.
     /// When entities refer to each other in Destiny content, it is this hash that they are referring to.
@@ -3222,7 +3222,7 @@ pub struct DestinyUnlockValueDefinition {
 }
 
 /// If an item has a related gearset, this is the list of items in that set, and an unlock expression that evaluates to a number representing the progress toward gearset completion (a very rare use for unlock expressions!)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemGearsetBlockDefinition {
     /// The maximum possible number of items that can be collected.
     #[serde(rename = "trackingValueMax")]
@@ -3234,7 +3234,7 @@ pub struct DestinyItemGearsetBlockDefinition {
 }
 
 /// Some items are "sacks" - they can be "opened" to produce other items. This is information related to its sack status, mostly UI strings. Engrams are an example of items that are considered to be "Sacks".
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSackBlockDefinition {
     /// A description of what will happen when you open the sack. As far as I can tell, this is blank currently. Unknown whether it will eventually be populated with useful info.
     #[serde(rename = "detailAction")]
@@ -3255,7 +3255,7 @@ pub struct DestinyItemSackBlockDefinition {
 }
 
 /// If defined, the item has at least one socket.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSocketBlockDefinition {
     /// This was supposed to be a string that would give per-item details about sockets. In practice, it turns out that all this ever has is the localized word "details". ... that's lame, but perhaps it will become something cool in the future.
     #[serde(rename = "detail")]
@@ -3275,7 +3275,7 @@ pub struct DestinyItemSocketBlockDefinition {
 }
 
 /// The definition information for a specific socket on an item. This will determine how the socket behaves in-game.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSocketEntryDefinition {
     /// All sockets have a type, and this is the hash identifier for this particular type. Use it to look up the DestinySocketTypeDefinition: read there for more information on how socket types affect the behavior of the socket.
     #[serde(rename = "socketTypeHash")]
@@ -3319,14 +3319,14 @@ pub struct DestinyItemSocketEntryDefinition {
 }
 
 /// The definition of a known, reusable plug that can be applied to a socket.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSocketEntryPlugItemDefinition {
     /// The hash identifier of a DestinyInventoryItemDefinition representing the plug that can be inserted.
     #[serde(rename = "plugItemHash")]
     pub plug_item_hash: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSocketEntryPlugItemRandomizedDefinition {
     #[serde(rename = "craftingRequirements")]
     pub crafting_requirements: Option<crate::destiny::definitions::DestinyPlugItemCraftingRequirements>,
@@ -3340,7 +3340,7 @@ pub struct DestinyItemSocketEntryPlugItemRandomizedDefinition {
     pub plug_item_hash: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPlugItemCraftingRequirements {
     #[serde(rename = "unlockRequirements")]
     pub unlock_requirements: Option<Vec<crate::destiny::definitions::DestinyPlugItemCraftingUnlockRequirement>>,
@@ -3353,14 +3353,14 @@ pub struct DestinyPlugItemCraftingRequirements {
     pub material_requirement_hashes: Option<Vec<u32>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyPlugItemCraftingUnlockRequirement {
     #[serde(rename = "failureDescription")]
     pub failure_description: Option<String>,
 }
 
 /// Represents a socket that has a plug associated with it intrinsically. This is useful for situations where the weapon needs to have a visual plug/Mod on it, but that plug/Mod should never change.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemIntrinsicSocketEntryDefinition {
     /// Indicates the plug that is intrinsically inserted into this socket.
     #[serde(rename = "plugItemHash")]
@@ -3376,7 +3376,7 @@ pub struct DestinyItemIntrinsicSocketEntryDefinition {
 }
 
 /// Sockets are grouped into categories in the UI. These define which category and which sockets are under that category.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSocketCategoryDefinition {
     /// The hash for the Socket Category: a quick way to go get the header display information for the category. Use it to look up DestinySocketCategoryDefinition info.
     #[serde(rename = "socketCategoryHash")]
@@ -3388,7 +3388,7 @@ pub struct DestinyItemSocketCategoryDefinition {
 }
 
 /// This appears to be information used when rendering rewards. We don't currently use it on BNet.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSummaryBlockDefinition {
     /// Apparently when rendering an item in a reward, this should be used as a sort priority. We're not doing it presently.
     #[serde(rename = "sortPriority")]
@@ -3397,7 +3397,7 @@ pub struct DestinyItemSummaryBlockDefinition {
 
 /// This defines information that can only come from a talent grid on an item. Items mostly have negligible talent grid data these days, but instanced items still retain grids as a source for some of this common information.
 /// Builds/Subclasses are the only items left that still have talent grids with meaningful Nodes.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemTalentGridBlockDefinition {
     /// The hash identifier of the DestinyTalentGridDefinition attached to this item.
     #[serde(rename = "talentGridHash")]
@@ -3426,7 +3426,7 @@ pub struct DestinyItemTalentGridBlockDefinition {
 /// Talent Grids have Nodes: the visual circles on the talent grid detail screen that have icons and can be activated if you meet certain requirements and pay costs. The actual visual data and effects, however, are driven by the "Steps" on Talent Nodes. Any given node will have 1:M of these steps, and the specific step that will be considered the "current" step (and thus the dictator of all benefits, visual state, and activation requirements on the Node) will almost always not be determined until an instance of the item is created. This is how, in Destiny 1, items were able to have such a wide variety of what users saw as "Perks": they were actually Talent Grids with nodes that had a wide variety of Steps, randomly chosen at the time of item creation.
 /// Now that Talent Grids are used exclusively by subclasses and builds, all of the properties within still apply: but there are additional visual elements on the Subclass/Build screens that are superimposed on top of the talent nodes. Unfortunately, BNet doesn't have this data: if you want to build a subclass screen, you will have to provide your own "decorative" assets, such as the visual connectors between nodes and the fancy colored-fire-bathed character standing behind the nodes.
 /// DestinyInventoryItem.talentGrid.talentGridHash defines an item's linked Talent Grid, which brings you to this definition that contains enough satic data about talent grids to make your head spin. These *must* be combined with instanced data - found when live data returns DestinyItemTalentGridComponent - in order to derive meaning. The instanced data will reference nodes and steps within these definitions, which you will then have to look up in the definition and combine with the instanced data to give the user the visual representation of their item's talent grid.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentGridDefinition {
     /// The maximum possible level of the Talent Grid: at this level, any nodes are allowed to be activated.
     #[serde(rename = "maxGridLevel")]
@@ -3481,7 +3481,7 @@ pub struct DestinyTalentGridDefinition {
 /// Talent Grids on items have Nodes. These nodes have positions in the talent grid's UI, and contain "Steps" (DestinyTalentNodeStepDefinition), one of whom will be the "Current" step.
 /// The Current Step determines the visual properties of the node, as well as what the node grants when it is activated.
 /// See DestinyTalentGridDefinition for a more complete overview of how Talent Grids work, and how they are used in Destiny 2 (and how they were used in Destiny 1).
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentNodeDefinition {
     /// The index into the DestinyTalentGridDefinition's "nodes" property where this node is located. Used to uniquely identify the node within the Talent Grid. Note that this is content version dependent: make sure you have the latest version of content before trying to use these properties.
     #[serde(rename = "nodeIndex")]
@@ -3571,7 +3571,7 @@ pub struct DestinyTalentNodeDefinition {
 
 /// Talent nodes have requirements that must be met before they can be activated.
 /// This describes the material costs, the Level of the Talent Grid's progression required, and other conditional information that limits whether a talent node can be activated.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyNodeActivationRequirement {
     /// The Progression level on the Talent Grid required to activate this node.
     /// See DestinyTalentGridDefinition.progressionHash for the related Progression, and read DestinyProgressionDefinition's documentation to learn more about Progressions.
@@ -3588,7 +3588,7 @@ pub struct DestinyNodeActivationRequirement {
 /// When a Talent Node is activated, the currently active step's benefits are conferred upon the item and character.
 /// The currently active step on talent nodes are determined when an item is first instantiated. Sometimes it is random, sometimes it is more deterministic (particularly when a node has only a single step).
 /// Note that, when dealing with Talent Node Steps, you must ensure that you have the latest version of content. stepIndex and nodeStepHash - two ways of identifying the step within a node - are both content version dependent, and thus are subject to change between content updates.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyNodeStepDefinition {
     /// These are the display properties actually used to render the Talent Node. The currently active step's displayProperties are shown.
     #[serde(rename = "displayProperties")]
@@ -3664,7 +3664,7 @@ pub struct DestinyNodeStepDefinition {
 }
 
 /// This is a bit of an odd duck. Apparently, if talent nodes steps have this data, the game will go through on step activation and alter the first Socket it finds on the item that has a type matching the given socket type, inserting the indicated plug item.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyNodeSocketReplaceResponse {
     /// The hash identifier of the socket type to find amidst the item's sockets (the item to which this talent grid is attached). See DestinyInventoryItemDefinition.sockets.socketEntries to find the socket type of sockets on the item in question.
     #[serde(rename = "socketTypeHash")]
@@ -3676,7 +3676,7 @@ pub struct DestinyNodeSocketReplaceResponse {
 }
 
 /// The list of indexes into the Talent Grid's "nodes" property for nodes in this exclusive set. (See DestinyTalentNodeDefinition.nodeIndex)
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentNodeExclusiveSetDefinition {
     /// The list of node indexes for the exclusive set. Historically, these were indexes. I would have liked to replace this with nodeHashes for consistency, but it's way too late for that. (9:09 PM, he's right!)
     #[serde(rename = "nodeIndexes")]
@@ -3684,7 +3684,7 @@ pub struct DestinyTalentNodeExclusiveSetDefinition {
 }
 
 /// As of Destiny 2, nodes can exist as part of "Exclusive Groups". These differ from exclusive sets in that, within the group, many nodes can be activated. But the act of activating any node in the group will cause "opposing" nodes (nodes in groups that are not allowed to be activated at the same time as this group) to deactivate.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentExclusiveGroup {
     /// The identifier for this exclusive group. Only guaranteed unique within the talent grid, not globally.
     #[serde(rename = "groupHash")]
@@ -3709,7 +3709,7 @@ pub struct DestinyTalentExclusiveGroup {
 
 /// An artificial construct provided by Bungie.Net, where we attempt to group talent nodes by functionality.
 /// This is a single set of references to Talent Nodes that share a common trait or purpose.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyTalentNodeCategory {
     /// Mostly just for debug purposes, but if you find it useful you can have it. This is BNet's manually created identifier for this category.
     #[serde(rename = "identifier")]
@@ -3729,7 +3729,7 @@ pub struct DestinyTalentNodeCategory {
 }
 
 /// An intrinsic perk on an item, and the requirements for it to be activated.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemPerkEntryDefinition {
     /// If this perk is not active, this is the string to show for why it's not providing its benefits.
     #[serde(rename = "requirementDisplayString")]
@@ -3747,7 +3747,7 @@ pub struct DestinyItemPerkEntryDefinition {
 /// In an attempt to categorize items by type, usage, and other interesting properties, we created DestinyItemCategoryDefinition: information about types that is assembled using a set of heuristics that examine the properties of an item such as what inventory bucket it's in, its item type name, and whether it has or is missing certain blocks of data.
 /// This heuristic is imperfect, however. If you find an item miscategorized, let us know on the Bungie API forums!
 /// We then populate all of the categories that we think an item belongs to in its DestinyInventoryItemDefinition.itemCategoryHashes property. You can use that to provide your own custom item filtering, sorting, aggregating... go nuts on it! And let us know if you see more categories that you wish would be added!
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemCategoryDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -3832,7 +3832,7 @@ pub struct DestinyItemCategoryDefinition {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProgressionRewardItemQuantity {
     #[serde(rename = "rewardedAtProgressionLevel")]
     pub rewarded_at_progression_level: i32,
@@ -3867,7 +3867,7 @@ pub struct DestinyProgressionRewardItemQuantity {
 
 /// In Destiny, "Races" are really more like "Species". Sort of. I mean, are the Awoken a separate species from humans? I'm not sure. But either way, they're defined here. You'll see Exo, Awoken, and Human as examples of these Species. Players will choose one for their character.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyRaceDefinition {
     #[serde(rename = "displayProperties")]
     pub display_properties: Option<crate::destiny::definitions::common::DestinyDisplayPropertiesDefinition>,
@@ -3899,7 +3899,7 @@ pub struct DestinyRaceDefinition {
 }
 
 /// Unlock Flags are small bits (literally, a bit, as in a boolean value) that the game server uses for an extremely wide range of state checks, progress storage, and other interesting tidbits of information.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyUnlockDefinition {
     /// Sometimes, but not frequently, these unlock flags also have human readable information: usually when they are being directly tested for some requirement, in which case the string is a localized description of why the requirement check failed.
     #[serde(rename = "displayProperties")]
@@ -3921,7 +3921,7 @@ pub struct DestinyUnlockDefinition {
 
 /// An artificial construct of our own creation, to try and put some order on top of Medals and keep them from being one giant, unmanageable and unsorted blob of stats.
 /// Unfortunately, we haven't had time to do this evaluation yet in Destiny 2, so we're short on Medal Tiers. This will hopefully be updated over time, if Medals continue to exist.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyMedalTierDefinition {
     /// The name of the tier.
     #[serde(rename = "tierName")]
@@ -3946,7 +3946,7 @@ pub struct DestinyMedalTierDefinition {
 }
 
 /// The results of a search for Destiny content. This will be improved on over time, I've been doing some experimenting to see what might be useful.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEntitySearchResult {
     /// A list of suggested words that might make for better search results, based on the text searched for.
     #[serde(rename = "suggestedWords")]
@@ -3958,7 +3958,7 @@ pub struct DestinyEntitySearchResult {
 }
 
 /// An individual Destiny Entity returned from the entity search.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEntitySearchResultItem {
     /// The hash identifier of the entity. You will use this to look up the DestinyDefinition relevant for the entity found.
     #[serde(rename = "hash")]

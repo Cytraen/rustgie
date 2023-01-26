@@ -5,7 +5,7 @@ use time::OffsetDateTime;
 
 /// This component contains base properties of the character. You'll probably want to always request this component, but hey you do you.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCharacterComponent {
     /// Every Destiny Profile has a membershipId. This is provided on the character as well for convenience.
     #[serde_as(as = "DisplayFromStr")]
@@ -106,7 +106,7 @@ pub struct DestinyCharacterComponent {
 }
 
 /// This component returns anything that could be considered "Progression" on a user: data where the user is gaining levels, reputation, completions, rewards, etc...
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCharacterProgressionComponent {
     /// A Dictionary of all known progressions for the Character, keyed by the Progression's hash.
     /// Not all progressions have user-facing data, but those who do will have that data contained in the DestinyProgressionDefinition.
@@ -149,7 +149,7 @@ pub struct DestinyCharacterProgressionComponent {
 
 /// Only really useful if you're attempting to render the character's current appearance in 3D, this returns a bare minimum of information, pre-aggregated, that you'll need to perform that rendering. Note that you need to combine this with other 3D assets and data from our servers.
 /// Examine the Javascript returned by https://bungie.net/sharedbundle/spasm to see how we use this data, but be warned: the rabbit hole goes pretty deep.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCharacterRenderComponent {
     /// Custom dyes, calculated by iterating over the character's equipped items. Useful for pre-fetching all of the dye data needed from our server.
     #[serde(rename = "customDyes")]
@@ -168,7 +168,7 @@ pub struct DestinyCharacterRenderComponent {
 }
 
 /// This component holds activity data for a character. It will tell you about the character's current activity status, as well as activities that are available to the user.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCharacterActivitiesComponent {
     /// The last date that the user started playing an activity.
     #[serde(with = "time::serde::rfc3339")]

@@ -6,7 +6,7 @@ use std::str::FromStr;
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumPostCategoryEnums {
     TextOnly = 1,
     Media = 2,
@@ -49,7 +49,7 @@ impl FromStr for ForumPostCategoryEnums {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ForumFlagsEnum {
     BungieStaffPost = 1,
     ForumNinjaPost = 2,

@@ -12,7 +12,7 @@ use time::OffsetDateTime;
 
 /// Very basic info about a user as returned by the Account server.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserMembership {
     /// Type of the membership. Not necessarily the native type.
     #[serde(rename = "membershipType")]
@@ -38,7 +38,7 @@ pub struct UserMembership {
 
 /// Very basic info about a user as returned by the Account server, but including CrossSave information. Do NOT use as a request contract.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct CrossSaveUserMembership {
     /// If there is a cross save override in effect, this value will tell you the type that is overridding this one.
     #[serde(rename = "crossSaveOverride")]
@@ -77,7 +77,7 @@ pub struct CrossSaveUserMembership {
 
 /// This contract supplies basic information commonly used to display a minimal amount of information about a user. Take care to not add more properties here unless the property applies in all (or at least the majority) of the situations where UserInfoCard is used. Avoid adding game specific or platform specific details here. In cases where UserInfoCard is a subset of the data needed in a contract, use UserInfoCard as a property of other contracts.
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserInfoCard {
     /// A platform specific additional display name - ex: psn Real Name, bnet Unique Name, etc.
     #[serde(rename = "supplementalDisplayName")]
@@ -123,7 +123,7 @@ pub struct UserInfoCard {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GeneralUser {
     #[serde_as(as = "DisplayFromStr")]
     #[serde(rename = "membershipId")]
@@ -247,7 +247,7 @@ pub struct GeneralUser {
     pub egs_display_name: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserToUserContext {
     #[serde(rename = "isFollowing")]
     pub is_following: bool,
@@ -262,7 +262,7 @@ pub struct UserToUserContext {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserMembershipData {
     /// this allows you to see destiny memberships that are visible and linked to this account (regardless of whether or not they have characters on the world server)
     #[serde(rename = "destinyMemberships")]
@@ -280,7 +280,7 @@ pub struct UserMembershipData {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct HardLinkedUserMembership {
     #[serde(rename = "membershipType")]
     pub membership_type: crate::BungieMembershipType,
@@ -298,7 +298,7 @@ pub struct HardLinkedUserMembership {
     pub cross_save_overridden_membership_id: Option<i64>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserSearchResponse {
     #[serde(rename = "searchResults")]
     pub search_results: Option<Vec<crate::user::UserSearchResponseDetail>>,
@@ -311,7 +311,7 @@ pub struct UserSearchResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserSearchResponseDetail {
     #[serde(rename = "bungieGlobalDisplayName")]
     pub bungie_global_display_name: Option<String>,
@@ -328,13 +328,13 @@ pub struct UserSearchResponseDetail {
     pub destiny_memberships: Option<Vec<crate::user::UserInfoCard>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct UserSearchPrefixRequest {
     #[serde(rename = "displayNamePrefix")]
     pub display_name_prefix: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ExactSearchRequest {
     #[serde(rename = "displayName")]
     pub display_name: Option<String>,
@@ -344,7 +344,7 @@ pub struct ExactSearchRequest {
 }
 
 /// The set of all email subscription/opt-in settings and definitions.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EmailSettings {
     /// Keyed by the name identifier of the opt-in definition.
     #[serde(rename = "optInDefinitions")]
@@ -360,7 +360,7 @@ pub struct EmailSettings {
 }
 
 /// Defines a single opt-in category: a wide-scoped permission to send emails for the subject related to the opt-in.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EmailOptInDefinition {
     /// The unique identifier for this opt-in category.
     #[serde(rename = "name")]
@@ -381,7 +381,7 @@ pub struct EmailOptInDefinition {
 
 #[bitflags]
 #[repr(u64)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum OptInFlags {
     Newsletter = 1,
     System = 2,
@@ -420,7 +420,7 @@ impl FromStr for OptInFlags {
 
 /// Defines a single subscription: permission to send emails for a specific, focused subject (generally timeboxed, such as for a specific release of a product or feature).
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EmailSubscriptionDefinition {
     /// The unique identifier for this subscription.
     #[serde(rename = "name")]
@@ -437,7 +437,7 @@ pub struct EmailSubscriptionDefinition {
 }
 
 /// Localized text relevant to a given EMail setting in a given localization.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EMailSettingLocalization {
     #[serde(rename = "title")]
     pub title: Option<String>,
@@ -447,7 +447,7 @@ pub struct EMailSettingLocalization {
 }
 
 /// Localized text relevant to a given EMail setting in a given localization. Extra settings specifically for subscriptions.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EMailSettingSubscriptionLocalization {
     #[serde(rename = "unknownUserDescription")]
     pub unknown_user_description: Option<String>,
@@ -472,7 +472,7 @@ pub struct EMailSettingSubscriptionLocalization {
 }
 
 /// Represents a data-driven view for Email settings. Web/Mobile UI can use this data to show new EMail settings consistently without further manual work.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EmailViewDefinition {
     /// The identifier for this view.
     #[serde(rename = "name")]
@@ -483,7 +483,7 @@ pub struct EmailViewDefinition {
     pub view_settings: Option<Vec<crate::user::EmailViewDefinitionSetting>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct EmailViewDefinitionSetting {
     /// The identifier for this UI Setting, which can be used to relate it to custom strings or other data as desired.
     #[serde(rename = "name")]

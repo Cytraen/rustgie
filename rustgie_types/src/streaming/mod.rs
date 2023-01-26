@@ -4,7 +4,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
 #[repr(u8)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DropStateEnum {
     Claimed = 0,
     Applied = 1,

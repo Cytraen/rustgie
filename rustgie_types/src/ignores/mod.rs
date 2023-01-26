@@ -5,7 +5,7 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct IgnoreResponse {
     #[serde(rename = "isIgnored")]
     pub is_ignored: bool,
@@ -16,7 +16,7 @@ pub struct IgnoreResponse {
 
 #[bitflags]
 #[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum IgnoreStatus {
     IgnoredUser = 1,
     IgnoredGroup = 2,
@@ -48,7 +48,7 @@ impl FromStr for IgnoreStatus {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum IgnoreLength {
     None = 0,
     Week = 1,

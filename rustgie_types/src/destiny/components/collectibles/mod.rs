@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCollectiblesComponent {
     #[serde(rename = "collectibles")]
     pub collectibles: Option<HashMap<u32, crate::destiny::components::collectibles::DestinyCollectibleComponent>>,
@@ -15,13 +15,13 @@ pub struct DestinyCollectiblesComponent {
     pub collection_badges_root_node_hash: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCollectibleComponent {
     #[serde(rename = "state")]
     pub state: enumflags2::BitFlags<crate::destiny::DestinyCollectibleState>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProfileCollectiblesComponent {
     /// The list of collectibles determined by the game as having been "recently" acquired.
     #[serde(rename = "recentCollectibleHashes")]

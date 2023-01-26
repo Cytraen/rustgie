@@ -1,6 +1,6 @@
 ﻿use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyEnvironmentLocationMapping {
     /// The location that is revealed on the director by this mapping.
     #[serde(rename = "locationHash")]

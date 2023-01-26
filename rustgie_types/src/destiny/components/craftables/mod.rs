@@ -1,7 +1,7 @@
 ﻿use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCraftablesComponent {
     /// A map of craftable item hashes to craftable item state components.
     #[serde(rename = "craftables")]
@@ -12,7 +12,7 @@ pub struct DestinyCraftablesComponent {
     pub crafting_root_node_hash: u32,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCraftableComponent {
     #[serde(rename = "visible")]
     pub visible: bool,
@@ -26,7 +26,7 @@ pub struct DestinyCraftableComponent {
     pub sockets: Option<Vec<crate::destiny::components::craftables::DestinyCraftableSocketComponent>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCraftableSocketComponent {
     #[serde(rename = "plugSetHash")]
     pub plug_set_hash: u32,
@@ -36,7 +36,7 @@ pub struct DestinyCraftableSocketComponent {
     pub plugs: Option<Vec<crate::destiny::components::craftables::DestinyCraftableSocketPlugComponent>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyCraftableSocketPlugComponent {
     #[serde(rename = "plugItemHash")]
     pub plug_item_hash: u32,

@@ -1,9 +1,9 @@
 ﻿use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ClanBannerSource {}
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ClanBannerDecal {
     #[serde(rename = "identifier")]
     pub identifier: Option<String>,

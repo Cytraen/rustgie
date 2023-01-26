@@ -2,7 +2,7 @@
 use time::OffsetDateTime;
 
 /// For now, this isn't used for much: it's a record of the recent refundable purchases that the user has made. In the future, it could be used for providing refunds/buyback via the API. Wouldn't that be fun?
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyVendorReceiptsComponent {
     /// The receipts for refundable purchases made at a vendor.
     #[serde(rename = "receipts")]
@@ -10,7 +10,7 @@ pub struct DestinyVendorReceiptsComponent {
 }
 
 /// The most essential summary information about a Profile (in Destiny 1, we called these "Accounts").
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProfileComponent {
     /// If you need to render the Profile (their platform name, icon, etc...) somewhere, this property contains that information.
     #[serde(rename = "userInfo")]

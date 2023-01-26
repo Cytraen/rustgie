@@ -9,7 +9,7 @@ use time::OffsetDateTime;
 
 #[bitflags]
 #[repr(u64)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ApplicationScopes {
     /// Read basic user profile information such as the user's handle, avatar icon, etc.
     ReadBasicUserProfile = 1,
@@ -73,7 +73,7 @@ impl FromStr for ApplicationScopes {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ApiUsage {
     /// Counts for on API calls made for the time range.
     #[serde(rename = "apiCalls")]
@@ -84,7 +84,7 @@ pub struct ApiUsage {
     pub throttled_requests: Option<Vec<crate::applications::Series>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Series {
     /// Collection of samples with time and value.
     #[serde(rename = "datapoints")]
@@ -95,7 +95,7 @@ pub struct Series {
     pub target: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Datapoint {
     /// Timestamp for the related count.
     #[serde(with = "time::serde::rfc3339")]
@@ -108,7 +108,7 @@ pub struct Datapoint {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct Application {
     /// Unique ID assigned to the application
     #[serde(rename = "applicationId")]
@@ -164,7 +164,7 @@ pub struct Application {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum ApplicationStatus {
     /// No value assigned
     None = 0,
@@ -198,7 +198,7 @@ impl FromStr for ApplicationStatus {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ApplicationDeveloper {
     #[serde(rename = "role")]
     pub role: crate::applications::DeveloperRole,
@@ -211,7 +211,7 @@ pub struct ApplicationDeveloper {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum DeveloperRole {
     None = 0,
     Owner = 1,

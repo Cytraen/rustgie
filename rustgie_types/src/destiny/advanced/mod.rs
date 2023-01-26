@@ -6,7 +6,7 @@ use std::fmt::{Display, Formatter};
 use std::str::FromStr;
 use time::OffsetDateTime;
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct AwaInitializeResponse {
     /// ID used to get the token. Present this ID to the user as it will identify this specific request on their device.
     #[serde(rename = "correlationId")]
@@ -18,7 +18,7 @@ pub struct AwaInitializeResponse {
 }
 
 #[serde_as]
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct AwaPermissionRequested {
     /// Type of advanced write action.
     #[serde(rename = "type")]
@@ -42,7 +42,7 @@ pub struct AwaPermissionRequested {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum AwaType {
     None = 0,
     /// Insert plugs into sockets.
@@ -66,7 +66,7 @@ impl FromStr for AwaType {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct AwaUserResponse {
     /// Indication of the selection the user has made (Approving or rejecting the action)
     #[serde(rename = "selection")]
@@ -82,7 +82,7 @@ pub struct AwaUserResponse {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum AwaUserSelection {
     None = 0,
     Rejected = 1,
@@ -107,7 +107,7 @@ impl FromStr for AwaUserSelection {
     }
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct AwaAuthorizationResult {
     /// Indication of how the user responded to the request. If the value is "Approved" the actionToken will contain the token that can be presented when performing the advanced write action.
     #[serde(rename = "userSelection")]
@@ -144,7 +144,7 @@ pub struct AwaAuthorizationResult {
 }
 
 #[repr(i32)]
-#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Deserialize_repr, Serialize_repr, Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum AwaResponseReason {
     None = 0,
     /// User provided an answer

@@ -2,7 +2,7 @@
 use std::collections::HashMap;
 
 /// DestinyManifest is the external-facing contract for just the properties needed by those calling the Destiny Platform.
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyManifest {
     #[serde(rename = "version")]
     pub version: Option<String>,
@@ -35,7 +35,7 @@ pub struct DestinyManifest {
     pub icon_image_pyramid_info: Option<Vec<crate::destiny::config::ImagePyramidEntry>>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct GearAssetDataBaseDefinition {
     #[serde(rename = "version")]
     pub version: i32,
@@ -44,7 +44,7 @@ pub struct GearAssetDataBaseDefinition {
     pub path: Option<String>,
 }
 
-#[derive(Deserialize, Serialize, PartialEq)]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct ImagePyramidEntry {
     /// The name of the subfolder where these images are located.
     #[serde(rename = "name")]

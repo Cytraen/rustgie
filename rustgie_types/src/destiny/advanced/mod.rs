@@ -26,7 +26,6 @@ pub struct AwaPermissionRequested {
 
     /// Item instance ID the action shall be applied to. This is optional for all but a new AwaType values. Rule of thumb is to provide the item instance ID if one is available.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "affectedItemId")]
     pub affected_item_id: Option<i64>,
 
@@ -36,7 +35,6 @@ pub struct AwaPermissionRequested {
 
     /// Destiny character ID, if applicable, that will be affected by the action.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "characterId")]
     pub character_id: Option<i64>,
 }

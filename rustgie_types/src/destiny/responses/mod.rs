@@ -347,7 +347,6 @@ pub struct DestinyCharacterResponse {
 pub struct DestinyItemResponse {
     /// If the item is on a character, this will return the ID of the character that is holding the item.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "characterId")]
     pub character_id: Option<i64>,
 

@@ -182,7 +182,6 @@ pub struct PlatformFriend {
     pub friend_platform: crate::social::friends::PlatformFriendType,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "destinyMembershipId")]
     pub destiny_membership_id: Option<i64>,
 
@@ -190,7 +189,6 @@ pub struct PlatformFriend {
     pub destiny_membership_type: Option<i32>,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "bungieNetMembershipId")]
     pub bungie_net_membership_id: Option<i64>,
 

@@ -168,7 +168,6 @@ pub struct GeneralUser {
     pub last_update: Option<OffsetDateTime>,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "legacyPortalUID")]
     pub legacy_portal_u_i_d: Option<i64>,
 
@@ -194,7 +193,6 @@ pub struct GeneralUser {
     pub locale_inherit_default: bool,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "lastBanReportId")]
     pub last_ban_report_id: Option<i64>,
 
@@ -271,7 +269,6 @@ pub struct UserMembershipData {
     /// If this property is populated, it will have the membership ID of the account considered to be "primary" in this user's cross save relationship.
     /// If null, this user has no cross save relationship, nor primary account.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "primaryMembershipId")]
     pub primary_membership_id: Option<i64>,
 
@@ -293,7 +290,6 @@ pub struct HardLinkedUserMembership {
     pub cross_save_overridden_type: crate::BungieMembershipType,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "CrossSaveOverriddenMembershipId")]
     pub cross_save_overridden_membership_id: Option<i64>,
 }
@@ -320,7 +316,6 @@ pub struct UserSearchResponseDetail {
     pub bungie_global_display_name_code: Option<i16>,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "bungieNetMembershipId")]
     pub bungie_net_membership_id: Option<i64>,
 

@@ -45,7 +45,6 @@ pub struct BungieTokenResponse {
     pub refresh_expires_in: Option<i32>,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "membership_id")]
     pub membership_id: Option<i64>,
 

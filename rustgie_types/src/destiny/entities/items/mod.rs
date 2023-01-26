@@ -13,7 +13,6 @@ pub struct DestinyItemComponent {
 
     /// If the item is instanced, it will have an instance ID. Lack of an instance ID implies that the item has no distinct local qualities aside from stack size.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "itemInstanceId")]
     pub item_instance_id: Option<i64>,
 

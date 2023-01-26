@@ -1,4 +1,5 @@
 ﻿use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DisplayFromStr};
 use time::OffsetDateTime;
 
 /// For now, this isn't used for much: it's a record of the recent refundable purchases that the user has made. In the future, it could be used for providing refunds/buyback via the API. Wouldn't that be fun?
@@ -10,6 +11,7 @@ pub struct DestinyVendorReceiptsComponent {
 }
 
 /// The most essential summary information about a Profile (in Destiny 1, we called these "Accounts").
+#[serde_as]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyProfileComponent {
     /// If you need to render the Profile (their platform name, icon, etc...) somewhere, this property contains that information.
@@ -28,6 +30,7 @@ pub struct DestinyProfileComponent {
     pub versions_owned: enumflags2::BitFlags<crate::destiny::DestinyGameVersions>,
 
     /// A list of the character IDs, for further querying on your part.
+    #[serde_as(as = "Option<Vec<DisplayFromStr>>")]
     #[serde(rename = "characterIds")]
     pub character_ids: Option<Vec<i64>>,
 

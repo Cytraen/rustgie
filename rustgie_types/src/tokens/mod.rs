@@ -48,7 +48,6 @@ pub struct PartnerOfferHistoryResponse {
     pub partner_offer_key: Option<String>,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "MembershipId")]
     pub membership_id: Option<i64>,
 

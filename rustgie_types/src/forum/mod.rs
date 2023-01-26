@@ -318,7 +318,6 @@ pub struct ForumRecruitmentDetail {
     pub approved: bool,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "conversationId")]
     pub conversation_id: Option<i64>,
 
@@ -331,6 +330,7 @@ pub struct ForumRecruitmentDetail {
     #[serde(rename = "Fireteam")]
     pub fireteam: Option<Vec<crate::user::GeneralUser>>,
 
+    #[serde_as(as = "Option<Vec<DisplayFromStr>>")]
     #[serde(rename = "kickedPlayerIds")]
     pub kicked_player_ids: Option<Vec<i64>>,
 }

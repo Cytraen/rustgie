@@ -63,6 +63,7 @@ pub struct DestinyPostmasterTransferRequest {
 #[serde_as]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemSetActionRequest {
+    #[serde_as(as = "Option<Vec<DisplayFromStr>>")]
     #[serde(rename = "itemIds")]
     pub item_ids: Option<Vec<i64>>,
 

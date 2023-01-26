@@ -71,6 +71,7 @@ pub struct GroupResponse {
     #[serde(rename = "founder")]
     pub founder: Option<crate::groups_v2::GroupMember>,
 
+    #[serde_as(as = "Option<Vec<DisplayFromStr>>")]
     #[serde(rename = "alliedIds")]
     pub allied_ids: Option<Vec<i64>>,
 
@@ -1031,7 +1032,6 @@ pub struct GroupMemberApplication {
     pub resolve_date: Option<OffsetDateTime>,
 
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "resolvedByMembershipId")]
     pub resolved_by_membership_id: Option<i64>,
 

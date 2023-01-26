@@ -232,7 +232,6 @@ pub struct DestinyMilestoneQuestRewardItem {
 
     /// If this quantity is referring to a specific instance of an item, this will have the item's instance ID. Normally, this will be null.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "itemInstanceId")]
     pub item_instance_id: Option<i64>,
 

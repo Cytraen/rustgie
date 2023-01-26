@@ -118,7 +118,6 @@ pub struct DestinyHistoricalStatsValue {
 
     /// When a stat represents the best, most, longest, fastest or some other personal best, the actual activity ID where that personal best was established is available on this property.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "activityId")]
     pub activity_id: Option<i64>,
 }
@@ -254,13 +253,11 @@ pub struct DestinyLeaderboardEntry {
 pub struct DestinyLeaderboardResults {
     /// Indicate the membership ID of the account that is the focal point of the provided leaderboards.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "focusMembershipId")]
     pub focus_membership_id: Option<i64>,
 
     /// Indicate the character ID of the character that is the focal point of the provided leaderboards. May be null, in which case any character from the focus membership can appear in the provided leaderboards.
     #[serde_as(as = "Option<DisplayFromStr>")]
-    #[serde(default)]
     #[serde(rename = "focusCharacterId")]
     pub focus_character_id: Option<i64>,
 }

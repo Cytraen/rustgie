@@ -115,8 +115,8 @@ impl RustgieClient {
                 }
 
                 builder = builder
-                    .https_only(true)
-                    .redirect(reqwest::redirect::Policy::none())
+                    //.https_only(true)
+                    //.redirect(reqwest::redirect::Policy::none())
                     .default_headers(default_headers);
 
                 builder.build()?

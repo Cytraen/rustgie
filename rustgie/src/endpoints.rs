@@ -195,6 +195,13 @@ impl crate::RustgieClient {
         ).await
     }
 
+    pub async fn destiny2_clear_loadout(&self, request_body: rustgie_types::destiny::requests::actions::DestinyLoadoutActionRequest, access_token: Option<&str>) -> Result<i32> {
+        self.bungie_api_post_with_body::<i32, rustgie_types::destiny::requests::actions::DestinyLoadoutActionRequest>(
+            Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Loadouts/ClearLoadout/").with_context(|| "Error parsing URL")?,
+            request_body, access_token
+        ).await
+    }
+
     pub async fn destiny2_equip_item(&self, request_body: rustgie_types::destiny::requests::actions::DestinyItemActionRequest, access_token: Option<&str>) -> Result<i32> {
         self.bungie_api_post_with_body::<i32, rustgie_types::destiny::requests::actions::DestinyItemActionRequest>(
             Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Items/EquipItem/").with_context(|| "Error parsing URL")?,
@@ -205,6 +212,13 @@ impl crate::RustgieClient {
     pub async fn destiny2_equip_items(&self, request_body: rustgie_types::destiny::requests::actions::DestinyItemSetActionRequest, access_token: Option<&str>) -> Result<rustgie_types::destiny::DestinyEquipItemResults> {
         self.bungie_api_post_with_body::<rustgie_types::destiny::DestinyEquipItemResults, rustgie_types::destiny::requests::actions::DestinyItemSetActionRequest>(
             Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Items/EquipItems/").with_context(|| "Error parsing URL")?,
+            request_body, access_token
+        ).await
+    }
+
+    pub async fn destiny2_equip_loadout(&self, request_body: rustgie_types::destiny::requests::actions::DestinyLoadoutActionRequest, access_token: Option<&str>) -> Result<i32> {
+        self.bungie_api_post_with_body::<i32, rustgie_types::destiny::requests::actions::DestinyLoadoutActionRequest>(
+            Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Loadouts/EquipLoadout/").with_context(|| "Error parsing URL")?,
             request_body, access_token
         ).await
     }
@@ -572,9 +586,23 @@ impl crate::RustgieClient {
         ).await
     }
 
+    pub async fn destiny2_snapshot_loadout(&self, request_body: rustgie_types::destiny::requests::actions::DestinyLoadoutUpdateActionRequest, access_token: Option<&str>) -> Result<i32> {
+        self.bungie_api_post_with_body::<i32, rustgie_types::destiny::requests::actions::DestinyLoadoutUpdateActionRequest>(
+            Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Loadouts/SnapshotLoadout/").with_context(|| "Error parsing URL")?,
+            request_body, access_token
+        ).await
+    }
+
     pub async fn destiny2_transfer_item(&self, request_body: rustgie_types::destiny::requests::DestinyItemTransferRequest, access_token: Option<&str>) -> Result<i32> {
         self.bungie_api_post_with_body::<i32, rustgie_types::destiny::requests::DestinyItemTransferRequest>(
             Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Items/TransferItem/").with_context(|| "Error parsing URL")?,
+            request_body, access_token
+        ).await
+    }
+
+    pub async fn destiny2_update_loadout_identifiers(&self, request_body: rustgie_types::destiny::requests::actions::DestinyLoadoutUpdateActionRequest, access_token: Option<&str>) -> Result<i32> {
+        self.bungie_api_post_with_body::<i32, rustgie_types::destiny::requests::actions::DestinyLoadoutUpdateActionRequest>(
+            Url::parse("https://www.bungie.net/Platform/Destiny2/Actions/Loadouts/UpdateLoadoutIdentifiers/").with_context(|| "Error parsing URL")?,
             request_body, access_token
         ).await
     }
@@ -586,8 +614,12 @@ impl crate::RustgieClient {
         ).await
     }
 
-    pub async fn fireteam_get_available_clan_fireteams(&self, activity_type: i32, date_range: rustgie_types::fireteam::FireteamDateRange, group_id: i64, page: i32, platform: rustgie_types::fireteam::FireteamPlatform, public_only: rustgie_types::fireteam::FireteamPublicSearchOption, slot_filter: rustgie_types::fireteam::FireteamSlotSearch, lang_filter: Option<&str>, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfFireteamSummary> {
+    pub async fn fireteam_get_available_clan_fireteams(&self, activity_type: i32, date_range: rustgie_types::fireteam::FireteamDateRange, group_id: i64, page: i32, platform: rustgie_types::fireteam::FireteamPlatform, public_only: rustgie_types::fireteam::FireteamPublicSearchOption, slot_filter: rustgie_types::fireteam::FireteamSlotSearch, exclude_immediate: Option<bool>, lang_filter: Option<&str>, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfFireteamSummary> {
         let mut query_params: Vec<(&str, String)> = Vec::new();
+        match exclude_immediate {
+            None => {}
+            Some(val) => { query_params.push(("excludeImmediate", val.to_string())); }
+        }
         match lang_filter {
             None => {}
             Some(val) => { query_params.push(("langFilter", val.to_string())); }
@@ -621,8 +653,12 @@ impl crate::RustgieClient {
         ).await
     }
 
-    pub async fn fireteam_search_public_available_clan_fireteams(&self, activity_type: i32, date_range: rustgie_types::fireteam::FireteamDateRange, page: i32, platform: rustgie_types::fireteam::FireteamPlatform, slot_filter: rustgie_types::fireteam::FireteamSlotSearch, lang_filter: Option<&str>, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfFireteamSummary> {
+    pub async fn fireteam_search_public_available_clan_fireteams(&self, activity_type: i32, date_range: rustgie_types::fireteam::FireteamDateRange, page: i32, platform: rustgie_types::fireteam::FireteamPlatform, slot_filter: rustgie_types::fireteam::FireteamSlotSearch, exclude_immediate: Option<bool>, lang_filter: Option<&str>, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfFireteamSummary> {
         let mut query_params: Vec<(&str, String)> = Vec::new();
+        match exclude_immediate {
+            None => {}
+            Some(val) => { query_params.push(("excludeImmediate", val.to_string())); }
+        }
         match lang_filter {
             None => {}
             Some(val) => { query_params.push(("langFilter", val.to_string())); }
@@ -833,7 +869,7 @@ impl crate::RustgieClient {
         ).await
     }
 
-    pub async fn group_v2_get_admins_and_founder_of_group(&self, _currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMember> {
+    pub async fn group_v2_get_admins_and_founder_of_group(&self, currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMember> {
         self.bungie_api_get::<rustgie_types::SearchResultOfGroupMember>(
             Url::parse(&format!("https://www.bungie.net/Platform/GroupV2/{group_id}/AdminsAndFounder/")).with_context(|| "Error parsing URL")?,
             access_token
@@ -854,7 +890,7 @@ impl crate::RustgieClient {
         ).await
     }
 
-    pub async fn group_v2_get_banned_members_of_group(&self, _currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupBan> {
+    pub async fn group_v2_get_banned_members_of_group(&self, currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupBan> {
         self.bungie_api_get::<rustgie_types::SearchResultOfGroupBan>(
             Url::parse(&format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Banned/")).with_context(|| "Error parsing URL")?,
             access_token
@@ -896,14 +932,14 @@ impl crate::RustgieClient {
         ).await
     }
 
-    pub async fn group_v2_get_invited_individuals(&self, _currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMemberApplication> {
+    pub async fn group_v2_get_invited_individuals(&self, currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMemberApplication> {
         self.bungie_api_get::<rustgie_types::SearchResultOfGroupMemberApplication>(
             Url::parse(&format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/InvitedIndividuals/")).with_context(|| "Error parsing URL")?,
             access_token
         ).await
     }
 
-    pub async fn group_v2_get_members_of_group(&self, _currentpage: i32, group_id: i64, member_type: Option<rustgie_types::groups_v2::RuntimeGroupMemberType>, name_search: Option<&str>, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMember> {
+    pub async fn group_v2_get_members_of_group(&self, currentpage: i32, group_id: i64, member_type: Option<rustgie_types::groups_v2::RuntimeGroupMemberType>, name_search: Option<&str>, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMember> {
         let mut query_params: Vec<(&str, String)> = Vec::new();
         match member_type {
             None => {}
@@ -919,7 +955,7 @@ impl crate::RustgieClient {
         ).await
     }
 
-    pub async fn group_v2_get_pending_memberships(&self, _currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMemberApplication> {
+    pub async fn group_v2_get_pending_memberships(&self, currentpage: i32, group_id: i64, access_token: Option<&str>) -> Result<rustgie_types::SearchResultOfGroupMemberApplication> {
         self.bungie_api_get::<rustgie_types::SearchResultOfGroupMemberApplication>(
             Url::parse(&format!("https://www.bungie.net/Platform/GroupV2/{group_id}/Members/Pending/")).with_context(|| "Error parsing URL")?,
             access_token

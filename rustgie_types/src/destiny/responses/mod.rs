@@ -185,6 +185,10 @@ pub struct DestinyProfileResponse {
     #[serde(rename = "profileStringVariables")]
     pub profile_string_variables: Option<crate::SingleComponentResponseOfDestinyStringVariablesComponent>,
 
+    /// COMPONENT TYPE: SocialCommendations
+    #[serde(rename = "profileCommendations")]
+    pub profile_commendations: Option<crate::SingleComponentResponseOfDestinySocialCommendationsComponent>,
+
     /// Basic information about each character, keyed by the CharacterId.
     /// COMPONENT TYPE: Characters
     #[serde(rename = "characters")]
@@ -194,6 +198,11 @@ pub struct DestinyProfileResponse {
     /// COMPONENT TYPE: CharacterInventories
     #[serde(rename = "characterInventories")]
     pub character_inventories: Option<crate::DictionaryComponentResponseOfint64AndDestinyInventoryComponent>,
+
+    /// The character loadouts, keyed by the Character's Id.
+    /// COMPONENT TYPE: CharacterLoadouts
+    #[serde(rename = "characterLoadouts")]
+    pub character_loadouts: Option<crate::DictionaryComponentResponseOfint64AndDestinyLoadoutsComponent>,
 
     /// Character-level progression data, keyed by the Character's Id.
     /// COMPONENT TYPE: CharacterProgressions
@@ -301,6 +310,11 @@ pub struct DestinyCharacterResponse {
     /// COMPONENT TYPE: CharacterEquipment
     #[serde(rename = "equipment")]
     pub equipment: Option<crate::SingleComponentResponseOfDestinyInventoryComponent>,
+
+    /// The loadouts available to the character.
+    /// COMPONENT TYPE: CharacterLoadouts
+    #[serde(rename = "loadouts")]
+    pub loadouts: Option<crate::SingleComponentResponseOfDestinyLoadoutsComponent>,
 
     /// Items available from Kiosks that are available to this specific character.
     /// COMPONENT TYPE: Kiosks

@@ -77,6 +77,45 @@ pub struct DestinyItemSetActionRequest {
 
 #[serde_as]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct DestinyLoadoutActionRequest {
+    /// The index of the loadout for this action request.
+    #[serde(rename = "loadoutIndex")]
+    pub loadout_index: i32,
+
+    #[serde_as(as = "DisplayFromStr")]
+    #[serde(rename = "characterId")]
+    pub character_id: i64,
+
+    #[serde(rename = "membershipType")]
+    pub membership_type: crate::BungieMembershipType,
+}
+
+#[serde_as]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct DestinyLoadoutUpdateActionRequest {
+    #[serde(rename = "colorHash")]
+    pub color_hash: Option<u32>,
+
+    #[serde(rename = "iconHash")]
+    pub icon_hash: Option<u32>,
+
+    #[serde(rename = "nameHash")]
+    pub name_hash: Option<u32>,
+
+    /// The index of the loadout for this action request.
+    #[serde(rename = "loadoutIndex")]
+    pub loadout_index: i32,
+
+    #[serde_as(as = "DisplayFromStr")]
+    #[serde(rename = "characterId")]
+    pub character_id: i64,
+
+    #[serde(rename = "membershipType")]
+    pub membership_type: crate::BungieMembershipType,
+}
+
+#[serde_as]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DestinyItemStateRequest {
     #[serde(rename = "state")]
     pub state: bool,

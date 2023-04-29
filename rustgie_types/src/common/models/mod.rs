@@ -141,6 +141,15 @@ pub struct Destiny2CoreSettings {
     #[serde(rename = "craftingRootNodeHash")]
     pub crafting_root_node_hash: u32,
 
+    #[serde(rename = "loadoutConstantsHash")]
+    pub loadout_constants_hash: u32,
+
+    #[serde(rename = "guardianRankConstantsHash")]
+    pub guardian_rank_constants_hash: u32,
+
+    #[serde(rename = "guardianRanksRootNodeHash")]
+    pub guardian_ranks_root_node_hash: u32,
+
     #[serde(rename = "currentRankProgressionHashes")]
     pub current_rank_progression_hashes: Option<Vec<u32>>,
 

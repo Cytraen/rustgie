@@ -999,6 +999,7 @@ pub enum DamageType {
     Void = 4,
     Raid = 5,
     Stasis = 6,
+    Strand = 7,
 }
 
 impl Display for DamageType {
@@ -1018,6 +1019,7 @@ impl FromStr for DamageType {
             "Void" => Ok(DamageType::Void),
             "Raid" => Ok(DamageType::Raid),
             "Stasis" => Ok(DamageType::Stasis),
+            "Strand" => Ok(DamageType::Strand),
             _ => Err(anyhow!("Could not deserialize string '{}' to DamageType", s)),
         }
     }
@@ -1332,6 +1334,8 @@ pub enum DestinyPresentationDisplayStyle {
     Medals = 2,
     Collectible = 3,
     Record = 4,
+    SeasonalTriumph = 5,
+    GuardianRank = 6,
 }
 
 impl Display for DestinyPresentationDisplayStyle {
@@ -1349,6 +1353,8 @@ impl FromStr for DestinyPresentationDisplayStyle {
             "Medals" => Ok(DestinyPresentationDisplayStyle::Medals),
             "Collectible" => Ok(DestinyPresentationDisplayStyle::Collectible),
             "Record" => Ok(DestinyPresentationDisplayStyle::Record),
+            "SeasonalTriumph" => Ok(DestinyPresentationDisplayStyle::SeasonalTriumph),
+            "GuardianRank" => Ok(DestinyPresentationDisplayStyle::GuardianRank),
             _ => Err(anyhow!("Could not deserialize string '{}' to DestinyPresentationDisplayStyle", s)),
         }
     }
@@ -1396,6 +1402,7 @@ pub enum DestinyRecordToastStyle {
     SeasonChallengeComplete = 6,
     GildedTitleComplete = 7,
     CraftingRecipeUnlocked = 8,
+    ToastGuardianRankDetails = 9,
 }
 
 impl Display for DestinyRecordToastStyle {
@@ -1417,6 +1424,7 @@ impl FromStr for DestinyRecordToastStyle {
             "SeasonChallengeComplete" => Ok(DestinyRecordToastStyle::SeasonChallengeComplete),
             "GildedTitleComplete" => Ok(DestinyRecordToastStyle::GildedTitleComplete),
             "CraftingRecipeUnlocked" => Ok(DestinyRecordToastStyle::CraftingRecipeUnlocked),
+            "ToastGuardianRankDetails" => Ok(DestinyRecordToastStyle::ToastGuardianRankDetails),
             _ => Err(anyhow!("Could not deserialize string '{}' to DestinyRecordToastStyle", s)),
         }
     }
@@ -1950,6 +1958,8 @@ pub enum DestinyComponentType {
     CharacterActivities = 204,
     /// This will return info about the equipped items on the character(s). Everyone can see this.
     CharacterEquipment = 205,
+    /// This will return info about the loadouts of the character(s).
+    CharacterLoadouts = 206,
     /// This will return basic info about instanced items - whether they can be equipped, their tracked status, and some info commonly needed in many places (current damage type, primary stat value, etc)
     ItemInstances = 300,
     /// Items can have Objectives (DestinyObjectiveDefinition) bound to them. If they do, this will return info for items that have such bound objectives.
@@ -1999,6 +2009,8 @@ pub enum DestinyComponentType {
     StringVariables = 1200,
     /// Returns summary status information about all "Craftables" aka crafting recipe items.
     Craftables = 1300,
+    /// Returns score values for all commendations and commendation nodes.
+    SocialCommendations = 1400,
 }
 
 impl Display for DestinyComponentType {
@@ -2024,6 +2036,7 @@ impl FromStr for DestinyComponentType {
             "CharacterRenderData" => Ok(DestinyComponentType::CharacterRenderData),
             "CharacterActivities" => Ok(DestinyComponentType::CharacterActivities),
             "CharacterEquipment" => Ok(DestinyComponentType::CharacterEquipment),
+            "CharacterLoadouts" => Ok(DestinyComponentType::CharacterLoadouts),
             "ItemInstances" => Ok(DestinyComponentType::ItemInstances),
             "ItemObjectives" => Ok(DestinyComponentType::ItemObjectives),
             "ItemPerks" => Ok(DestinyComponentType::ItemPerks),
@@ -2047,6 +2060,7 @@ impl FromStr for DestinyComponentType {
             "Metrics" => Ok(DestinyComponentType::Metrics),
             "StringVariables" => Ok(DestinyComponentType::StringVariables),
             "Craftables" => Ok(DestinyComponentType::Craftables),
+            "SocialCommendations" => Ok(DestinyComponentType::SocialCommendations),
             _ => Err(anyhow!("Could not deserialize string '{}' to DestinyComponentType", s)),
         }
     }

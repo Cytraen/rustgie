@@ -54,4 +54,12 @@ pub struct DestinyProfileComponent {
     /// If populated, this is a reference to the event card that is currently active.
     #[serde(rename = "activeEventCardHash")]
     pub active_event_card_hash: Option<u32>,
+
+    /// The 'current' Guardian Rank value, which starts at rank 1.
+    #[serde(rename = "currentGuardianRank")]
+    pub current_guardian_rank: i32,
+
+    /// The 'lifetime highest' Guardian Rank value, which starts at rank 1.
+    #[serde(rename = "lifetimeHighestGuardianRank")]
+    pub lifetime_highest_guardian_rank: i32,
 }

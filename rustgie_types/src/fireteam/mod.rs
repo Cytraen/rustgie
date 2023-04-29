@@ -190,6 +190,15 @@ pub struct FireteamSummary {
 
     #[serde(rename = "titleBeforeModeration")]
     pub title_before_moderation: Option<String>,
+
+    #[serde(rename = "ownerCurrentGuardianRankSnapshot")]
+    pub owner_current_guardian_rank_snapshot: i32,
+
+    #[serde(rename = "ownerHighestLifetimeGuardianRankSnapshot")]
+    pub owner_highest_lifetime_guardian_rank_snapshot: i32,
+
+    #[serde(rename = "ownerTotalCommendationScoreSnapshot")]
+    pub owner_total_commendation_score_snapshot: i32,
 }
 
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]

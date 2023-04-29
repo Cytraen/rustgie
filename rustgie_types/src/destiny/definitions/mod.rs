@@ -7,7 +7,9 @@ pub mod collectibles;
 pub mod common;
 pub mod director;
 pub mod energy_types;
+pub mod guardian_ranks;
 pub mod items;
+pub mod loadouts;
 pub mod lore;
 pub mod metrics;
 pub mod milestones;
@@ -17,6 +19,7 @@ pub mod progression;
 pub mod records;
 pub mod reporting;
 pub mod seasons;
+pub mod social;
 pub mod sockets;
 pub mod sources;
 pub mod traits;
@@ -2447,6 +2450,10 @@ pub struct DestinyDamageTypeDefinition {
     /// We have an enumeration for damage types for quick reference. This is the current definition's damage type enum value.
     #[serde(rename = "enumValue")]
     pub enum_value: crate::destiny::DamageType,
+
+    /// A color associated with the damage type. The displayProperties icon is tinted with a color close to this.
+    #[serde(rename = "color")]
+    pub color: Option<crate::destiny::misc::DestinyColor>,
 
     /// The unique identifier for this entity. Guaranteed to be unique for the type of entity, but not globally.
     /// When entities refer to each other in Destiny content, it is this hash that they are referring to.

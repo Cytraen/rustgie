@@ -494,6 +494,19 @@ pub struct SingleComponentResponseOfDestinyStringVariablesComponent {
     pub disabled: Option<bool>,
 }
 
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct SingleComponentResponseOfDestinySocialCommendationsComponent {
+    #[serde(rename = "data")]
+    pub data: Option<crate::destiny::components::social::DestinySocialCommendationsComponent>,
+
+    #[serde(rename = "privacy")]
+    pub privacy: crate::components::ComponentPrivacySetting,
+
+    /// If true, this component is disabled.
+    #[serde(rename = "disabled")]
+    pub disabled: Option<bool>,
+}
+
 #[serde_as]
 #[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
 pub struct DictionaryComponentResponseOfint64AndDestinyCharacterComponent {
@@ -515,6 +528,21 @@ pub struct DictionaryComponentResponseOfint64AndDestinyInventoryComponent {
     #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
     #[serde(rename = "data")]
     pub data: Option<HashMap<i64, crate::destiny::entities::inventory::DestinyInventoryComponent>>,
+
+    #[serde(rename = "privacy")]
+    pub privacy: crate::components::ComponentPrivacySetting,
+
+    /// If true, this component is disabled.
+    #[serde(rename = "disabled")]
+    pub disabled: Option<bool>,
+}
+
+#[serde_as]
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct DictionaryComponentResponseOfint64AndDestinyLoadoutsComponent {
+    #[serde_as(as = "Option<HashMap<DisplayFromStr, _>>")]
+    #[serde(rename = "data")]
+    pub data: Option<HashMap<i64, crate::destiny::components::loadouts::DestinyLoadoutsComponent>>,
 
     #[serde(rename = "privacy")]
     pub privacy: crate::components::ComponentPrivacySetting,
@@ -957,6 +985,19 @@ pub struct SingleComponentResponseOfDestinyCharacterRenderComponent {
 pub struct SingleComponentResponseOfDestinyCharacterActivitiesComponent {
     #[serde(rename = "data")]
     pub data: Option<crate::destiny::entities::characters::DestinyCharacterActivitiesComponent>,
+
+    #[serde(rename = "privacy")]
+    pub privacy: crate::components::ComponentPrivacySetting,
+
+    /// If true, this component is disabled.
+    #[serde(rename = "disabled")]
+    pub disabled: Option<bool>,
+}
+
+#[derive(Deserialize, Serialize, Clone, Debug, PartialEq)]
+pub struct SingleComponentResponseOfDestinyLoadoutsComponent {
+    #[serde(rename = "data")]
+    pub data: Option<crate::destiny::components::loadouts::DestinyLoadoutsComponent>,
 
     #[serde(rename = "privacy")]
     pub privacy: crate::components::ComponentPrivacySetting,
